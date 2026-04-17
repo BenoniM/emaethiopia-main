@@ -1,0 +1,125 @@
+@import url('https://api.fontshare.com/v2/css?f[]=neue-montreal@400,500,600,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 153 78% 13%;
+
+    --card: 150 10% 97%;
+    --card-foreground: 153 78% 13%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 153 78% 13%;
+
+    --primary: 120 61% 37%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 150 15% 95%;
+    --secondary-foreground: 153 78% 13%;
+
+    --muted: 150 10% 95%;
+    --muted-foreground: 150 5% 45%;
+
+    --accent: 120 61% 37%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 150 10% 90%;
+    --input: 150 10% 90%;
+    --ring: 120 61% 37%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 150 10% 97%;
+    --sidebar-foreground: 153 78% 13%;
+    --sidebar-primary: 120 61% 37%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 150 10% 94%;
+    --sidebar-accent-foreground: 153 78% 13%;
+    --sidebar-border: 150 10% 90%;
+    --sidebar-ring: 120 61% 37%;
+
+    /* Custom tokens */
+    --surface: 150 10% 96%;
+    --surface-hover: 150 10% 93%;
+    --hero-overlay: 150 20% 8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(120 61% 37%), hsl(120 61% 50%));
+  }
+
+  .glow-green {
+    box-shadow: 0 8px 30px -8px hsl(120 61% 37% / 0.35);
+  }
+
+  .glass-light {
+    background: hsl(0 0% 100% / 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid hsl(150 10% 90% / 0.5);
+  }
+
+  .glass-dark {
+    background: hsl(150 20% 8% / 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .card-lift {
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .card-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px -15px hsl(120 61% 37% / 0.15);
+  }
+
+  .magnetic-btn {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+  }
+
+  .magnetic-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 25px -8px hsl(120 61% 37% / 0.4);
+  }
+
+  .magnetic-btn:active {
+    transform: translateY(0) scale(0.98);
+  }
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
