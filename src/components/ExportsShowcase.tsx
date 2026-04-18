@@ -88,7 +88,7 @@ const ExportsShowcase = () => {
   return (
     <section 
       ref={containerRef} 
-      className="relative w-full bg-[#181a18] text-[#f8f9fa] overflow-visible border-y border-white/5"
+      className="relative w-full bg-[#031a00] text-[#f8f9fa] overflow-visible border-y border-white/5"
     >
       {/* Background noise */}
       <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03]" 
