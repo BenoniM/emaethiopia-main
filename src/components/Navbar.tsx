@@ -9,8 +9,8 @@ import littleDot from "@/assets/icon/little-dot.svg";
 const navLinks = [
   { label: "Home", href: "/" }, // Added Home here
   { label: "About Us", href: "/about" },
-  { 
-    label: "Products", 
+  {
+    label: "Products",
     href: "/products",
     subLinks: [
       { label: "Export Products", href: "/export-products" },
@@ -27,6 +27,8 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLightBg, setIsLightBg] = useState(false);
+  
   const lastScrollYRef = useRef(0);
   const menuOpenRef = useRef(false);
   const location = useLocation();
@@ -159,10 +161,62 @@ const Navbar = () => {
 
   // Scroll listener
   useEffect(() => {
+    const checkBgColor = () => {
+      // Find the element roughly where the menu text drops (Center X, 1/3 down Y)
+      const x = window.innerWidth / 2;
+      const y = window.innerHeight / 3; 
+
+      const elements = document.elementsFromPoint(x, y);
+      const header = document.querySelector('header');
+
+      // Default to false (meaning dark context -> white text) because images act dark.
+      let lightBgFound = false; 
+
+      for (const elem of elements) {
+        // Skip the navbar itself so we pierce straight through to the page content
+        if (header && header.contains(elem)) continue;
+        if (elem.tagName === 'HTML' || elem.tagName === 'BODY') continue;
+
+        // If we hit a raw image, video, or canvas, default to Dark mode (White text)
+        if (elem.tagName === 'IMG' || elem.tagName === 'VIDEO' || elem.tagName === 'CANVAS') {
+          lightBgFound = false;
+          break;
+        }
+
+        const style = window.getComputedStyle(elem);
+        
+        // If there's an image background on a div/section, treat it as complex/dark 
+        if (style.backgroundImage && style.backgroundImage !== 'none' && style.backgroundImage !== 'initial') {
+          lightBgFound = false;
+          break;
+        }
+
+        const bg = style.backgroundColor;
+        if (bg && bg !== 'transparent') {
+          const match = bg.match(/[\d.]+/g);
+          if (match && match.length >= 3) {
+            const alpha = match.length >= 4 ? parseFloat(match[3]) : 1;
+            if (alpha > 0) { // Only evaluate solid or somewhat opaque layers
+              const r = parseInt(match[0]);
+              const g = parseInt(match[1]);
+              const b = parseInt(match[2]);
+              const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+              
+              // Luma > 180 means very light (closest to white)
+              lightBgFound = luma > 180;
+              break; 
+            }
+          }
+        }
+      }
+
+      setIsLightBg(lightBgFound);
+    };
+
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrolled(currentScrollY > 50);
-      
+
       if (currentScrollY > lastScrollYRef.current && currentScrollY > 150) {
         setIsVisible(false); // scrolling down past threshold
       } else {
@@ -173,17 +227,34 @@ const Navbar = () => {
       if (menuOpenRef.current && currentScrollY > 10) {
         closeMenu();
       }
+      
+      checkBgColor();
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("resize", checkBgColor);
+    
+    // Check initially
+    checkBgColor();
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", checkBgColor);
+    };
   }, [closeMenu]);
+
+  const activeLineBgClass = isLightBg ? "bg-[#1D781D]" : "bg-white";
+  const activeTextColorClass = isLightBg ? "text-[#1D781D] hover:text-[#0f3e0f]" : "text-white hover:text-[#1D781D]";
+  const activeSubTextColorClass = isLightBg ? "text-[#1D781D] hover:text-[#0f3e0f]" : "text-white/70 hover:text-[#1D781D]";
+
+  // Using a soft CSS filter so the original SVG img dot stays fully intact, just turns green on light bgs
+  const activeDotClass = isLightBg ? "brightness-[0.35] sepia hue-rotate-90 saturate-[300%]" : "";
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled && !menuOpenRef.current ? "backdrop-blur-md bg-foreground/15" : "bg-transparent"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled && !menuOpenRef.current ? "backdrop-blur-md bg-foreground/15" : "bg-transparent"
+          }`}
         style={{ transform: isVisible ? "translateY(0)" : "translateY(-100%)" }}
       >
         <div className="flex items-start justify-between px-6 py-5 md:px-10 md:py-6 relative w-full h-full pointer-events-none">
@@ -201,9 +272,8 @@ const Navbar = () => {
             {/* The Hamburger Button acts as the origin point */}
             <button
               onClick={toggleMenu}
-              className={`relative z-20 flex h-14 w-14 items-center justify-center rounded-full transition-all duration-300 overflow-hidden ${
-                menuOpen ? "bg-[#1D781D] border border-white" : "bg-transparent"
-              }`}
+              className={`relative z-20 flex h-14 w-14 items-center justify-center rounded-full transition-all duration-300 overflow-hidden ${menuOpen ? "bg-[#1D781D] border border-white" : "bg-transparent"
+                }`}
               aria-label={menuOpenRef.current ? "Close menu" : "Open menu"}
             >
               {!menuOpen && (
@@ -235,7 +305,7 @@ const Navbar = () => {
                 {/* Center line descending from bottom center of the button */}
                 <div
                   ref={menuLineRef}
-                  className="absolute top-0 bottom-6 left-1/2 -translate-x-[0.5px] w-[1px] bg-white opacity-80"
+                  className={`absolute top-0 bottom-6 left-1/2 -translate-x-[0.5px] w-[1px] opacity-80 transition-colors duration-300 ${activeLineBgClass}`}
                   style={{ transformOrigin: "top", transform: "scaleY(0)" }}
                 />
 
@@ -252,14 +322,14 @@ const Navbar = () => {
                         ref={(el) => { menuDotsRef.current[i] = el; }}
                         src={littleDot}
                         alt=""
-                        className="absolute right-[152px] top-[17px] translate-x-1/2 h-[14px] w-[14px] z-10 drop-shadow-md"
+                        className={`absolute right-[152px] top-[17px] translate-x-1/2 h-[14px] w-[14px] z-10 drop-shadow-md transition-all duration-300 ${activeDotClass}`}
                         style={{ opacity: 0, transform: "scale(0)" }}
                       />
 
                       {/* Main Link label to the left of the dot */}
                       <Link
                         to={link.href}
-                        className="text-white text-lg lg:text-xl font-body font-medium transition-colors hover:text-[#1D781D] drop-shadow-md whitespace-nowrap block"
+                        className={`text-lg lg:text-xl font-body font-medium drop-shadow-md whitespace-nowrap block transition-colors duration-300 ${activeTextColorClass}`}
                         onClick={closeMenu}
                       >
                         {link.label}
@@ -274,7 +344,7 @@ const Navbar = () => {
                                 <Link
                                   key={subLink.label}
                                   to={subLink.href}
-                                  className="text-white/70 hover:text-[#1D781D] font-body text-sm whitespace-nowrap block text-right pr-0 transition-colors"
+                                  className={`font-body text-sm whitespace-nowrap block text-right pr-0 transition-colors duration-300 ${activeSubTextColorClass}`}
                                   onClick={closeMenu}
                                 >
                                   {subLink.label}

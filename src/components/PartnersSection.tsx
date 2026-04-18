@@ -3,12 +3,12 @@ import { useRef } from "react";
 import { Building2, Award, Handshake, Globe, ShieldCheck, Truck } from "lucide-react";
 
 const partners = [
-  { name: "Droga Pharma", icon: Building2, description: "Parent company providing pharmaceutical excellence" },
-  { name: "ECX Ethiopia", icon: Award, description: "Ethiopian Commodity Exchange partnership" },
-  { name: "Global Traders", icon: Handshake, description: "International trade network across 30+ countries" },
-  { name: "Export Authority", icon: Globe, description: "Ethiopian Export Authority certified" },
-  { name: "Quality Cert.", icon: ShieldCheck, description: "ISO 9001:2015 certified operations" },
-  { name: "Logistics Hub", icon: Truck, description: "End-to-end supply chain partners" },
+  { name: "Droga Pharma", logo: "src/assets/partners/droga.png", description: "Parent company providing pharmaceutical excellence" },
+  { name: "ECX Ethiopia", logo: "src/assets/partners/ecx.png", description: "Ethiopian Commodity Exchange partnership" },
+  { name: "EMA Trade", logo: "src/assets/partners/ema.png", description: "International trade network across 30+ countries" },
+  { name: "Export Authority", logo: "src/assets/partners/trust.png", description: "Ethiopian Export Authority certified" },
+  { name: "Quality Cert.", logo: "src/assets/partners/partner2.png", description: "ISO 9001:2015 certified operations" },
+  { name: "Logistics Hub", logo: "src/assets/partners/physio.svg", description: "End-to-end supply chain partners" },
 ];
 
 const PartnersSection = () => {
@@ -35,62 +35,87 @@ const PartnersSection = () => {
           </p>
         </motion.div>
 
-        {/* Marquee */}
-        <div className="mb-16 overflow-hidden">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.3 }}
-            className="flex animate-marquee gap-12 whitespace-nowrap"
+        {/* Star Wars Style Crawling Carousel */}
+        <div className="relative h-[800px] w-full overflow-hidden [perspective:800px]">
+          <div 
+            className="grid h-full grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3 [transform:rotateX(45deg)] origin-bottom scale-90"
           >
-            {[...Array(3)].map((_, setIdx) => (
-              <div key={setIdx} className="flex gap-12">
-                {["Quality First", "Global Reach", "Sustainable Growth", "Premium Products", "Trusted Partnership", "Innovation"].map((text) => (
-                  <span key={`${setIdx}-${text}`} className="font-display text-5xl font-bold text-border/60 md:text-7xl">
-                    {text}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Partner grid with glowing cards */}
-        <motion.div
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {partners.map((partner, i) => {
-            const Icon = partner.icon;
-            return (
+            {/* Column 1 - Crawling Upwards */}
+            <div className="relative flex flex-col gap-8">
               <motion.div
-                key={partner.name}
-                variants={{
-                  hidden: { opacity: 0, y: 40, scale: 0.95 },
-                  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
-                }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="group relative rounded-2xl border border-border bg-background p-8 transition-all duration-300 hover:border-primary/30 hover:shadow-xl"
+                animate={{ y: ["0%", "-50%"] }}
+                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                className="flex flex-col gap-8"
               >
-                <motion.div
-                  whileHover={{ rotate: 12, scale: 1.15 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                  className="mb-5 inline-flex rounded-2xl bg-primary/8 p-4"
-                >
-                  <Icon className="h-7 w-7 text-primary" />
-                </motion.div>
-                <h3 className="mb-2 font-display text-lg font-bold text-foreground">
-                  {partner.name}
-                </h3>
-                <p className="font-body text-sm leading-relaxed text-muted-foreground">
-                  {partner.description}
-                </p>
+                {[...partners, ...partners].map((partner, i) => {
+                  return (
+                    <div
+                      key={`col1-${i}`}
+                      className="group relative rounded-2xl border border-primary/20 bg-background/50 backdrop-blur-sm p-10 transition-all duration-300 hover:border-primary hover:bg-background"
+                    >
+                      <div className="mb-6 flex h-16 items-center justify-center">
+                        <img src={partner.logo} alt={partner.name} className="h-14 object-contain filter group-hover:grayscale-0 transition-all duration-300" />
+                      </div>
+                      <h3 className="mb-3 font-display text-2xl font-bold text-center text-primary uppercase tracking-tighter">{partner.name}</h3>
+                      <p className="font-body text-base text-center leading-relaxed text-muted-foreground">{partner.description}</p>
+                    </div>
+                  );
+                })}
               </motion.div>
-            );
-          })}
-        </motion.div>
+            </div>
+
+            {/* Column 2 - Crawling Upwards (Slower) */}
+            <div className="relative hidden flex-col gap-8 md:flex">
+              <motion.div
+                animate={{ y: ["0%", "-50%"] }}
+                transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+                className="flex flex-col gap-8"
+              >
+                {[...partners, ...partners].map((partner, i) => {
+                  return (
+                    <div
+                      key={`col2-${i}`}
+                      className="group relative rounded-2xl border border-primary/20 bg-background/50 backdrop-blur-sm p-10 transition-all duration-300 hover:border-primary hover:bg-background"
+                    >
+                      <div className="mb-6 flex h-16 items-center justify-center">
+                        <img src={partner.logo} alt={partner.name} className="h-14 object-contain filter group-hover:grayscale-0 transition-all duration-300" />
+                      </div>
+                      <h3 className="mb-3 font-display text-2xl font-bold text-center text-primary uppercase tracking-tighter">{partner.name}</h3>
+                      <p className="font-body text-base text-center leading-relaxed text-muted-foreground">{partner.description}</p>
+                    </div>
+                  );
+                })}
+              </motion.div>
+            </div>
+
+            {/* Column 3 - Crawling Upwards (Faster) */}
+            <div className="relative hidden flex-col gap-8 lg:flex">
+              <motion.div
+                animate={{ y: ["0%", "-50%"] }}
+                transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
+                className="flex flex-col gap-8"
+              >
+                {[...partners.slice().reverse(), ...partners.slice().reverse()].map((partner, i) => {
+                  return (
+                    <div
+                      key={`col3-${i}`}
+                      className="group relative rounded-2xl border border-primary/20 bg-background/50 backdrop-blur-sm p-10 transition-all duration-300 hover:border-primary hover:bg-background"
+                    >
+                      <div className="mb-6 flex h-16 items-center justify-center">
+                        <img src={partner.logo} alt={partner.name} className="h-14 object-contain filter group-hover:grayscale-0 transition-all duration-300" />
+                      </div>
+                      <h3 className="mb-3 font-display text-2xl font-bold text-center text-primary uppercase tracking-tighter">{partner.name}</h3>
+                      <p className="font-body text-base text-center leading-relaxed text-muted-foreground">{partner.description}</p>
+                    </div>
+                  );
+                })}
+              </motion.div>
+            </div>
+          </div>
+          
+          {/* Deep Space Fading Overlay */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-full bg-gradient-to-b from-secondary via-transparent to-transparent z-10" />
+        </div>
       </div>
     </section>
   );
