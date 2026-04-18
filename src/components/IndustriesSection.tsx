@@ -1,22 +1,25 @@
 import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { ArrowRight } from "lucide-react";
+import coffee from "@/assets/industries/coffee.jpg";
+import importExport from "@/assets/industries/import-export.jpg";
+import agriculture from "@/assets/industries/agriculture.jpg";
 
 const industries = [
   {
     title: "Coffee",
     description: "Supplying premium Arabica & Robusta to roasters and distributors worldwide from Ethiopia's finest regions.",
-    image: "/src/assets/industries/coffee.jpg",
+    image: coffee,
   },
   {
     title: "Import & Export",
     description: "Full-service import and export operations connecting Ethiopian producers with global markets.",
-    image: "/src/assets/industries/import-export.jpg",
+    image: importExport,
   },
   {
     title: "Agriculture",
     description: "Organic pulses, beans, seeds and grains for the global food processing and agriculture industry.",
-    image: "/src/assets/industries/agriculture.jpg",
+    image: agriculture,
   },
 ];
 
