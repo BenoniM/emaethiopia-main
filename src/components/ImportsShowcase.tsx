@@ -88,13 +88,13 @@ const ImportsShowcase = () => {
       className="relative w-full h-screen bg-[#fdfaf6] flex flex-col overflow-hidden" 
       ref={containerRef}
     >
-      <div className="container mx-auto px-6 pt-10 pb-4 flex flex-col h-full">
+      <div className="container pt-10 pb-4 flex flex-col h-full">
         
         {/* Header */}
         <div className="mb-6 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end flex-shrink-0">
           <div>
             <h2 className="font-display text-2xl font-bold uppercase tracking-tight text-[#1a202c] md:text-3xl">
-              Our <span className="text-primary font-medium">Imports</span>
+              Our <span className="text-primary">Imports</span>
             </h2>
             <p className="mt-1 max-w-lg font-body text-[13px] text-[#4a5568]">
               High-quality medical equipment strengthening Ethiopia's healthcare infrastructure.
@@ -111,7 +111,7 @@ const ImportsShowcase = () => {
         </div>
 
         {/* Grid - GAPS REMOVED (gap-0) */}
-        <div className="grid grid-cols-1 gap-0 md:grid-cols-3 flex-grow mb-8 border-l border-r border-gray-100/50">
+        <div className="grid grid-cols-1 gap-0 md:grid-cols-3 flex-grow mb-8">
           {importProducts.map((product, index) => (
             <div
               key={product.id}
