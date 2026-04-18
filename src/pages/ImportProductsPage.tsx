@@ -7,27 +7,9 @@ import { GlowingEffect } from "@/components/ui/glowing-effect";
 import productStretcher from "@/assets/product-stretcher-new.jpg";
 import productBlood from "@/assets/product-blood.jpg";
 import productMedicalDevices from "@/assets/product-medical-devices.jpg";
+import ImportsShowcase from "@/components/ImportsShowcase";
 
-const importProducts = [
-  {
-    title: "Ambulance Stretcher Trolley",
-    description: "High-quality ambulance stretcher trolleys designed for emergency medical services across Ethiopia. Features include adjustable height, foldable design, heavy-duty wheels with locks, and stainless steel construction for maximum durability and hygiene compliance.",
-    image: productStretcher,
-    features: ["Adjustable Height", "Stainless Steel", "Heavy-Duty Wheels", "Foldable Design"],
-  },
-  {
-    title: "Viva Check Blood Glucose Monitor",
-    description: "Precision blood glucose monitoring system — the Viva Check provides accurate readings in just 5 seconds with minimal blood sample required. Designed for hospitals, clinics, and home healthcare use, helping manage diabetes across Ethiopia.",
-    image: productBlood,
-    features: ["5-Second Results", "Minimal Blood Sample", "Memory Storage", "Compact Design"],
-  },
-  {
-    title: "Diagnostic Medical Devices",
-    description: "A comprehensive range of diagnostic medical devices including digital blood pressure monitors, pulse oximeters, infrared thermometers, and other essential clinical equipment for Ethiopian healthcare facilities — all meeting WHO and CE certification standards.",
-    image: productMedicalDevices,
-    features: ["Digital Accuracy", "WHO Standards", "Bulk Available", "Training Included"],
-  },
-];
+
 
 const benefits = [
   { icon: HeartPulse, title: "Healthcare Impact", description: "Strengthening Ethiopian healthcare infrastructure by importing world-class medical equipment and diagnostic devices to hospitals and clinics nationwide." },
@@ -113,63 +95,8 @@ const ImportProductsPage = () => {
         </div>
       </section>
 
-      {/* Product Showcase - distinct dark section */}
-      <section className="bg-foreground py-20">
-        <div className="container mx-auto px-6">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-10">
-            <h2 className="flex items-center gap-3 font-display text-3xl font-bold text-background">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">I</span>
-              Our Import Range
-            </h2>
-            <p className="mt-2 max-w-2xl font-body text-background/70">High-quality medical equipment and diagnostic devices sourced from certified international manufacturers for Ethiopian healthcare.</p>
-          </motion.div>
-
-          <div className="space-y-8">
-            {importProducts.map((product, i) => (
-              <motion.div
-                key={product.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="group relative overflow-hidden rounded-3xl border border-background/10 bg-background"
-              >
-                <GlowingEffect spread={40} glow disabled={false} blur={8} />
-                <div className="grid md:grid-cols-2">
-                  <div className="relative aspect-[4/3] overflow-hidden md:aspect-auto">
-                    <motion.img
-                      src={product.image}
-                      alt={product.title}
-                      className="h-full w-full object-cover"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.6 }}
-                    />
-                    <div className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-primary opacity-0 transition-all duration-300 group-hover:opacity-100">
-                      <ArrowUpRight className="h-5 w-5 text-primary-foreground" />
-                    </div>
-                  </div>
-                  <div className="flex flex-col justify-center p-8 md:p-12">
-                    <div className="mb-3 flex items-center gap-2">
-                      <Activity className="h-5 w-5 text-primary" />
-                      <span className="font-body text-xs font-semibold tracking-widest text-primary uppercase">Medical Equipment</span>
-                    </div>
-                    <h3 className="mb-4 font-display text-2xl font-bold text-foreground md:text-3xl">{product.title}</h3>
-                    <p className="mb-6 font-body text-base leading-relaxed text-muted-foreground">{product.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {product.features.map((feature) => (
-                        <span key={feature} className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 font-body text-xs font-medium text-foreground">
-                          <CheckCircle className="h-3 w-3 text-primary" />
-                          {feature}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Product Showcase */}
+      <ImportsShowcase />
 
       {/* CTA */}
       <section className="py-20">

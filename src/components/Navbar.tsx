@@ -7,6 +7,7 @@ import closeIcon from "@/assets/icon/close.svg";
 import littleDot from "@/assets/icon/little-dot.svg";
 
 const navLinks = [
+  { label: "Home", href: "/" }, // Added Home here
   { label: "About Us", href: "/about" },
   { 
     label: "Products", 
@@ -24,7 +25,9 @@ const navLinks = [
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const lastScrollYRef = useRef(0);
   const menuOpenRef = useRef(false);
   const location = useLocation();
 
@@ -157,8 +160,17 @@ const Navbar = () => {
   // Scroll listener
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-      if (menuOpenRef.current && window.scrollY > 10) {
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 50);
+      
+      if (currentScrollY > lastScrollYRef.current && currentScrollY > 150) {
+        setIsVisible(false); // scrolling down past threshold
+      } else {
+        setIsVisible(true); // scrolling up
+      }
+      lastScrollYRef.current = currentScrollY;
+
+      if (menuOpenRef.current && currentScrollY > 10) {
         closeMenu();
       }
     };
@@ -172,6 +184,7 @@ const Navbar = () => {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled && !menuOpenRef.current ? "backdrop-blur-md bg-foreground/15" : "bg-transparent"
         }`}
+        style={{ transform: isVisible ? "translateY(0)" : "translateY(-100%)" }}
       >
         <div className="flex items-start justify-between px-6 py-5 md:px-10 md:py-6 relative w-full h-full pointer-events-none">
           {/* Logo */}
