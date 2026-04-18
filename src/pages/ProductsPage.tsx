@@ -381,7 +381,7 @@ const ProductsPage = () => {
               return (
                 <div
                   key={p.id}
-                  className="absolute inset-0 transition-all duration-[0.8s] ease-[cubic-bezier(0.23,1,0.32,1)] overflow-visible"
+                  className="absolute inset-0 transition-[transform,clip-path,background-color] duration-[0.8s] ease-[cubic-bezier(0.23,1,0.32,1)] will-change-[transform,clip-path] transform-gpu overflow-visible"
                   style={{
                     transform: `rotate(${i * SEG + correction}deg)`,
                     clipPath: isFocused ? WIDE_CLIP : NORMAL_CLIP,
@@ -398,7 +398,7 @@ const ProductsPage = () => {
                   />
 
                   <div
-                    className="absolute flex flex-col items-center justify-start transition-all duration-[0.8s] ease-[cubic-bezier(0.23,1,0.32,1)]"
+                    className="absolute flex flex-col items-center justify-start transition-[transform,top,width,opacity] duration-[0.9s] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-[transform,top,width] transform-gpu"
                     style={{
                       top: contentTop,
                       left: "50%",

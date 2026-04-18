@@ -1,129 +1,116 @@
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { Coffee, Building2, ArrowLeftRight, Sprout, ArrowUpRight } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import gsap from "gsap";
+import { ArrowRight } from "lucide-react";
 
 const industries = [
   {
-    icon: Coffee,
     title: "Coffee",
     description: "Supplying premium Arabica & Robusta to roasters and distributors worldwide from Ethiopia's finest regions.",
-    color: "from-primary/10 to-primary/5",
+    image: "/src/assets/industries/coffee.jpg",
   },
   {
-    icon: Building2,
-    title: "Construction",
-    description: "Providing quality construction materials and equipment for projects across East Africa.",
-    color: "from-primary/8 to-primary/3",
-  },
-  {
-    icon: ArrowLeftRight,
     title: "Import & Export",
     description: "Full-service import and export operations connecting Ethiopian producers with global markets.",
-    color: "from-primary/10 to-primary/5",
+    image: "/src/assets/industries/import-export.jpg",
   },
   {
-    icon: Sprout,
     title: "Agriculture",
     description: "Organic pulses, beans, seeds and grains for the global food processing and agriculture industry.",
-    color: "from-primary/8 to-primary/3",
+    image: "/src/assets/industries/agriculture.jpg",
   },
 ];
 
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12 } },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 } as const,
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const } },
-};
-
 const IndustriesSection = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [activeIndex, setActiveIndex] = useState(0);
+  const bgRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    bgRefs.current.forEach((bg, idx) => {
+      if (idx === activeIndex) {
+        gsap.to(bg, { opacity: 1, duration: 0.6, ease: "power2.inOut" });
+      } else {
+        gsap.to(bg, { opacity: 0, duration: 0.6, ease: "power2.inOut" });
+      }
+    });
+  }, [activeIndex]);
 
   return (
-    <section id="industries" className="relative bg-secondary py-28 lg:py-36">
-      <div className="container mx-auto px-6" ref={ref}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-6 text-center"
-        >
-          <span className="mb-4 inline-block font-body text-sm font-semibold tracking-widest text-primary uppercase">
+    <section 
+      id="industries"
+      className="relative h-screen w-full overflow-hidden bg-black flex items-center justify-center"
+    >
+      {/* Background Layer - Static position, changing opacity */}
+      <div className="absolute inset-0 z-0">
+        {industries.map((item, index) => (
+          <div
+            key={index}
+            ref={(el) => (bgRefs.current[index] = el)}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ 
+              backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8)), url(${item.image})`,
+              opacity: index === 0 ? 1 : 0 
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="container relative z-10 mx-auto px-6">
+        <div className="mb-12 text-center">
+          <span className="mb-3 inline-block font-body text-xs font-bold tracking-[0.2em] text-white uppercase">
             Industries We Serve
           </span>
-          <h2 className="mb-4 font-display text-4xl font-bold text-foreground md:text-5xl">
-            Delivering Tailored Solutions Across{" "}
-            <span className="text-gradient">Diverse Industries</span>
+          <h2 className="font-display text-4xl font-bold text-white md:text-5xl">
+            Tailored Solutions Across Diverse Sectors
           </h2>
-          <p className="mx-auto max-w-2xl font-body text-lg text-muted-foreground">
-            At EMA, we understand that each industry has unique challenges and
-            opportunities. We proudly operate under the umbrella of Droga Pharma.
-          </p>
-        </motion.div>
+        </div>
 
-        {/* Marquee */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.3, duration: 0.6 }}
-          className="mb-16 overflow-hidden"
-        >
-          <div className="flex animate-marquee gap-8 whitespace-nowrap">
-            {[...Array(2)].map((_, setIdx) => (
-              <div key={setIdx} className="flex gap-8">
-                {["Discover EMA's", "Diverse Industries", "Shaping the Future", "Across Sectors", "Sustainable Growth", "Innovation"].map((text) => (
-                  <span key={`${setIdx}-${text}`} className="font-display text-5xl font-bold text-border md:text-7xl">
-                    {text}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </motion.div>
+        {/* lg:items-center ensures small boxes align with the middle of the large box */}
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-5 h-[500px]">
+          {industries.map((industry, index) => {
+            const isActive = activeIndex === index;
 
-        {/* Industry cards */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
-        >
-          {industries.map((item) => {
-            const Icon = item.icon;
             return (
-              <motion.div
-                key={item.title}
-                variants={cardVariants}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="card-lift group cursor-pointer rounded-3xl border border-border bg-background p-8 text-center transition-all duration-400 hover:border-primary/30 hover:shadow-xl"
+              <div
+                key={industry.title}
+                onMouseEnter={() => setActiveIndex(index)}
+                className={`relative cursor-pointer transition-all duration-700 ease-[0.23,1,0.32,1]
+                  ${isActive 
+                    ? "w-full lg:w-[420px] h-[450px] bg-white text-black shadow-2xl p-10" 
+                    : "w-full lg:w-[220px] h-[220px] bg-white/10 backdrop-blur-xl text-white border border-white/20 p-6"
+                  } 
+                  rounded-2xl flex flex-col overflow-hidden`}
               >
-                <motion.div
-                  whileHover={{ rotate: -10, scale: 1.15 }}
-                  className={`mx-auto mb-6 inline-flex rounded-2xl bg-gradient-to-br ${item.color} p-5`}
+                {/* Content Wrapper: Centers title for small boxes, tops it for large ones */}
+                <div className={`relative z-10 flex flex-col h-full transition-all duration-500 
+                  ${!isActive ? "justify-center items-center" : "justify-start"}`}
                 >
-                  <Icon className="h-8 w-8 text-primary" />
-                </motion.div>
-                <h3 className="mb-3 font-display text-xl font-bold text-foreground">
-                  {item.title}
-                </h3>
-                <p className="mb-4 font-body text-sm leading-relaxed text-muted-foreground">
-                  {item.description}
-                </p>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  className="inline-flex items-center gap-1 font-body text-sm font-semibold text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                >
-                  Learn More <ArrowUpRight className="h-4 w-4" />
-                </motion.div>
-              </motion.div>
+                  <h3 className={`font-display font-bold transition-all duration-500 
+                    ${isActive ? "text-3xl mb-4 text-left" : "text-xl text-center mb-0"}`}
+                  >
+                    {industry.title}
+                  </h3>
+                  
+                  {/* Expanded Content */}
+                  <div className={`transition-all duration-500 
+                    ${isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none h-0"}`}
+                  >
+                    <p className="font-body text-base leading-relaxed text-gray-600 text-left">
+                      {industry.description}
+                    </p>
+                  </div>
+
+                  {/* Footer Logic inside the active box */}
+                  {isActive && (
+                    <div className="mt-auto pt-6 border-t border-black/10 w-full flex items-center justify-between">
+                      <span className="font-bold text-xs uppercase tracking-widest">Tell me more</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </div>
+                  )}
+                </div>
+              </div>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -1,8 +1,8 @@
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { ArrowDown, ArrowRight } from "lucide-react";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
+import gsap from "gsap";
 import { AnimatedHero } from "@/components/ui/animated-hero";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import emaLogo from "@/assets/ema-logo.png";
 import heroSlide1 from "@/assets/hero-slide-1.jpg";
 import heroSlide2 from "@/assets/hero-slide-2.jpg";
@@ -25,34 +25,34 @@ const slides = [
   { image: heroSlide6, alt: "Ethiopian export shipping logistics" },
 ];
 
-const stats = [
-  { value: "5+", label: "Years Experience" },
-  { value: "500+", label: "Tons Monthly" },
-  { value: "100+", label: "Happy Clients" },
-  { value: "10K+", label: "Tons Exported" },
-];
-
-const miniProducts = [
+const grainProducts = [
   { name: "Green Coffee", image: productCoffeeGreen },
   { name: "Sesame Seeds", image: productSesame },
   { name: "Chickpea", image: productChickpea },
-  { name: "Red Kidney Bean", image: productKidney },
+  { name: "Red Kidney", image: productKidney },
   { name: "Mung Bean", image: productMungBean },
 ];
 
 const HeroSection = () => {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [scrollIndex, setScrollIndex] = useState(0);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
 
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  // Refs for bg images
+  const bgImgRefs = useRef<(HTMLImageElement | null)[]>([]);
+  const bgContainerRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  // Refs for content elements
+  const foundingDateRef = useRef<HTMLSpanElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLDivElement>(null);
+  const exploreBtnRef = useRef<HTMLAnchorElement>(null);
+  const grainContainerRef = useRef<HTMLDivElement>(null);
+  const grainTrackRef = useRef<HTMLDivElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
+
+  // Background slide cycling
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   }, []);
@@ -62,196 +62,276 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, [nextSlide]);
 
+  // Animate slide transitions
+  useEffect(() => {
+    bgContainerRefs.current.forEach((container, i) => {
+      if (!container) return;
+      if (i === currentSlide) {
+        gsap.set(container, { zIndex: 2 });
+        gsap.fromTo(container, { opacity: 0 }, { opacity: 1, duration: 1.8, ease: "power2.inOut" });
+        const img = bgImgRefs.current[i];
+        if (img) {
+          gsap.fromTo(img, { scale: 1.15 }, { scale: 1, duration: 8, ease: "none" });
+        }
+      } else {
+        gsap.to(container, { opacity: 0, duration: 1.8, ease: "power2.inOut" });
+        gsap.set(container, { zIndex: 1, delay: 1.8 });
+      }
+    });
+  }, [currentSlide]);
+
+  // Grain product scrolling
   useEffect(() => {
     const interval = setInterval(() => {
-      setScrollIndex((prev) => (prev + 1) % miniProducts.length);
+      setScrollIndex((prev) => (prev + 1) % grainProducts.length);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
 
+  // Animate grain track scroll
+// 1. Remove the old scrollIndex state and the two grain-related useEffects
+// 2. Add this new useEffect for the infinite loop:
+
+useEffect(() => {
+  if (!grainTrackRef.current) return;
+
+  const totalItems = grainProducts.length;
+  const itemWidth = 130; // Matches your div width
+  const gap = 12; // Matches gap-3
+  const stepDistance = itemWidth + gap;
+
+  // Create a continuous seamless loop
+  const ctx = gsap.context(() => {
+    gsap.to(grainTrackRef.current, {
+      x: `-=${stepDistance * totalItems}`,
+      duration: totalItems * 3, // 3 seconds per grain
+      ease: "none",
+      repeat: -1,
+      modifiers: {
+        x: gsap.utils.unitize((x) => {
+          // This keeps the value looping between 0 and the total width
+          return parseFloat(x) % (stepDistance * totalItems);
+        }),
+      },
+    });
+  });
+
+  return () => ctx.revert();
+}, []);
+
+  // Entry animations on mount
+  useEffect(() => {
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    tl.fromTo(foundingDateRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7 }, 0.3);
+    tl.fromTo(titleRef.current, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8 }, 0.5);
+    tl.fromTo(subtitleRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7 }, 0.8);
+    tl.fromTo(exploreBtnRef.current, { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.6 }, 1.0);
+    tl.fromTo(grainContainerRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, 1.2);
+    tl.fromTo(descriptionRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, 1.3);
+    tl.fromTo(buttonsRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, 1.3);
+  }, []);
+
   return (
-    <section ref={containerRef} className="relative flex min-h-screen flex-col overflow-hidden">
-      {/* Background slider with overlay crossfade */}
+    <section
+      ref={containerRef}
+      className="relative h-screen w-full overflow-hidden flex flex-col"
+    >
+      {/* Background slider */}
       <div className="absolute inset-0 overflow-hidden">
-        <AnimatePresence mode="sync">
-          <motion.div
-            key={currentSlide}
+        {slides.map((slide, i) => (
+          <div
+            key={i}
+            ref={(el) => { bgContainerRefs.current[i] = el; }}
             className="absolute inset-0"
-            style={{ y: imageY }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.8, ease: "easeInOut" }}
+            style={{ opacity: i === 0 ? 1 : 0, zIndex: i === 0 ? 2 : 1 }}
           >
-            <motion.img
-              src={slides[currentSlide].image}
-              alt={slides[currentSlide].alt}
+            <img
+              ref={(el) => { bgImgRefs.current[i] = el; }}
+              src={slide.image}
+              alt={slide.alt}
               className="h-full w-full object-cover"
-              initial={{ scale: 1.15 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 8, ease: "linear" }}
             />
-          </motion.div>
-        </AnimatePresence>
-        <div className="absolute inset-0 bg-foreground/55" />
+          </div>
+        ))}
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-foreground/55" style={{ zIndex: 3 }} />
       </div>
 
-      {/* Slide indicators */}
-      <div className="absolute bottom-[200px] right-8 z-20 flex flex-col gap-2 md:bottom-[160px]">
+      {/* ============ MAIN CONTENT LAYER ============ */}
+      {/* We use an overlay layout separated into absolute positioned chunks to explicitly control positioning seamlessly without depending on unpredictable flex flow. */}
+      <div className="relative z-10 w-full h-full pointer-events-none">
+
+        {/* === ABSOLUTE CENTER BLOCK: Fixed vertically slightly above center = 45% === */}
+        {/* Ensures the bottom items are always completely visible, whilst properly centering title text blocks. */}
+        <div className="absolute top-[45%] left-1/2 w-full max-w-5xl -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center text-center px-6 pointer-events-auto">
+
+          {/* Founding Date — original translucent pill badge */}
+          <span
+            ref={foundingDateRef}
+            className="mb-6 inline-flex items-center gap-3 rounded-full border border-primary/30 bg-primary/10 px-5 py-2 font-body text-xs font-medium tracking-widest text-primary-foreground uppercase backdrop-blur-sm"
+            style={{ opacity: 0 }}
+          >
+            <img src={emaLogo} alt="EMA Logo" className="h-5 w-5 rounded-full" />
+            Since 2019 G.C.
+          </span>
+
+          {/* Title — "Premium Ethiopian" + animated words */}
+          <h1
+  ref={titleRef}
+  className="flex flex-col items-center justify-center text-center font-display text-5xl font-bold text-white md:text-7xl lg:text-[5rem]"
+  style={{ opacity: 1 }}
+>
+  <span className="block">Premium Ethiopian</span>
+  
+  <div className="flex justify-center items-center min-h-[1.2em] w-full">
+    <AnimatedHero words={["Coffee", "Sesame Seeds", "Pulses", "Oil Seeds", "Medical Devices"]} />
+  </div>
+</h1>
+
+          {/* Subtitle line */}
+          <div
+            ref={subtitleRef}
+            className="mb-8 max-w-lg font-body text-base font-light tracking-wide text-white/80 md:text-lg"
+            style={{ opacity: 0 }}
+          >
+            We Supply The Organic Taste Of Ethiopia!
+          </div>
+
+          <a
+  ref={exploreBtnRef}
+  href="#about"
+  className="group relative mb-8 flex h-[40px] w-fit items-center rounded-full bg-[#154716] transition-all duration-300 hover:scale-105 md:h-[46px]"
+>
+  {/* Text Section */}
+  <div className="flex h-full items-center justify-center rounded-full bg-white px-5 mr-1 md:px-6">
+    <p className="whitespace-nowrap font-display text-xs font-bold tracking-wide text-[#154716] md:text-sm">
+      Explore
+    </p>
+  </div>
+
+  {/* Arrow Section */}
+  <div className="flex items-center justify-center px-2 md:px-3">
+    <ArrowDown className="h-4 w-4 text-white transition-transform duration-300 group-hover:translate-y-1 md:h-5 md:w-5" />
+  </div>
+</a>
+
+{/* Changing Grains — Original Width, Infinite Loop */}
+<div
+  ref={grainContainerRef}
+  className="relative w-[360px] overflow-hidden drop-shadow-md mx-auto"
+  style={{ opacity: 0 }}
+>
+  <div 
+    ref={grainTrackRef} 
+    className="flex gap-3"
+    style={{ 
+      width: "max-content",
+      // Offset by roughly one and a half items to start with a grain in the center
+      paddingLeft: "109px" 
+    }}
+  >
+    {/* We clone the array once for the seamless wrap-around */}
+    {[...grainProducts, ...grainProducts].map((product, i) => (
+      <div
+        key={`${product.name}-${i}`}
+        className="w-[130px] shrink-0 cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-white/10 backdrop-blur-md transition-all hover:bg-white/20"
+      >
+        <div className="aspect-square overflow-hidden">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="h-full w-full object-cover transition-transform duration-400 hover:scale-110"
+          />
+        </div>
+        <div className="px-2 py-2 text-center">
+          <span className="font-body text-[10px] font-medium text-white/90">
+            {product.name}
+          </span>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {/* Optional: Soft Gradient Overlays to "fade" the cuts */}
+  <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-[#154716]/40 to-transparent pointer-events-none z-10" />
+  <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[#154716]/40 to-transparent pointer-events-none z-10" />
+</div>
+        </div>
+
+        {/* === ABSOLUTE BOTTOM ROW === */}
+        {/* Anchored independently to bottom of the screen */}
+        <div className="absolute bottom-8 lg:bottom-12 left-0 w-full px-6 md:px-12 pointer-events-auto">
+          <div className="flex w-full flex-col items-center gap-6 md:flex-row md:items-end md:justify-between">
+            {/* Bottom Left: Import/Export Buttons — Green main div, White inside */}
+            <div
+              ref={buttonsRef}
+              className="flex flex-wrap items-center justify-center md:justify-start gap-4 md:gap-6"
+              style={{ opacity: 0 }}
+            >
+            <Link
+              to="/export-products"
+              className="group relative flex h-[40px] w-fit items-center overflow-hidden rounded-full bg-white transition-transform duration-300 hover:scale-105 md:h-[46px]"
+            >
+              {/* Inner White Pill */}
+              <div className="flex h-full items-center justify-center rounded-full bg-[#154716] px-5 md:px-6">
+                <p className="whitespace-nowrap font-display text-xs font-bold tracking-wide text-white md:text-sm">
+                  Our Exports
+                </p>
+              </div>
+
+              {/* Arrow Section */}
+              <div className="flex items-center justify-center px-2 md:px-3">
+                <ArrowRight className="h-4 w-4 text-[#154716] transition-transform duration-300 group-hover:translate-x-1 md:h-5 md:w-5" />
+              </div>
+            </Link>
+
+            <Link
+              to="/import-products"
+              className="group relative flex h-[40px] w-fit items-center overflow-hidden rounded-full bg-white transition-transform duration-300 hover:scale-105 md:h-[46px]"
+            >
+              {/* Inner White Pill */}
+              <div className="flex h-full items-center justify-center rounded-full bg-[#154716] px-5 md:px-6">
+                <p className="whitespace-nowrap font-display text-xs font-bold tracking-wide text-white md:text-sm">
+                  Import Products
+                </p>
+              </div>
+
+              {/* Arrow Section */}
+              <div className="flex items-center justify-center px-2 md:px-3">
+                <ArrowRight className="h-4 w-4 text-[#154716] transition-transform duration-300 group-hover:translate-x-1 md:h-5 md:w-5" />
+              </div>
+            </Link>
+            </div>
+
+            {/* Bottom Right: Long Description */}
+            <p
+              ref={descriptionRef}
+              className="max-w-sm md:max-w-lg text-center font-body text-[10px] leading-relaxed text-white md:text-right md:text-sm"
+              style={{ opacity: 0 }}
+            >
+              Since 2019 G.C. EMA Import And Export Pvt.Ltd. Has Been Focused On Export Business Particularly
+              On Export Of Best Quality Ethiopia Coffee, Oil Seeds &amp; Pulses Like Sesame Seeds, Niger Seeds,
+              Haricot Beans, Chick Pea, Beans, Green Mung Bean And Red Kidney Bean.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Slide indicators — right side */}
+      <div className="absolute top-1/2 right-4 z-20 flex -translate-y-1/2 flex-col gap-2 md:right-6 pointer-events-auto">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrentSlide(i)}
-            className={`h-2 w-2 rounded-full transition-all duration-300 ${
-              i === currentSlide ? "h-6 bg-primary" : "bg-background/30 hover:bg-background/50"
-            }`}
+            className={`h-2 w-2 rounded-full transition-all duration-300 ${i === currentSlide
+                ? "h-6 bg-primary"
+                : "bg-white/30 hover:bg-white/50"
+              }`}
+            aria-label={`Go to slide ${i + 1}`}
           />
         ))}
       </div>
-
-      {/* Main content */}
-      <motion.div
-        style={{ y: textY, opacity }}
-        className="container relative z-10 mx-auto flex flex-1 items-center px-6 pt-24"
-      >
-        <div className="max-w-3xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-          >
-            <span className="mb-6 inline-flex items-center gap-3 rounded-full border border-primary/30 bg-primary/10 px-5 py-2 font-body text-xs font-medium tracking-widest text-primary-foreground uppercase backdrop-blur-sm">
-              <img src={emaLogo} alt="EMA Logo" className="h-5 w-5 rounded-full" />
-              Since 2019 G.C.
-            </span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="mb-6 font-display text-5xl font-bold leading-[1.08] tracking-tight text-background md:text-7xl"
-          >
-            Premium Ethiopian
-            <br />
-            <AnimatedHero words={["Coffee", "Sesame Seeds", "Pulses", "Oil Seeds", "Medical Devices"]} />
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="mb-10 max-w-xl font-body text-lg leading-relaxed text-background/80"
-          >
-            EMA Import and Export Pvt.Ltd. — exporting the finest Ethiopian green coffee beans, sesame seeds, Niger seeds, haricot beans, chickpea, green mung bean, and red kidney bean while importing essential medical devices.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
-            className="flex flex-wrap gap-4"
-          >
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                to="/export-products"
-                className="magnetic-btn group flex items-center gap-2 rounded-full bg-primary px-8 py-4 font-body text-sm font-semibold text-primary-foreground"
-              >
-                Our Exports
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                to="/import-products"
-                className="flex items-center gap-2 rounded-full border border-background/30 bg-background/10 px-8 py-4 font-body text-sm font-semibold text-background backdrop-blur-sm transition-all hover:bg-background/20"
-              >
-                Import Products
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {/* Bottom right scrolling product cards */}
-      <motion.div
-        initial={{ opacity: 0, x: 60 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
-        className="absolute bottom-[200px] right-6 z-20 hidden md:bottom-[160px] md:right-12 lg:block"
-      >
-        <div className="relative h-36 w-[360px] overflow-hidden">
-          <motion.div
-            className="flex gap-3"
-            animate={{ x: -(scrollIndex * 120) }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {[...miniProducts, ...miniProducts].map((product, i) => (
-              <motion.div
-                key={`${product.name}-${i}`}
-                whileHover={{ y: -8, scale: 1.05 }}
-                className="group w-28 shrink-0 cursor-pointer overflow-hidden rounded-xl border border-background/10 bg-background/10 backdrop-blur-md transition-all hover:bg-background/20"
-              >
-                <div className="aspect-square overflow-hidden">
-                  <motion.img
-                    src={product.image}
-                    alt={product.name}
-                    className="h-full w-full object-cover"
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.4 }}
-                  />
-                </div>
-                <div className="px-2 py-2 text-center">
-                  <span className="font-body text-[10px] font-medium text-background/90">{product.name}</span>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {/* Stats bar */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.3, duration: 0.8 }}
-        className="relative z-10 border-t border-background/10 bg-foreground/80 backdrop-blur-md"
-      >
-        <div className="container mx-auto grid grid-cols-2 divide-x divide-background/10 px-6 md:grid-cols-4">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.4 + i * 0.1 }}
-              className="px-6 py-8 text-center transition-colors hover:bg-background/5"
-            >
-              <div className="mb-1 font-display text-3xl font-bold text-background md:text-4xl">
-                {stat.value}
-              </div>
-              <div className="font-body text-sm text-background/60">{stat.label}</div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.6 }}
-        className="absolute bottom-[180px] left-1/2 -translate-x-1/2 md:bottom-[140px]"
-      >
-        <motion.a
-          href="#about"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-2"
-        >
-          <span className="font-body text-xs tracking-widest text-background/60 uppercase">Explore More</span>
-          <ArrowDown className="h-5 w-5 text-primary" />
-        </motion.a>
-      </motion.div>
     </section>
   );
 };

@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState, useMemo } from "react";
+import gsap from "gsap";
 
 interface AnimatedHeroProps {
   words: string[];
@@ -8,36 +8,44 @@ interface AnimatedHeroProps {
 const AnimatedHero = ({ words }: AnimatedHeroProps) => {
   const [titleNumber, setTitleNumber] = useState(0);
   const titles = useMemo(() => words, [words]);
+  const spanRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (titleNumber === titles.length - 1) {
-        setTitleNumber(0);
-      } else {
-        setTitleNumber(titleNumber + 1);
-      }
+      setTitleNumber((prev) => (prev === titles.length - 1 ? 0 : prev + 1));
     }, 2500);
     return () => clearTimeout(timeoutId);
   }, [titleNumber, titles]);
 
+  useEffect(() => {
+    if (!spanRef.current) return;
+
+    // Reset the position and opacity for the new word immediately
+    gsap.fromTo(
+      spanRef.current,
+      { opacity: 0, y: 40 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.5, 
+        ease: "power3.out",
+        overwrite: true // Prevents animation overlap
+      }
+    );
+
+    // We handle the "exit" animation via the cleanup or a timeline
+    // But for a simple swap, the fromTo above handles the "entrance" best.
+  }, [titleNumber]);
+
   return (
-    <span className="relative inline-flex h-[1.15em] w-full overflow-hidden">
-      <AnimatePresence mode="wait">
-        {titles.map((title, index) =>
-          index === titleNumber ? (
-            <motion.span
-              key={`title-${index}`}
-              className="absolute text-gradient"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -40 }}
-              transition={{ type: "spring", stiffness: 100, damping: 15 }}
-            >
-              {title}
-            </motion.span>
-          ) : null
-        )}
-      </AnimatePresence>
+    <span className="relative flex justify-center items-center w-full h-[1.2em] overflow-hidden">
+      <span
+        key={titles[titleNumber]} // Use key to force a fresh element for GSAP if needed
+        ref={spanRef}
+        className="absolute text-center whitespace-nowrap text-gradient"
+      >
+        {titles[titleNumber]}
+      </span>
     </span>
   );
 };
