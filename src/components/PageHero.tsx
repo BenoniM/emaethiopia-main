@@ -45,7 +45,7 @@ const PageHero = ({ badge, title, description }: PageHeroProps) => {
   }, [nextSlide]);
 
   return (
-    <section ref={containerRef} className="relative flex min-h-[70vh] flex-col overflow-hidden">
+    <section ref={containerRef} data-nav-theme="dark" className="relative flex min-h-[70vh] flex-col overflow-hidden">
       {/* Background slider with overlay crossfade */}
       <div className="absolute inset-0 overflow-hidden">
         <AnimatePresence mode="sync">

@@ -27,8 +27,9 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isLightBg, setIsLightBg] = useState(false);
-  
+  // "light" = white/light solid bg → use green; "dark" = dark/image/video bg → use white
+  const [bgMode, setBgMode] = useState<"light" | "dark">("dark");
+
   const lastScrollYRef = useRef(0);
   const menuOpenRef = useRef(false);
   const location = useLocation();
@@ -124,45 +125,117 @@ const Navbar = () => {
 
   useEffect(() => {
     closeMenu();
+    // Re-evaluate bg colour after the new page has painted
+    const t = setTimeout(() => {
+      setBgMode('dark'); // reset first so there's no flash of wrong colour
+      // Then let the scroll/resize listener pick it up on next tick
+      window.dispatchEvent(new Event('resize'));
+    }, 80);
+    return () => clearTimeout(t);
   }, [location.pathname, closeMenu]);
 
   useEffect(() => {
+    /**
+     * Sample several horizontal points at the navbar band (y ≈ 40px — centre of
+     * the navbar row).  For each point we walk down the element stack looking for
+     * the first non-navbar node that carries a visible background.
+     *
+     * Rules:
+     *   • IMG / VIDEO / CANVAS / background-image  → always "dark" (use white)
+     *   • Solid colour with luma > 180             → "light" (use green)
+     *   • Everything else (dark solid / transparent)→ "dark" (use white)
+     *
+     * We tally votes across sample points and pick the majority.
+     */
     const checkBgColor = () => {
-      const x = window.innerWidth / 2;
-      const y = window.innerHeight / 3; 
-      const elements = document.elementsFromPoint(x, y);
       const header = document.querySelector('header');
-      let lightBgFound = false; 
+      const sampleY = 40; // vertical centre of the navbar strip
+      const sampleXPositions = [
+        window.innerWidth * 0.15,
+        window.innerWidth * 0.35,
+        window.innerWidth * 0.5,
+        window.innerWidth * 0.65,
+        window.innerWidth * 0.85,
+      ];
 
-      for (const elem of elements) {
-        if (header && header.contains(elem)) continue;
-        if (elem.tagName === 'HTML' || elem.tagName === 'BODY') continue;
-        if (elem.tagName === 'IMG' || elem.tagName === 'VIDEO' || elem.tagName === 'CANVAS') {
-          lightBgFound = false;
-          break;
-        }
-        const style = window.getComputedStyle(elem);
-        if (style.backgroundImage && style.backgroundImage !== 'none' && style.backgroundImage !== 'initial') {
-          lightBgFound = false;
-          break;
-        }
-        const bg = style.backgroundColor;
-        if (bg && bg !== 'transparent') {
-          const match = bg.match(/[\d.]+/g);
-          if (match && match.length >= 3) {
-            const alpha = match.length >= 4 ? parseFloat(match[3]) : 1;
-            if (alpha > 0) {
-              const r = parseInt(match[0]);
-              const g = parseInt(match[1]);
-              const b = parseInt(match[2]);
-              const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-              lightBgFound = luma > 180;
-              break; 
+      let lightVotes = 0;
+      let darkVotes = 0;
+
+      for (const x of sampleXPositions) {
+        const elements = document.elementsFromPoint(x, sampleY);
+        let voted = false;
+
+        for (const elem of elements) {
+          // Skip the navbar itself and root tags
+          if (header && header.contains(elem)) continue;
+          if (elem.tagName === 'HTML' || elem.tagName === 'BODY') continue;
+
+          // Manual override check
+          const themeOverride = elem.closest('[data-nav-theme]');
+          if (themeOverride) {
+            const theme = themeOverride.getAttribute('data-nav-theme');
+            if (theme === 'dark') {
+              darkVotes++;
+            } else if (theme === 'light') {
+              lightVotes++;
+            }
+            voted = true;
+            break;
+          }
+
+          // Media elements → definitively dark
+          if (
+            elem.tagName === 'IMG' ||
+            elem.tagName === 'VIDEO' ||
+            elem.tagName === 'CANVAS'
+          ) {
+            darkVotes++;
+            voted = true;
+            break;
+          }
+
+          const style = window.getComputedStyle(elem);
+
+          // CSS background-image (gradients, url()) → treat as dark
+          if (
+            style.backgroundImage &&
+            style.backgroundImage !== 'none' &&
+            style.backgroundImage !== 'initial'
+          ) {
+            darkVotes++;
+            voted = true;
+            break;
+          }
+
+          // Solid background colour
+          const bg = style.backgroundColor;
+          if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)') {
+            const match = bg.match(/[\d.]+/g);
+            if (match && match.length >= 3) {
+              const alpha = match.length >= 4 ? parseFloat(match[3]) : 1;
+              if (alpha > 0.05) {
+                const r = parseInt(match[0]);
+                const g = parseInt(match[1]);
+                const b = parseInt(match[2]);
+                // Perceived luminance (ITU-R BT.709)
+                const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+                if (luma > 180) {
+                  lightVotes++;
+                } else {
+                  darkVotes++;
+                }
+                voted = true;
+                break;
+              }
             }
           }
         }
+
+        // No opaque element found → assume dark page / hero image
+        if (!voted) darkVotes++;
       }
-      setIsLightBg(lightBgFound);
+
+      setBgMode(lightVotes > darkVotes ? 'light' : 'dark');
     };
 
     const handleScroll = () => {
@@ -178,24 +251,42 @@ const Navbar = () => {
       checkBgColor();
     };
 
+    // Also fire on route changes (handled below via location) and initial mount
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", checkBgColor);
-    checkBgColor();
+    // Small delay so page content has actually painted
+    const initTimer = setTimeout(checkBgColor, 100);
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", checkBgColor);
+      clearTimeout(initTimer);
     };
   }, [closeMenu]);
 
-  const activeLineBgClass = isLightBg ? "bg-[#1D781D]" : "bg-white";
-  const activeTextColorClass = isLightBg ? "text-[#1D781D] hover:text-[#0f3e0f]" : "text-white hover:text-[#1D781D]";
-  const activeSubTextColorClass = isLightBg ? "text-[#1D781D] hover:text-[#0f3e0f]" : "text-white/70 hover:text-[#1D781D]";
-  const activeDotClass = isLightBg ? "brightness-[0.35] sepia hue-rotate-90 saturate-[300%]" : "";
+  const isLight = bgMode === 'light';
+  // Line separating menu items
+  const activeLineBgClass = isLight ? "bg-[#1D781D]" : "bg-white";
+  // Primary nav link colour
+  const activeTextColorClass = isLight
+    ? "text-[#1D781D] hover:text-[#0f3e0f]"
+    : "text-white hover:text-white/70";
+  // Sub-link colour
+  const activeSubTextColorClass = isLight
+    ? "text-[#1D781D] hover:text-[#0f3e0f]"
+    : "text-white/80 hover:text-white";
+  // Little-dot tint
+  const activeDotClass = isLight
+    ? "brightness-[0.35] sepia hue-rotate-90 saturate-[300%]"
+    : "brightness-0 invert"; // force white on dark bg
+  // Text-shadow for legibility on busy backgrounds
+  const textShadow = isLight
+    ? undefined
+    : { textShadow: "0 1px 6px rgba(0,0,0,0.55)" };
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled && !menuOpenRef.current ? "backdrop-blur-md bg-foreground/15" : "bg-transparent"}`}
+        className={`fixed top-0 left-0 right-0 z-50 pointer-events-none transition-all duration-500 ${scrolled && !menuOpenRef.current ? "backdrop-blur-md bg-foreground/15" : "bg-transparent"}`}
         style={{ transform: isVisible ? "translateY(0)" : "translateY(-100%)" }}
       >
         <div className="flex items-start justify-between px-6 py-5 md:px-10 md:py-6 relative w-full h-full pointer-events-none">
@@ -237,25 +328,28 @@ const Navbar = () => {
                       {/* Main Link Logic */}
                       {link.subLinks ? (
                         <div className="flex items-center gap-2 cursor-default">
-                          <span className={`text-lg lg:text-xl font-body font-medium drop-shadow-md whitespace-nowrap block transition-colors duration-300 ${activeTextColorClass}`}>
+                          <span
+                            className={`text-lg lg:text-xl font-body font-medium whitespace-nowrap block transition-colors duration-300 ${activeTextColorClass}`}
+                            style={textShadow}
+                          >
                             {link.label}
                           </span>
                           {/* Chevron Arrow */}
-                          <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            width="16" height="16" 
-                            viewBox="0 0 24 24" fill="none" 
-                            stroke="currentColor" strokeWidth="2.5" 
-                            strokeLinecap="round" strokeLinejoin="round" 
-                            className={`transition-transform duration-300 group-hover/link:rotate-90 ${isLightBg ? "text-[#1D781D]" : "text-white/80"}`}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16" height="16"
+                            viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" strokeWidth="2.5"
+                            className={`transition-transform duration-300 group-hover/link:rotate-90 ${isLight ? "text-[#1D781D]" : "text-white/80"}`}
                           >
-                            <path d="m9 18 6-6-6-6"/>
+                            <path d="m9 18 6-6-6-6" />
                           </svg>
                         </div>
                       ) : (
                         <Link
                           to={link.href}
-                          className={`text-lg lg:text-xl font-body font-medium drop-shadow-md whitespace-nowrap block transition-colors duration-300 ${activeTextColorClass}`}
+                          className={`text-lg lg:text-xl font-body font-medium whitespace-nowrap block transition-colors duration-300 ${activeTextColorClass}`}
+                          style={textShadow}
                           onClick={closeMenu}
                         >
                           {link.label}
