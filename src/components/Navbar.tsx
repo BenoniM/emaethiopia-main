@@ -7,11 +7,11 @@ import closeIcon from "@/assets/icon/close.svg";
 import littleDot from "@/assets/icon/little-dot.svg";
 
 const navLinks = [
-  { label: "Home", href: "/" }, // Added Home here
+  { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   {
     label: "Products",
-    href: "/products",
+    href: "",
     subLinks: [
       { label: "Export Products", href: "/export-products" },
       { label: "Import Products", href: "/import-products" }
@@ -33,17 +33,13 @@ const Navbar = () => {
   const menuOpenRef = useRef(false);
   const location = useLocation();
 
-  // Refs for icon images
   const hamburgerImgRef = useRef<HTMLImageElement>(null);
   const closeImgRef = useRef<HTMLImageElement>(null);
-
-  // Refs for menu panel
   const menuPanelRef = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<(HTMLDivElement | null)[]>([]);
   const menuDotsRef = useRef<(HTMLImageElement | null)[]>([]);
   const menuLineRef = useRef<HTMLDivElement>(null);
 
-  // Animate icon swap: hamburger ↔ close
   const animateIcon = useCallback((open: boolean) => {
     if (open) {
       gsap.to(hamburgerImgRef.current, {
@@ -78,37 +74,18 @@ const Navbar = () => {
     }
   }, []);
 
-  // Menu panel animation
   const animateMenu = useCallback((open: boolean) => {
     if (open) {
       gsap.set(menuPanelRef.current, { display: "block", pointerEvents: "auto" });
-
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-      tl.fromTo(
-        menuPanelRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.45 },
-        0
-      );
-
-      // Vertical line drops straight down from the top
-      tl.fromTo(
-        menuLineRef.current,
-        { scaleY: 0 },
-        { scaleY: 1, duration: 0.5 },
-        0
-      );
-
-      // Stagger dots popping
+      tl.fromTo(menuPanelRef.current, { opacity: 0 }, { opacity: 1, duration: 0.45 }, 0);
+      tl.fromTo(menuLineRef.current, { scaleY: 0 }, { scaleY: 1, duration: 0.5 }, 0);
       tl.fromTo(
         menuDotsRef.current.filter(Boolean),
         { scale: 0, opacity: 0 },
         { scale: 1, opacity: 1, duration: 0.25, stagger: 0.05 },
         0.15
       );
-
-      // Stagger links fading in from left
       tl.fromTo(
         menuItemsRef.current.filter(Boolean),
         { opacity: 0, x: -15 },
@@ -122,17 +99,8 @@ const Navbar = () => {
           gsap.set(menuPanelRef.current, { display: "none", pointerEvents: "none" });
         },
       });
-
-      tl.to(
-        menuItemsRef.current.filter(Boolean),
-        { opacity: 0, x: 10, duration: 0.2, stagger: 0.02 },
-        0
-      );
-      tl.to(
-        menuDotsRef.current.filter(Boolean),
-        { scale: 0, opacity: 0, duration: 0.15, stagger: 0.02 },
-        0.05
-      );
+      tl.to(menuItemsRef.current.filter(Boolean), { opacity: 0, x: 10, duration: 0.2, stagger: 0.02 }, 0);
+      tl.to(menuDotsRef.current.filter(Boolean), { scale: 0, opacity: 0, duration: 0.15, stagger: 0.02 }, 0.05);
       tl.to(menuLineRef.current, { scaleY: 0, duration: 0.25 }, 0.1);
       tl.to(menuPanelRef.current, { opacity: 0, duration: 0.2 }, 0.25);
     }
@@ -154,89 +122,65 @@ const Navbar = () => {
     animateMenu(next);
   }, [animateIcon, animateMenu]);
 
-  // Close menu on route change
   useEffect(() => {
     closeMenu();
   }, [location.pathname, closeMenu]);
 
-  // Scroll listener
   useEffect(() => {
     const checkBgColor = () => {
-      // Find the element roughly where the menu text drops (Center X, 1/3 down Y)
       const x = window.innerWidth / 2;
       const y = window.innerHeight / 3; 
-
       const elements = document.elementsFromPoint(x, y);
       const header = document.querySelector('header');
-
-      // Default to false (meaning dark context -> white text) because images act dark.
       let lightBgFound = false; 
 
       for (const elem of elements) {
-        // Skip the navbar itself so we pierce straight through to the page content
         if (header && header.contains(elem)) continue;
         if (elem.tagName === 'HTML' || elem.tagName === 'BODY') continue;
-
-        // If we hit a raw image, video, or canvas, default to Dark mode (White text)
         if (elem.tagName === 'IMG' || elem.tagName === 'VIDEO' || elem.tagName === 'CANVAS') {
           lightBgFound = false;
           break;
         }
-
         const style = window.getComputedStyle(elem);
-        
-        // If there's an image background on a div/section, treat it as complex/dark 
         if (style.backgroundImage && style.backgroundImage !== 'none' && style.backgroundImage !== 'initial') {
           lightBgFound = false;
           break;
         }
-
         const bg = style.backgroundColor;
         if (bg && bg !== 'transparent') {
           const match = bg.match(/[\d.]+/g);
           if (match && match.length >= 3) {
             const alpha = match.length >= 4 ? parseFloat(match[3]) : 1;
-            if (alpha > 0) { // Only evaluate solid or somewhat opaque layers
+            if (alpha > 0) {
               const r = parseInt(match[0]);
               const g = parseInt(match[1]);
               const b = parseInt(match[2]);
               const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-              
-              // Luma > 180 means very light (closest to white)
               lightBgFound = luma > 180;
               break; 
             }
           }
         }
       }
-
       setIsLightBg(lightBgFound);
     };
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrolled(currentScrollY > 50);
-
       if (currentScrollY > lastScrollYRef.current && currentScrollY > 150) {
-        setIsVisible(false); // scrolling down past threshold
+        setIsVisible(false);
       } else {
-        setIsVisible(true); // scrolling up
+        setIsVisible(true);
       }
       lastScrollYRef.current = currentScrollY;
-
-      if (menuOpenRef.current && currentScrollY > 10) {
-        closeMenu();
-      }
-      
+      if (menuOpenRef.current && currentScrollY > 10) closeMenu();
       checkBgColor();
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", checkBgColor);
-    
-    // Check initially
     checkBgColor();
-    
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", checkBgColor);
@@ -246,68 +190,33 @@ const Navbar = () => {
   const activeLineBgClass = isLightBg ? "bg-[#1D781D]" : "bg-white";
   const activeTextColorClass = isLightBg ? "text-[#1D781D] hover:text-[#0f3e0f]" : "text-white hover:text-[#1D781D]";
   const activeSubTextColorClass = isLightBg ? "text-[#1D781D] hover:text-[#0f3e0f]" : "text-white/70 hover:text-[#1D781D]";
-
-  // Using a soft CSS filter so the original SVG img dot stays fully intact, just turns green on light bgs
   const activeDotClass = isLightBg ? "brightness-[0.35] sepia hue-rotate-90 saturate-[300%]" : "";
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled && !menuOpenRef.current ? "backdrop-blur-md bg-foreground/15" : "bg-transparent"
-          }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled && !menuOpenRef.current ? "backdrop-blur-md bg-foreground/15" : "bg-transparent"}`}
         style={{ transform: isVisible ? "translateY(0)" : "translateY(-100%)" }}
       >
         <div className="flex items-start justify-between px-6 py-5 md:px-10 md:py-6 relative w-full h-full pointer-events-none">
-          {/* Logo */}
           <Link to="/" className="relative z-[60] pointer-events-auto">
-            <img
-              src={emaLogo}
-              alt="EMA Ethiopia"
-              className="h-14 w-14 rounded-full transition-transform duration-300 hover:scale-110"
-            />
+            <img src={emaLogo} alt="EMA Ethiopia" className="h-14 w-14 rounded-full transition-transform duration-300 hover:scale-110" />
           </Link>
 
-          {/* Right Side: Hamburger container with menu */}
           <div className="relative z-[60] flex flex-col items-center pointer-events-auto">
-            {/* The Hamburger Button acts as the origin point */}
             <button
               onClick={toggleMenu}
-              className={`relative z-20 flex h-14 w-14 items-center justify-center rounded-full transition-all duration-300 overflow-hidden ${menuOpen ? "bg-[#1D781D] border border-white" : "bg-transparent"
-                }`}
+              className={`relative z-20 flex h-14 w-14 items-center justify-center rounded-full transition-all duration-300 overflow-hidden ${menuOpen ? "bg-[#1D781D] border border-white" : "bg-transparent"}`}
               aria-label={menuOpenRef.current ? "Close menu" : "Open menu"}
             >
-              {!menuOpen && (
-                <div className="absolute inset-0 bg-[#1D781D] backdrop-blur-md rounded-full pointer-events-none transition-opacity duration-300 opacity-90 hover:opacity-100" />
-              )}
-              <img
-                ref={hamburgerImgRef}
-                src={hamburgerIcon}
-                alt="Menu"
-                className="h-6 w-6 relative z-10"
-                style={{ display: "block" }}
-              />
-              <img
-                ref={closeImgRef}
-                src={closeIcon}
-                alt="Close"
-                className="absolute h-6 w-6 z-10"
-                style={{ display: "none", opacity: 0 }}
-              />
+              {!menuOpen && <div className="absolute inset-0 bg-[#1D781D] backdrop-blur-md rounded-full pointer-events-none transition-opacity duration-300 opacity-90 hover:opacity-100" />}
+              <img ref={hamburgerImgRef} src={hamburgerIcon} alt="Menu" className="h-6 w-6 relative z-10" style={{ display: "block" }} />
+              <img ref={closeImgRef} src={closeIcon} alt="Close" className="absolute h-6 w-6 z-10" style={{ display: "none", opacity: 0 }} />
             </button>
 
-            {/* Downward extending menu panel */}
-            <div
-              ref={menuPanelRef}
-              className="absolute top-14 left-1/2 -translate-x-1/2 w-[320px] pointer-events-none z-10"
-              style={{ display: "none", opacity: 0 }}
-            >
+            <div ref={menuPanelRef} className="absolute top-14 left-1/2 -translate-x-1/2 w-[320px] pointer-events-none z-10" style={{ display: "none", opacity: 0 }}>
               <nav className="relative flex flex-col w-full h-full">
-                {/* Center line descending from bottom center of the button */}
-                <div
-                  ref={menuLineRef}
-                  className={`absolute top-0 bottom-6 left-1/2 -translate-x-[0.5px] w-[1px] opacity-80 transition-colors duration-300 ${activeLineBgClass}`}
-                  style={{ transformOrigin: "top", transform: "scaleY(0)" }}
-                />
+                <div ref={menuLineRef} className={`absolute top-0 bottom-6 left-1/2 -translate-x-[0.5px] w-[1px] opacity-80 transition-colors duration-300 ${activeLineBgClass}`} style={{ transformOrigin: "top", transform: "scaleY(0)" }} />
 
                 <div className="flex flex-col relative w-full pt-4 pb-8">
                   {navLinks.map((link, i) => (
@@ -317,7 +226,6 @@ const Navbar = () => {
                       className="group/link relative flex flex-col items-end w-full pr-[calc(50%+30px)] min-h-[48px] justify-start pt-[12px] opacity-0"
                       style={{ transform: "translateX(-20px)" }}
                     >
-                      {/* Anchor Dot placed precisely on the center line */}
                       <img
                         ref={(el) => { menuDotsRef.current[i] = el; }}
                         src={littleDot}
@@ -326,16 +234,35 @@ const Navbar = () => {
                         style={{ opacity: 0, transform: "scale(0)" }}
                       />
 
-                      {/* Main Link label to the left of the dot */}
-                      <Link
-                        to={link.href}
-                        className={`text-lg lg:text-xl font-body font-medium drop-shadow-md whitespace-nowrap block transition-colors duration-300 ${activeTextColorClass}`}
-                        onClick={closeMenu}
-                      >
-                        {link.label}
-                      </Link>
+                      {/* Main Link Logic */}
+                      {link.subLinks ? (
+                        <div className="flex items-center gap-2 cursor-default">
+                          <span className={`text-lg lg:text-xl font-body font-medium drop-shadow-md whitespace-nowrap block transition-colors duration-300 ${activeTextColorClass}`}>
+                            {link.label}
+                          </span>
+                          {/* Chevron Arrow */}
+                          <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            width="16" height="16" 
+                            viewBox="0 0 24 24" fill="none" 
+                            stroke="currentColor" strokeWidth="2.5" 
+                            strokeLinecap="round" strokeLinejoin="round" 
+                            className={`transition-transform duration-300 group-hover/link:rotate-90 ${isLightBg ? "text-[#1D781D]" : "text-white/80"}`}
+                          >
+                            <path d="m9 18 6-6-6-6"/>
+                          </svg>
+                        </div>
+                      ) : (
+                        <Link
+                          to={link.href}
+                          className={`text-lg lg:text-xl font-body font-medium drop-shadow-md whitespace-nowrap block transition-colors duration-300 ${activeTextColorClass}`}
+                          onClick={closeMenu}
+                        >
+                          {link.label}
+                        </Link>
+                      )}
 
-                      {/* Dropdown Sub-links using CSS Grid transition */}
+                      {/* Sub-links */}
                       {link.subLinks && (
                         <div className="grid grid-rows-[0fr] group-hover/link:grid-rows-[1fr] transition-[grid-template-rows] duration-300 overflow-visible">
                           <div className="overflow-hidden min-h-0 pt-2 opacity-0 group-hover/link:opacity-100 transition-opacity duration-300 delay-100">

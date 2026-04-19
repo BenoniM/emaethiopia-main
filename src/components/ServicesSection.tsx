@@ -207,10 +207,10 @@ const ServicesSection = () => {
                     <p className="font-body text-base leading-relaxed text-muted-foreground">
                       {service.description}
                     </p>
-                    <div className="mt-6 flex items-center gap-2 text-primary font-semibold text-sm">
+                    <Link to="/services" className="mt-6 flex items-center gap-2 text-primary font-semibold text-sm">
                       <span>Explore Service</span>
                       <ArrowRight className="h-4 w-4" />
-                    </div>
+                    </Link>
                   </div>
                 </div>
               );
@@ -300,7 +300,7 @@ const WorkProcessStack = () => {
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <Link to="/contact" className="w-14 h-14 rounded-full border border-white/80 flex items-center justify-center text-white backdrop-blur-sm bg-black/10 transition-all duration-500 group-hover:bg-primary group-hover:border-primary group-hover:scale-110 pointer-events-auto">
+                    <Link to="/industries" className="w-14 h-14 rounded-full border border-white/80 flex items-center justify-center text-white backdrop-blur-sm bg-black/10 transition-all duration-500 group-hover:bg-primary group-hover:border-primary group-hover:scale-110 pointer-events-auto">
                       <ArrowRight className="w-5 h-5" strokeWidth={1} />
                     </Link>
                   </div>

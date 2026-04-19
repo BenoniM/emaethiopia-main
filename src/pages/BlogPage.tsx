@@ -1,26 +1,38 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
-import { Calendar, ArrowUpRight, Linkedin, Tag, Coffee, Globe, FlaskConical, Truck, Leaf, Building2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Calendar, ArrowUpRight, Linkedin, Tag } from "lucide-react";
 import emaLogo from "@/assets/ema-logo.png";
+
+// Import blog image assets
+import blogImg1 from "@/assets/blog-page/Ethiopia-BIuZVSnK.svg";
+import blogImg2 from "@/assets/blog-page/lacafshow-Cl1dqURW.svg";
+import blogImg3 from "@/assets/blog-page/trust-FrJE3CST.svg";
+import blogImg4 from "@/assets/blog-page/imports-DI8pMC4v.svg";
+import blogImg5 from "@/assets/blog-page/wakeup-DJVX4zJd.svg";
+import blogImg6 from "@/assets/blog-page/lasquality-CVtmSdYv.svg";
+import blogImg7 from "@/assets/blog-page/vs-C68xEDJ1.svg";
+import blogImg8 from "@/assets/blog-page/Ethcof-CWnx5UW2.svg";
+import blogImg9 from "@/assets/blog-page/value-BY-PtGiN.svg";
+
+// CTA background
+import ctaBg from "@/assets/CTA/photo_2026-04-19_11-44-37.jpg";
 
 /* ─────────────────────────── DATA ─────────────────────────── */
 const blogPosts = [
   {
     id: 1,
-    title: "Ethiopia, the Birthplace of Coffee",
+    title: "From Ethiopia to the World",
     excerpt:
-      "Ethiopia, the birthplace of coffee, offers beans with rich flavors and unique profiles unlike anywhere else on earth. From Yirgacheffe to Sidama, every cup tells a story of ancient tradition. Discover what makes Ethiopian coffee truly one-of-a-kind.",
-    author: "EMA Ethiopia",
+      "Ethiopia's fertile lands produce some of the most sought-after agricultural commodities — green coffee, sesame, Niger seeds, and pulses that fuel global markets and support local farmers.",
+    author: "Admin",
     date: "August 20, 2022",
-    category: "Coffee Origins",
+    category: "Exports",
     tag: "LinkedIn",
-    imageSrc: "https://www.emaethiopia.com/wp-content/uploads/2022/08/blog1.jpg",
-    fallbackIcon: Coffee,
-    fallbackLabel: "Ethiopian Coffee",
-    fallbackGradient: "from-[hsl(120_61%_20%)] to-[hsl(120_61%_37%)]",
+    image: blogImg1,
     featured: true,
   },
   {
@@ -32,10 +44,7 @@ const blogPosts = [
     date: "August 20, 2022",
     category: "Events",
     tag: "LinkedIn",
-    imageSrc: "https://www.emaethiopia.com/wp-content/uploads/2022/08/blog2.jpg",
-    fallbackIcon: Globe,
-    fallbackLabel: "Cafe Show 2024",
-    fallbackGradient: "from-[hsl(200_60%_20%)] to-[hsl(120_61%_30%)]",
+    image: blogImg2,
     featured: false,
   },
   {
@@ -47,10 +56,7 @@ const blogPosts = [
     date: "August 20, 2022",
     category: "Company",
     tag: "LinkedIn",
-    imageSrc: "https://www.emaethiopia.com/wp-content/uploads/2022/08/blog3.jpg",
-    fallbackIcon: Building2,
-    fallbackLabel: "Your Trusted Partner",
-    fallbackGradient: "from-[hsl(120_61%_15%)] to-[hsl(120_50%_35%)]",
+    image: blogImg3,
     featured: false,
   },
   {
@@ -62,10 +68,7 @@ const blogPosts = [
     date: "August 20, 2022",
     category: "Imports",
     tag: "LinkedIn",
-    imageSrc: "https://www.emaethiopia.com/wp-content/uploads/2022/08/blog4.jpg",
-    fallbackIcon: Truck,
-    fallbackLabel: "Medical Imports",
-    fallbackGradient: "from-[hsl(120_55%_18%)] to-[hsl(120_61%_37%)]",
+    image: blogImg4,
     featured: false,
   },
   {
@@ -77,10 +80,7 @@ const blogPosts = [
     date: "August 20, 2022",
     category: "Coffee Origins",
     tag: "LinkedIn",
-    imageSrc: "https://www.emaethiopia.com/wp-content/uploads/2022/08/blog5.jpg",
-    fallbackIcon: Coffee,
-    fallbackLabel: "Ethiopia's Finest",
-    fallbackGradient: "from-[hsl(120_61%_22%)] to-[hsl(150_50%_32%)]",
+    image: blogImg5,
     featured: false,
   },
   {
@@ -92,10 +92,7 @@ const blogPosts = [
     date: "August 20, 2022",
     category: "Industry",
     tag: "LinkedIn",
-    imageSrc: "https://www.emaethiopia.com/wp-content/uploads/2022/08/blog6.jpg",
-    fallbackIcon: FlaskConical,
-    fallbackLabel: "In Quality",
-    fallbackGradient: "from-[hsl(120_40%_15%)] to-[hsl(120_61%_40%)]",
+    image: blogImg6,
     featured: false,
   },
   {
@@ -107,67 +104,39 @@ const blogPosts = [
     date: "August 20, 2022",
     category: "Coffee Origins",
     tag: "LinkedIn",
-    imageSrc: "https://www.emaethiopia.com/wp-content/uploads/2022/08/blog7.jpg",
-    fallbackIcon: Coffee,
-    fallbackLabel: "Arabica vs Robusta",
-    fallbackGradient: "from-[hsl(200_30%_15%)] to-[hsl(120_61%_30%)]",
+    image: blogImg7,
     featured: false,
   },
   {
     id: 8,
-    title: "From Ethiopia to the World",
+    title: "Ethiopia, the Birthplace of Coffee",
     excerpt:
-      "Ethiopia's fertile lands produce some of the most sought-after agricultural commodities — green coffee, sesame, Niger seeds, and pulses that fuel global markets and support local farmers.",
-    author: "Admin",
+      "Ethiopia, the birthplace of coffee, offers beans with rich flavors and unique profiles unlike anywhere else on earth. From Yirgacheffe to Sidama, every cup tells a story of ancient tradition. Discover what makes Ethiopian coffee truly one-of-a-kind.",
+    author: "EMA Ethiopia",
     date: "August 20, 2022",
-    category: "Exports",
+    category: "Coffee Origins",
     tag: "LinkedIn",
-    imageSrc: "https://www.emaethiopia.com/wp-content/uploads/2022/08/blog8.jpg",
-    fallbackIcon: Globe,
-    fallbackLabel: "From Ethiopia",
-    fallbackGradient: "from-[hsl(190_50%_20%)] to-[hsl(120_61%_35%)]",
+    image: blogImg8,
     featured: false,
   },
   {
     id: 9,
     title: "Adding Value to Every Bean",
     excerpt:
-      "We don't just export coffee — we ensure each bean is handled with care, from farm to container. EMA's rigorous quality control guarantees consistency and excellence across every shipment.",
+      "We don't just export coffee — we ensure each bean is handled with care, from farm to container. EMA's rigorous quality control process guarantees consistency and excellence across every shipment.",
     author: "Admin",
     date: "August 20, 2022",
     category: "Quality",
     tag: "LinkedIn",
-    imageSrc: "https://www.emaethiopia.com/wp-content/uploads/2022/08/blog9.jpg",
-    fallbackIcon: Leaf,
-    fallbackLabel: "Adding Value",
-    fallbackGradient: "from-[hsl(30_20%_10%)] to-[hsl(120_61%_25%)]",
+    image: blogImg9,
     featured: false,
   },
 ];
 
 const categories = ["All", "Coffee Origins", "Events", "Company", "Imports", "Exports", "Quality", "Industry"];
 
-/* ─────────────────────────── BLOG IMAGE ─────────────────────────── */
+/* ─────────────────────────── UI COMPONENTS ─────────────────────────── */
 type Post = typeof blogPosts[0];
-
-const BlogImage = ({ post, className }: { post: Post; className?: string }) => {
-  const [imgError, setImgError] = useState(false);
-  const Icon = post.fallbackIcon;
-
-  return imgError ? (
-    <div className={`flex flex-col items-center justify-center bg-gradient-to-br ${post.fallbackGradient} ${className}`}>
-      <Icon className="mb-3 h-10 w-10 text-white/60" />
-      <span className="font-display text-sm font-bold uppercase tracking-widest text-white/80">{post.fallbackLabel}</span>
-    </div>
-  ) : (
-    <img
-      src={post.imageSrc}
-      alt={post.title}
-      className={`h-full w-full object-cover ${className}`}
-      onError={() => setImgError(true)}
-    />
-  );
-};
 
 /* ─────────────────────────── FEATURED CARD ─────────────────────────── */
 const FeaturedCard = ({ post }: { post: Post }) => (
@@ -181,7 +150,7 @@ const FeaturedCard = ({ post }: { post: Post }) => (
     {/* Image */}
     <div className="relative overflow-hidden" style={{ minHeight: "440px" }}>
       <motion.div className="h-full w-full" whileHover={{ scale: 1.04 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
-        <BlogImage post={post} className="h-full w-full object-cover" />
+        <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
       </motion.div>
       <div className="absolute inset-0 bg-gradient-to-r from-foreground/20 to-transparent pointer-events-none" />
       <span className="absolute left-5 top-5 flex items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 font-body text-xs font-semibold tracking-widest text-primary-foreground uppercase shadow-md">
@@ -239,7 +208,7 @@ const BlogCard = ({ post, index }: { post: Post; index: number }) => (
     {/* Image */}
     <div className="relative overflow-hidden" style={{ height: "230px" }}>
       <motion.div className="h-full w-full" whileHover={{ scale: 1.06 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
-        <BlogImage post={post} className="h-full w-full object-cover" />
+        <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
       </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none" />
       <div className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-primary opacity-0 shadow-lg transition-all duration-300 group-hover:opacity-100 group-hover:scale-110">
@@ -276,19 +245,9 @@ const BlogCard = ({ post, index }: { post: Post; index: number }) => (
   </motion.article>
 );
 
-/* ─────────────────────────── STATS ─────────────────────────── */
-const stats = [
-  { value: "9+", label: "Articles Published" },
-  { value: "300+", label: "Global Partners" },
-  { value: "70+", label: "Export Products" },
-  { value: "5", label: "Years of Excellence" },
-];
-
 /* ─────────────────────────── PAGE ─────────────────────────── */
 const BlogPage = () => {
   const [activeCategory, setActiveCategory] = useState("All");
-  const statsRef = useRef(null);
-  const isStatsInView = useInView(statsRef, { once: true, margin: "-80px" });
 
   const featuredPost = blogPosts.find((p) => p.featured)!;
   const filteredPosts = blogPosts
@@ -413,51 +372,43 @@ const BlogPage = () => {
         </div>
       </section>
 
-      {/* ── Newsletter / LinkedIn CTA ── */}
-      <section className="relative overflow-hidden bg-foreground py-28">
-        {/* decorative blobs */}
-        <div
-          className="pointer-events-none absolute -left-40 -top-40 h-96 w-96 rounded-full opacity-20"
-          style={{ background: "radial-gradient(circle, hsl(120 61% 37%), transparent 70%)" }}
-        />
-        <div
-          className="pointer-events-none absolute -bottom-40 -right-40 h-96 w-96 rounded-full opacity-10"
-          style={{ background: "radial-gradient(circle, hsl(120 61% 50%), transparent 70%)" }}
-        />
+      {/* REDESIGNED CTA SECTION - 50% SCREEN HEIGHT */}
+      <div 
+        className="relative flex h-[50vh] min-h-[450px] items-center justify-center bg-cover bg-center overflow-hidden"
+        style={{ backgroundImage: `url(${ctaBg})` }}
+      >
+        {/* The warm overlay from the image */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1D781D]/40 via-[#289928]/20 to-[#259825]/40 backdrop-brightness-75" />
 
         <div className="container relative z-10 mx-auto px-6">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="mx-auto max-w-2xl text-center"
+            className="mx-auto max-w-4xl bg-white px-8 py-10 text-center shadow-2xl md:px-16 md:py-12"
           >
-            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-5 py-2 font-body text-xs font-semibold tracking-widest text-primary uppercase">
-              <img src={emaLogo} alt="EMA" className="h-4 w-4 rounded-full" />
-              Stay Connected
-            </span>
-            <h2 className="mb-4 font-display text-4xl font-bold text-background md:text-5xl">
-              Follow Our <span className="text-gradient">Journey</span>
+            <h2 className="mb-4 font-display text-2xl font-extrabold text-black md:text-4xl uppercase tracking-tighter">
+              Ready to Partner<br />with EMA?
             </h2>
-            <p className="mb-10 font-body text-lg leading-relaxed text-background/70">
-              Stay up-to-date with the latest news, coffee insights, and trade updates from EMA Ethiopia. Join our community of 300+ global partners.
+            
+            <p className="mx-auto mb-8 max-w-3xl font-body text-sm md:text-base text-gray-800 leading-relaxed">
+              Whether you're looking for premium Ethiopian green coffee beans, sesame seeds, pulses, or medical equipment — 
+              our team is ready to help you source, process, and deliver with confidence.
             </p>
-            <motion.a
-              href="https://www.linkedin.com/company/ema-ethiopia"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-3 rounded-full bg-primary px-8 py-4 font-body text-base font-semibold text-primary-foreground magnetic-btn"
-            >
-              <Linkedin className="h-5 w-5" />
-              Follow on LinkedIn
-              <ArrowUpRight className="h-5 w-5" />
-            </motion.a>
+
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link
+                  to="/contact"
+                  className="inline-flex min-w-[200px] items-center justify-center rounded-full bg-[#259825] px-8 py-5 font-body text-xs font-bold text-white uppercase tracking-wide"
+                >
+                  Get Started
+                </Link>
+              </motion.div>
+            </div>
           </motion.div>
         </div>
-      </section>
+      </div>
 
       <Footer />
     </div>

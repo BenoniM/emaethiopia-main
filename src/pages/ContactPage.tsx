@@ -13,7 +13,7 @@ const ContactPage = () => {
         title={<>Let's <span className="text-gradient">Connect</span></>}
         description="Reach out to discuss your Ethiopian coffee, oil seed, and pulse export needs, or inquire about medical equipment imports."
       />
-      <ContactSection />
+      <ContactSection showForm={true} />
       <Footer />
     </div>
   );

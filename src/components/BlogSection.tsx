@@ -1,12 +1,14 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import gsap from "gsap";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // Updated Image Imports
 import birthplace from "@/assets/blog/birthplace.jpg";
 import cafeShow from "@/assets/blog/Cafe-Show-Seoul-2023.jpeg";
 import homeBg from "@/assets/blog/Home.jpg";
 import specialty from "@/assets/blog/speciality.jpg";
+
 
 const blogPosts = [
   {
@@ -193,14 +195,14 @@ const BlogSection = () => {
         <button
           onClick={goPrev}
           disabled={isAnimating}
-          className="group pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-black/20 backdrop-blur-md transition-all hover:bg-white disabled:opacity-20"
+          className="group pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-[#259825]/50 backdrop-blur-md transition-all hover:bg-white disabled:opacity-20"
         >
           <ChevronLeft className="h-6 w-6 text-white group-hover:text-[#259825]" />
         </button>
         <button
           onClick={goNext}
           disabled={isAnimating}
-          className="group pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-black/20 backdrop-blur-md transition-all hover:bg-white disabled:opacity-20"
+          className="group pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-[#259825]/50 backdrop-blur-md transition-all hover:bg-white disabled:opacity-20"
         >
           <ChevronRight className="h-6 w-6 text-white group-hover:text-[#259825]" />
         </button>
@@ -233,10 +235,10 @@ const BlogSection = () => {
               {blogPosts[activeIndex].excerpt}
             </p>
 
-            <button className="group flex items-center gap-3 w-fit font-body text-xs font-bold tracking-widest text-white/70 uppercase transition-colors hover:text-[#259825] hover:scale-110">
+            <Link to={`/blog`} className="group flex items-center gap-3 w-fit font-body text-xs font-bold tracking-widest text-white/70 uppercase transition-colors hover:text-[#259825] hover:scale-110">
               <span>Read Article</span>
               <div className="h-[1px] w-8 bg-white/20 transition-all group-hover:w-12 group-hover:bg-[#259825]" />
-            </button>
+            </Link>
           </div>
 
           {/* Miniature Image Container */}
