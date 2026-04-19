@@ -22,8 +22,8 @@ const AboutPage = () => {
       />
       <AboutSection />
       <JourneySection />
-      <TestimonialsSection />
       <PartnersSection />
+      <TestimonialsSection />
       <Footer />
     </div>
   );

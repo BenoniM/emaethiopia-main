@@ -1,7 +1,10 @@
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
-import { ArrowRight, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { ArrowRight, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import gsap from "gsap";
+
+// Assets
 import teamCupping from "@/assets/team-cupping.png";
 import coffeeLab from "@/assets/coffee-lab.png";
 import aboutSeedlings from "@/assets/about-seedlings.png";
@@ -15,143 +18,169 @@ const highlights = [
   "Direct farmer partnerships & fair trade",
 ];
 
+const imageData = [
+  { img: teamCupping, label: "Our Process", tilt: -12, top: "15%", left: "0%", z: 30 },
+  { img: coffeeLab, label: "Quality First", tilt: -5, top: "5%", left: "15%", z: 20 },
+  { img: aboutSeedlings, label: "The Harvest", tilt: 6, top: "10%", left: "35%", z: 10 },
+];
+
 const AboutSection = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const images = [teamCupping, coffeeLab, aboutSeedlings];
+  const containerRef = useRef(null);
+  const imageRefs = useRef([]);
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const topZIndex = useRef(50);
 
   useEffect(() => {
-    if (!isInView) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [isInView, images.length]);
+    if (isInView) {
+      gsap.fromTo(
+        imageRefs.current,
+        { opacity: 0, scale: 0.8, y: 100 },
+        { 
+          opacity: 1, 
+          scale: 1, 
+          y: 0, 
+          duration: 1.2, 
+          stagger: 0.2, 
+          ease: "expo.out" 
+        }
+      );
+    }
+  }, [isInView]);
 
-  const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % images.length);
-  const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+const handleMouseMove = (e, index) => {
+    const { clientX, clientY, currentTarget } = e;
+    const { left, top, width, height } = currentTarget.getBoundingClientRect();
+    
+    const x = (clientX - (left + width / 2)) / 15;
+    const y = (clientY - (top + height / 2)) / 15;
+
+    // Increment our shared counter and apply it immediately
+    topZIndex.current += 1;
+    gsap.set(imageRefs.current[index], { zIndex: topZIndex.current });
+
+    gsap.to(imageRefs.current[index], {
+      x: x,
+      y: y,
+      z: 40, 
+      scale: 1.05,
+      rotation: x * 0.5 + imageData[index].tilt,
+      duration: 0.4,
+      ease: "power2.out",
+    });
+  };
+
+  const handleMouseLeave = (index) => {
+    gsap.to(imageRefs.current[index], {
+      x: 0,
+      y: 0,
+      z: 0,
+      scale: 1,
+      rotation: imageData[index].tilt,
+      duration: 0.7,
+      ease: "back.out(1.4)",
+      // REMOVED: the onComplete zIndex reset. 
+      // This keeps the image on top until a new one is hovered.
+    });
+  };
+  
 
   return (
-    <section id="about" className="relative overflow-hidden py-28 lg:py-36">
-      <div className="container mx-auto px-6" ref={ref}>
-        {/* Top section */}
-        <div className="mb-20 grid gap-16 lg:grid-cols-2 lg:items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {/* <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 font-body text-xs font-semibold tracking-widest text-primary uppercase">
-              About EMA Ethiopia
-            </span> */}
-            <h2 className="mb-6 font-display text-4xl font-bold leading-tight text-foreground md:text-5xl">
-              Connecting{" "}
-              <span className="text-gradient">Ethiopia's Finest</span>{" "}
-              to the World
-            </h2>
-            <p className="mb-6 font-body text-lg leading-relaxed text-muted-foreground">
-              Since 2019, EMA Import and Export Pvt.Ltd. has been at the forefront of Ethiopian international trade. We specialize in exporting premium green coffee beans, oil seeds, pulses, and spices while importing essential medical equipment to strengthen Ethiopia's healthcare infrastructure.
-            </p>
-            <p className="mb-8 font-body text-base text-muted-foreground">
-              Operating under the Droga Pharma umbrella, we maintain ISO-certified processing facilities and a state-of-the-art Coffee Laboratory for cupping and grading. Our direct relationships with Ethiopian farmers and cooperatives ensure the highest quality at every step.
-            </p>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                to="/about"
-                className="magnetic-btn inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 font-body text-sm font-semibold text-background"
-              >
-                Learn More About Us
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </motion.div>
-          </motion.div>
-
-          {/* Image Slider - Automatic & Manual with Dots */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="group relative h-[400px] w-full overflow-hidden rounded-3xl"
-          >
-            <AnimatePresence mode="popLayout">
-              <motion.img
-                key={currentIndex}
-                src={images[currentIndex]}
-                initial={{ opacity: 0, x: 100, filter: "blur(10px)" }}
-                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, x: -100, filter: "blur(10px)" }}
-                transition={{ 
-                  duration: 0.8, 
-                  ease: [0.4, 0, 0.2, 1],
-                  opacity: { duration: 0.6 },
-                  x: { type: "spring", stiffness: 100, damping: 20 }
-                }}
-                className="h-full w-full object-cover"
-              />
-            </AnimatePresence>
-
-            {/* Navigation Arrows */}
-            <button
-              onClick={prevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-background/20 p-2 text-white opacity-0 backdrop-blur-md transition-opacity hover:bg-background/40 group-hover:opacity-100"
-            >
-              <ChevronLeft className="h-6 w-6" />
-            </button>
-            <button
-              onClick={nextSlide}
-              className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-background/20 p-2 text-white opacity-0 backdrop-blur-md transition-opacity hover:bg-background/40 group-hover:opacity-100"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </button>
-
-            {/* Dots indicator */}
-            <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-2">
-              {images.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentIndex(i)}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    currentIndex === i ? "w-8 bg-primary" : "w-2 bg-white/50 hover:bg-white"
-                  }`}
-                />
-              ))}
-            </div>
-          </motion.div>
+    <section 
+      id="about" 
+      ref={containerRef}
+      className="relative overflow-hidden bg-[#F0F4F0] py-16 lg:py-24"
+    >
+      <div className="container mx-auto px-6">
+        <div className="mb-12 text-center lg:text-left">
+          <h2 className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-[#2D4A31] md:text-5xl lg:text-6xl">
+            Connecting <span className="text-[#3D6344]">Ethiopia's Finest</span> <br />
+            <span className="text-[#5B8C61]">to the World</span>
+          </h2>
         </div>
 
-        {/* What we do highlights */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="rounded-3xl border border-border bg-card p-10 lg:p-14"
-        >
-          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
-            <div>
-              <h3 className="mb-4 font-display text-3xl font-bold text-foreground">
-                What We <span className="text-gradient">Deliver</span>
-              </h3>
-              <p className="font-body text-base text-muted-foreground">
-                From Ethiopia's fertile highlands to global markets — we handle sourcing, processing, quality testing, and logistics for every shipment.
+        <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
+          {/* --- STACKED POLAROID IMAGES --- */}
+          <div className="relative h-[480px] md:h-[600px] lg:col-span-6 [perspective:1200px]">
+            {imageData.map((item, i) => (
+              <div
+                key={i}
+                ref={(el) => (imageRefs.current[i] = el)}
+                onMouseMove={(e) => handleMouseMove(e, i)}
+                onMouseLeave={() => handleMouseLeave(i)}
+                className="absolute w-[220px] md:w-[320px] cursor-pointer"
+                style={{ 
+                  zIndex: item.z, 
+                  top: item.top, 
+                  left: item.left,
+                  transform: `rotate(${item.tilt}deg)`,
+                  transformStyle: "preserve-3d"
+                }}
+              >
+                <div className="relative rounded-sm bg-white p-3 pb-12 shadow-xl ring-1 ring-black/5 transition-shadow duration-300 hover:shadow-2xl">
+                  {/* Subtle Paper Texture */}
+                  <div 
+                    className="pointer-events-none absolute inset-0 opacity-[0.03] mix-blend-multiply" 
+                    style={{ backgroundImage: `url('https://www.transparenttextures.com/patterns/p6-dark.png')` }} 
+                  />
+                  
+                  <div className="relative overflow-hidden bg-gray-200">
+                    <img 
+                      src={item.img} 
+                      alt={item.label} 
+                      className="aspect-square w-full object-cover sepia-[0.05]" 
+                    />
+                    <div className="absolute inset-0 shadow-[inset_0_0_15px_rgba(0,0,0,0.1)]" />
+                  </div>
+                  
+                  <div className="mt-6 text-center">
+                    <span 
+                      className="block text-2xl text-[#2D4A31]/80" 
+                      style={{ fontFamily: '"Permanent Marker", cursive' }}
+                    >
+                      {item.label}
+                    </span>
+                    <div className="mx-auto mt-1 h-1 w-1 rounded-full bg-[#2D4A31]/20" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* --- TEXT CONTENT --- */}
+          <div className="lg:col-span-6 lg:pl-10">
+            <div className="space-y-6">
+              <p className="font-body text-xl font-medium leading-relaxed text-[#2D4A31]">
+                Since 2019, EMA Import and Export Pvt.Ltd. has been at the forefront of Ethiopian international trade.
               </p>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {highlights.map((item, i) => (
-                <motion.div
-                  key={item}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: 0.4 + i * 0.05 }}
-                  className="flex items-start gap-2.5"
+              
+              <p className="font-body text-base leading-relaxed text-[#4A634E]">
+                Operating under the Droga Pharma umbrella, we maintain ISO-certified processing facilities and a state-of-the-art Coffee Laboratory. Our direct relationships with farmers ensure excellence from seed to cup.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-6 pt-4">
+                <Link
+                  to="/about"
+                  className="flex items-center gap-2 rounded-full bg-[#2D4A31] px-8 py-4 font-body text-sm font-bold text-white transition-all hover:bg-[#3D6344] hover:shadow-lg"
                 >
-                  <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                  <span className="font-body text-sm text-foreground">{item}</span>
-                </motion.div>
-              ))}
+                  Learn More About Us
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+
+              <div className="mt-10 pt-8 border-t border-[#2D4A31]/10">
+                <h3 className="mb-4 font-display text-xl font-bold text-[#2D4A31]">What We Deliver</h3>
+                <div className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
+                  {highlights.map((item, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <CheckCircle className="mt-1 h-4 w-4 shrink-0 text-[#5B8C61]" />
+                      <span className="font-body text-sm text-[#2D4A31]">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

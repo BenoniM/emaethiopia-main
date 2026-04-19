@@ -15,8 +15,8 @@ const IndustriesPage = () => {
         description="We proudly serve multiple industries under the umbrella of Droga Pharma, delivering tailored solutions across sectors."
       />
       <IndustriesSection />
-      <BlogSection />
       <PartnersSection />
+      <BlogSection />
       <Footer />
     </div>
   );

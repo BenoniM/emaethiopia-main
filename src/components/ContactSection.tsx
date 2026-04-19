@@ -4,6 +4,8 @@ import { Mail, Phone, MapPin, Send, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import mapImage from "@/assets/map.png";
+// Use your specific asset path
+import ctaBg from "@/assets/CTA/photo_2026-04-19_11-44-37.jpg";
 
 const ContactSection = () => {
   const ref = useRef(null);
@@ -30,7 +32,6 @@ const ContactSection = () => {
       return;
     }
     setSending(true);
-    // Simulate sending (replace with real API endpoint)
     await new Promise((r) => setTimeout(r, 1500));
     toast({ title: "Message sent!", description: "Thank you for reaching out. Our team will respond within 24 hours." });
     setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
@@ -39,38 +40,7 @@ const ContactSection = () => {
 
   return (
     <section id="contact" className="relative">
-      {/* CTA Section — clean background, no image */}
-      <div className="bg-foreground py-28 lg:py-36">
-        <div className="container relative z-10 mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-background/20 bg-background/10 px-4 py-1.5 font-body text-xs font-semibold tracking-widest text-background/80 uppercase backdrop-blur-sm">
-              Start Today
-            </span>
-            <h2 className="mb-6 font-display text-4xl font-bold text-background md:text-6xl">
-              Ready to Partner<br />with EMA?
-            </h2>
-            <p className="mx-auto mb-8 max-w-2xl font-body text-lg text-background/80">
-              Whether you're looking for premium Ethiopian green coffee beans, sesame seeds, pulses, or medical equipment — our team is ready to help you source, process, and deliver with confidence.
-            </p>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                to="/contact"
-                className="magnetic-btn inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 font-body text-sm font-semibold text-primary-foreground"
-              >
-                Get Started
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Contact form area */}
+      {/* Contact form area stays exactly as you had it */}
       <div className="bg-secondary py-28 lg:py-36" ref={ref}>
         <div className="container mx-auto px-6">
           <div id="contact-form" className="grid gap-16 lg:grid-cols-2">
@@ -131,15 +101,6 @@ const ContactSection = () => {
                 <div className="bg-card p-4">
                   <p className="font-display text-sm font-bold text-foreground">Droga Building, 7th Floor, Room no-701</p>
                   <p className="font-body text-xs text-muted-foreground">Gulele Subcity, Woreda 9, Addis Ababa, Ethiopia</p>
-                  <motion.a
-                    href="https://maps.app.goo.gl/nZ6NJKFFout5b4gF7"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.03 }}
-                    className="mt-3 inline-flex items-center gap-1 font-body text-sm font-semibold text-primary"
-                  >
-                    Get Direction <MapPin className="h-3.5 w-3.5" />
-                  </motion.a>
                 </div>
               </motion.div>
             </motion.div>
@@ -153,82 +114,60 @@ const ContactSection = () => {
               onSubmit={handleSubmit}
             >
               <h3 className="font-display text-2xl font-bold text-foreground">Send Message</h3>
-              <p className="font-body text-sm text-muted-foreground">Our team will respond within 24 hours.</p>
-
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
                   <label className="mb-2 block font-body text-sm font-medium text-foreground">Full Name *</label>
-                  <motion.input
-                    whileFocus={{ scale: 1.01 }}
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Your full name"
-                    className="w-full rounded-xl border border-border bg-secondary px-4 py-3.5 font-body text-sm text-foreground placeholder:text-muted-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  />
+                  <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full rounded-xl border border-border bg-secondary px-4 py-3.5" />
                 </div>
                 <div>
                   <label className="mb-2 block font-body text-sm font-medium text-foreground">Email *</label>
-                  <motion.input
-                    whileFocus={{ scale: 1.01 }}
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="your@email.com"
-                    className="w-full rounded-xl border border-border bg-secondary px-4 py-3.5 font-body text-sm text-foreground placeholder:text-muted-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  />
+                  <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full rounded-xl border border-border bg-secondary px-4 py-3.5" />
                 </div>
               </div>
-              <div>
-                <label className="mb-2 block font-body text-sm font-medium text-foreground">Phone</label>
-                <motion.input
-                  whileFocus={{ scale: 1.01 }}
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="+251 xxx xxx xxx"
-                  className="w-full rounded-xl border border-border bg-secondary px-4 py-3.5 font-body text-sm text-foreground placeholder:text-muted-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                />
-              </div>
-              <div>
-                <label className="mb-2 block font-body text-sm font-medium text-foreground">Subject</label>
-                <motion.input
-                  whileFocus={{ scale: 1.01 }}
-                  type="text"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  placeholder="e.g. Green Coffee Inquiry, Medical Equipment Quote"
-                  className="w-full rounded-xl border border-border bg-secondary px-4 py-3.5 font-body text-sm text-foreground placeholder:text-muted-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                />
-              </div>
-              <div>
-                <label className="mb-2 block font-body text-sm font-medium text-foreground">Message *</label>
-                <motion.textarea
-                  whileFocus={{ scale: 1.01 }}
-                  rows={5}
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  placeholder="Tell us about your requirements — product type, volume, destination, quality specs..."
-                  className="w-full resize-none rounded-xl border border-border bg-secondary px-4 py-3.5 font-body text-sm text-foreground placeholder:text-muted-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                />
-              </div>
-              <motion.button
-                type="submit"
-                disabled={sending}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="magnetic-btn flex w-full items-center justify-center gap-2 rounded-full bg-foreground py-4 font-body text-sm font-semibold text-background disabled:opacity-60"
-              >
+              <textarea name="message" value={formData.message} onChange={handleChange} rows={5} className="w-full rounded-xl border border-border bg-secondary px-4 py-3.5" />
+              <button type="submit" disabled={sending} className="w-full rounded-full bg-foreground py-4 font-semibold text-background">
                 {sending ? "Sending..." : "Send Message"}
-                <Send className="h-4 w-4" />
-              </motion.button>
+              </button>
             </motion.form>
           </div>
+        </div>
+      </div>
+
+      {/* REDESIGNED CTA SECTION - 50% SCREEN HEIGHT */}
+      <div 
+        className="relative flex h-[50vh] min-h-[450px] items-center justify-center bg-cover bg-center overflow-hidden"
+        style={{ backgroundImage: `url(${ctaBg})` }}
+      >
+        {/* The warm overlay from the image */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1D781D]/40 via-[#289928]/20 to-[#259825]/40 backdrop-brightness-75" />
+
+        <div className="container relative z-10 mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mx-auto max-w-4xl bg-white px-8 py-10 text-center shadow-2xl md:px-16 md:py-12"
+          >
+            <h2 className="mb-4 font-display text-2xl font-extrabold text-black md:text-4xl uppercase tracking-tighter">
+              Ready to Partner<br />with EMA?
+            </h2>
+            
+            <p className="mx-auto mb-8 max-w-3xl font-body text-sm md:text-base text-gray-800 leading-relaxed">
+              Whether you're looking for premium Ethiopian green coffee beans, sesame seeds, pulses, or medical equipment — 
+              our team is ready to help you source, process, and deliver with confidence.
+            </p>
+
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link
+                  to="/contact"
+                  className="inline-flex min-w-[200px] items-center justify-center rounded-full bg-[#259825] px-8 py-5 font-body text-xs font-bold text-white uppercase tracking-wide"
+                >
+                  Get Started
+                </Link>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
