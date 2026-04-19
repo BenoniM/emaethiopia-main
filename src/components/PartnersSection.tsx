@@ -1,13 +1,19 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import drogalogo from "@/assets/partners/droga.png";
+import ecxlogo from "@/assets/partners/ecx.png";
+import emalogo from "@/assets/partners/ema.png";
+import trustlogo from "@/assets/partners/trust.png";
+import partner2logo from "@/assets/partners/partner2.png";
+import physiologo from "@/assets/partners/physio.svg";
 
 const partners = [
-  { name: "Droga Pharma", logo: "src/assets/partners/droga.png", description: "Parent company providing pharmaceutical excellence" },
-  { name: "ECX Ethiopia", logo: "src/assets/partners/ecx.png", description: "Ethiopian Commodity Exchange partnership" },
-  { name: "EMA Trade", logo: "src/assets/partners/ema.png", description: "International trade network across 30+ countries" },
-  { name: "Export Authority", logo: "src/assets/partners/trust.png", description: "Ethiopian Export Authority certified" },
-  { name: "Quality Cert.", logo: "src/assets/partners/partner2.png", description: "ISO 9001:2015 certified operations" },
-  { name: "Logistics Hub", logo: "src/assets/partners/physio.svg", description: "End-to-end supply chain partners" },
+  { name: "Droga Pharma", logo: drogalogo, description: "Parent company providing pharmaceutical excellence" },
+  { name: "ECX Ethiopia", logo: ecxlogo, description: "Ethiopian Commodity Exchange partnership" },
+  { name: "EMA Trade", logo: emalogo, description: "International trade network across 30+ countries" },
+  { name: "Export Authority", logo: trustlogo, description: "Ethiopian Export Authority certified" },
+  { name: "Quality Cert.", logo: partner2logo, description: "ISO 9001:2015 certified operations" },
+  { name: "Logistics Hub", logo: physiologo, description: "End-to-end supply chain partners" },
 ];
 
 const PartnersSection = () => {
