@@ -256,7 +256,7 @@ const BlogPage = () => {
       <div 
         className="relative flex h-[50vh] min-h-[450px] items-center justify-center bg-cover bg-center overflow-hidden"
         style={{ backgroundImage: `url(${ctaBg})` }}
-      >
+       >
         {/* The warm overlay from the image */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#1D781D]/40 via-[#289928]/20 to-[#259825]/40 backdrop-brightness-75" />
 

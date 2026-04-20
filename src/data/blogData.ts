@@ -1,7 +1,7 @@
-import blogImg1 from "@/assets/blog-page/Ethiopia-BIuZVSnK.svg";
-import blogImg2 from "@/assets/blog-page/lacafshow-Cl1dqURW.svg";
-import blogImg3 from "@/assets/blog-page/trust-FrJE3CST.svg";
-import blogImg4 from "@/assets/blog-page/imports-DI8pMC4v.svg";
+import blogImg1 from "@/assets/chigagoexpo.jpg";
+import blogImg2 from "@/assets/award1.jpg";
+import blogImg3 from "@/assets/annualevent.jpg";
+import blogImg4 from "@/assets/dubai1.jpg";
 import blogImg5 from "@/assets/blog-page/wakeup-DJVX4zJd.svg";
 import blogImg6 from "@/assets/blog-page/lasquality-CVtmSdYv.svg";
 import blogImg7 from "@/assets/blog-page/vs-C68xEDJ1.svg";
@@ -9,10 +9,20 @@ import blogImg8 from "@/assets/blog-page/Ethcof-CWnx5UW2.svg";
 import blogImg9 from "@/assets/blog-page/value-BY-PtGiN.svg";
 
 // Gallery photos
-import photoBirthplace from "@/assets/blog/birthplace.jpg";
-import photoCafeShow from "@/assets/blog/Cafe-Show-Seoul-2023.jpeg";
-import photoHome from "@/assets/blog/Home.jpg";
-import photoSpeciality from "@/assets/blog/speciality.jpg";
+import photoBirthplace from "@/assets/chigago1.jpg";
+import photoCafeShow from "@/assets/chigago2.jpg";
+import photoHome from "@/assets/chigago3.jpg";
+import photoSpeciality from "@/assets/chigago4.jpg";
+import award from "@/assets/award2.jpg";
+import award2 from "@/assets/award3.jpg"
+import award1 from "@/assets/award1.jpg";
+import annual1 from "@/assets/annual1.jpg";
+import annual2 from "@/assets/annual2.jpg";
+import annual3 from "@/assets/annualevent.jpg";
+import dubai1 from "@/assets/dubai1.jpg";
+import dubai2 from "@/assets/dubai2.jpg";
+import dubai3 from "@/assets/dubai3.jpg";
+import dubai4 from "@/assets/dubai4.jpg";
 
 export type BlogPost = {
   id: number;
@@ -32,11 +42,11 @@ export type BlogPost = {
 export const blogPosts: BlogPost[] = [
   {
     id: 1,
-    title: "From Ethiopia to the World",
+    title: " Calling all Coffee Connoisseurs!",
     excerpt:
-      "Ethiopia's fertile lands produce some of the most sought-after agricultural commodities — green coffee, sesame, Niger seeds, and pulses that fuel global markets and support local farmers.",
+      "Ema Coffee, Ethiopia's finest export, is excited to announce our participation in the Speciality Coffee Expo 2024 in Chicago! 🌍☕️ Join us to experience the rich heritage and exquisite flavors of Ethiopian coffee. From the birthplace of coffee to your cup, let's celebrate the artistry and passion behind every sip. ",
     author: "Admin",
-    date: "August 20, 2022",
+    date: "April 12-14, 2024",
     category: "Exports",
     tag: "LinkedIn",
     image: blogImg1,
@@ -66,11 +76,11 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 2,
-    title: "Cafe Show 2024: A World Coffee Experience",
+    title: "Appreciation Certificate from Addis International Bank",
     excerpt:
-      "This event is a unique opportunity to experience the world of coffee — the 23rd International Cafe Show brought together the finest in specialty coffee culture from around the globe.",
+      "Appreciation of our exceptional contribution to the success of the Bank in generating foreign currency through Export.",
     author: "Admin",
-    date: "August 20, 2022",
+    date: "March 07, 2024",
     category: "Events",
     tag: "LinkedIn",
     image: blogImg2,
@@ -96,15 +106,15 @@ export const blogPosts: BlogPost[] = [
         text: "We left Seoul energized and inspired. The global coffee community's passion for quality and sustainability aligns perfectly with EMA's mission. We look forward to returning next year with even more to share.",
       },
     ],
-    gallery: [photoCafeShow, photoSpeciality, photoBirthplace, photoHome],
+    gallery: [award, award2, award1,],
   },
   {
     id: 3,
-    title: "At EMA, We're More Than Just a Company",
+    title: "The World Biggest Annual F&B Event",
     excerpt:
-      "At EMA, we're more than just a company — we're a community dedicated to excellence. With over 70 high-quality products and 300+ loyal customers, we're here to help you succeed.",
+      "We are pleased to inform you that we will be participating in Gulfood Feb 19-Feb 23, 2024 the world's leading food and beverage trade ,offering a prime opportunity to showcase our products and connect with industry leaders from around the world.",
     author: "Admin",
-    date: "August 20, 2022",
+    date: "Feburary 19-23, 2024",
     category: "Company",
     tag: "LinkedIn",
     image: blogImg3,
@@ -130,15 +140,15 @@ export const blogPosts: BlogPost[] = [
         text: "We're proud of what we've built, and we're just getting started. Thank you to every customer, partner, and team member who has been part of this journey.",
       },
     ],
-    gallery: [photoHome, photoBirthplace, photoCafeShow, photoSpeciality],
+    gallery: [annual1, annual2, annual3],
   },
   {
     id: 4,
-    title: "Pharmaceutical & Medical Equipment Imports",
+    title: "World of Coffee Dubai",
     excerpt:
-      "EMA Ethiopia expands its import portfolio with state-of-the-art pharmaceutical and medical equipment, bridging the gap between global innovation and local healthcare needs.",
+      "Excited to immerse our in the rich world of coffee at the Dubai World of Coffee 2024 exhibition! ☕️ Join us as we explore the latest trends, innovations, and indulge in the aromatic journey of all things coffee. Let's sip, savor, and share the brewtiful experience together!",
     author: "Admin",
-    date: "August 20, 2022",
+    date: "January 21-23, 2024",
     category: "Imports",
     tag: "LinkedIn",
     image: blogImg4,
@@ -164,7 +174,7 @@ export const blogPosts: BlogPost[] = [
         text: "By bridging the gap between global medical innovation and local healthcare needs, EMA is contributing to a healthier Ethiopia. We believe that access to quality healthcare products is a fundamental right, and we're committed to making that a reality.",
       },
     ],
-    gallery: [photoHome, photoSpeciality, photoBirthplace, photoCafeShow],
+    gallery: [dubai2, dubai1, dubai3, dubai4],
   },
   {
     id: 5,

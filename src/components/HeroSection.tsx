@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { AnimatedHero } from "@/components/ui/animated-hero";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import emaLogo from "@/assets/ema-logo.png";
-import heroSlide1 from "@/assets/hero-slide-1.jpg";
+import heroSlide1 from "@/assets/testimony.jpg";
 import heroSlide2 from "@/assets/hero-slide-2.jpg";
 import heroSlide3 from "@/assets/hero-slide-3.jpg";
 import heroSlide4 from "@/assets/hero-slide-4.jpg";

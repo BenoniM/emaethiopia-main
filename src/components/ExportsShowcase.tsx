@@ -11,11 +11,11 @@ import grainKidney from "@/assets/export-imgs/kidney-bean.png";
 import grainChickpea from "@/assets/export-imgs/chickpea.png";
 
 // Food images (right column)
-import foodCoffee from "@/assets/food-imgs/coffee-dish.png";
-import foodSesame from "@/assets/food-imgs/sesame-dish.png";
-import foodNiger from "@/assets/food-imgs/niger-seed-dish.png";
-import foodKidney from "@/assets/food-imgs/kidney-bean-dish.png";
-import foodChickpea from "@/assets/food-imgs/chickpea-dish.png";
+import foodCoffee from "@/assets/coffee1.jpg";
+import foodSesame from "@/assets/sesame.jpg";
+import foodNiger from "@/assets/nigerseed.jpg";
+import foodKidney from "@/assets/redkidneybeans.jpg";
+import foodChickpea from "@/assets/chickpeas.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -217,8 +217,10 @@ const ExportsShowcase = () => {
               <img 
                 src={p.foodImage} 
                 alt={`${p.name} dish`} 
-                className="w-full h-full object-cover grayscale-[15%] mix-blend-luminosity hover:mix-blend-normal hover:grayscale-0 transition-all duration-700" 
+                className="w-full h-full object-cover grayscale-[5%] mix-blend-luminosity hover:mix-blend-normal hover:grayscale-0 transition-all duration-700" 
               />
+              {/* Dark overlay */}
+              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/0 transition-all duration-700 pointer-events-none" />
             </div>
           ))}
         </div>
