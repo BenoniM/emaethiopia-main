@@ -12,6 +12,7 @@ import IndustriesPage from "./pages/IndustriesPage.tsx";
 import ContactPage from "./pages/ContactPage.tsx";
 import BlogPage from "./pages/BlogPage.tsx";
 import BlogDetailPage from "./pages/BlogDetailPage.tsx";
+import CoffeePage from "./pages/CoffeePage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import ScrollToTop from "./components/ScrollToTop.tsx";
 
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:id" element={<BlogDetailPage />} />
+          <Route path="/coffee" element={<CoffeePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

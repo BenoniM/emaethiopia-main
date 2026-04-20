@@ -28,7 +28,39 @@ import bgOilSeed from "@/assets/product-oilseeds.jpg";
 import bgSpices from "@/assets/product-spices.png";
 
 /* ─── product data ─────────────────────────────────────────── */
-const products = [
+interface Product {
+  id: string;
+  title: string;
+  subtitle: string;
+  color: string;
+  image?: string;
+  bgImage?: any;
+  isOverview: boolean;
+  description: string;
+  specs: string[];
+  origin: string;
+  adjustments?: {
+    wheel?: {
+      x?: string;
+      y?: string;
+      scale?: number;
+      rotate?: number;
+      width?: {
+        focused?: string;
+        normal?: string;
+      };
+      positions?: {
+        left: string;
+        top: string;
+        width: string;
+        rot: number;
+        z: number;
+      }[];
+    };
+  };
+}
+
+const products: Product[] = [
   {
     id: "green-coffee",
     title: "Green Coffee",
@@ -37,6 +69,7 @@ const products = [
     image: greenCoffee,
     bgImage: bgCoffee,
     isOverview: false,
+    adjustments: { wheel: { x: "-3%", y: "0%", scale: 1.2, rotate: 0 } },
     description:
       "Premium Ethiopian Arabica green coffee — washed and natural processed from Yirgacheffe, Sidamo, Jimma, and Harar regions.",
     specs: ["Arabica Variety", "Grade 1-5", "Washed & Natural", "SCA 80+"],
@@ -50,6 +83,7 @@ const products = [
     image: sesameSeeds,
     bgImage: bgSesame,
     isOverview: false,
+    adjustments: { wheel: { x: "4%", y: "0%", scale: 1, rotate: 0 } },
     description:
       "Premium Humera and Wollega sesame seeds with 50-55% oil content and nutty flavor. White, brown, and mixed varieties.",
     specs: ["50-55% Oil", "Humera & Wollega", "White & Brown", "99.5% Purity"],
@@ -63,6 +97,7 @@ const products = [
     image: nigerSeed,
     bgImage: bgNigerSeed,
     isOverview: false,
+    adjustments: { wheel: { x: "0%", y: "0%", scale: 1, rotate: 0 } },
     description:
       "High-quality Ethiopian Niger seeds (Noug) with 38-43% oil content for bird feed and edible oil markets.",
     specs: ["38-43% Oil", "Bird Feed Grade", "Edible Oil", "Machine Cleaned"],
@@ -76,6 +111,7 @@ const products = [
     image: kidneyBean,
     bgImage: bgKidney,
     isOverview: false,
+    adjustments: { wheel: { x: "4%", y: "0%", scale: 1, rotate: 0 } },
     description:
       "Nutrient-rich Ethiopian red kidney beans packed with protein and fiber for global food markets.",
     specs: ["High Protein", "Export Grade", "Machine Cleaned", "Low Moisture"],
@@ -89,6 +125,7 @@ const products = [
     image: chickpea,
     bgImage: bgChickpea,
     isOverview: false,
+    adjustments: { wheel: { x: "0%", y: "-10%", scale: 1, rotate: 0 } },
     description:
       "Ethiopian chickpeas in Desi and Kabuli varieties — exported to Middle East, South Asia, and European markets.",
     specs: ["Desi & Kabuli", "8-12mm", "High Protein", "Machine Sorted"],
@@ -102,6 +139,7 @@ const products = [
     image: mungBean,
     bgImage: bgMungBean,
     isOverview: false,
+    adjustments: { wheel: { x: "5%", y: "0%", scale: 1, rotate: 0 } },
     description:
       "Premium Ethiopian green mung beans for Asian cuisine, sprouting, and food processing.",
     specs: ["High Germination", "3-4mm", "Sprouting Grade", "Machine Sorted"],
@@ -115,6 +153,7 @@ const products = [
     image: haricotBean,
     bgImage: bgHaricot,
     isOverview: false,
+    adjustments: { wheel: { x: "0%", y: "0%", scale: 1.2, rotate: 0 } },
     description:
       "White haricot beans from Ethiopia — exported for canning and baked beans production worldwide.",
     specs: ["Canning Grade", "6-8mm", "Low Moisture", "Hand Sorted"],
@@ -128,6 +167,7 @@ const products = [
     image: oilSeed,
     bgImage: bgOilSeed,
     isOverview: false,
+    adjustments: { wheel: { x: "0%", y: "35%", scale: 1.3, rotate: 0 } },
     description:
       "Ethiopian oil seeds including linseed, sunflower, and soybean — sourced from cooperatives.",
     specs: ["Multiple Varieties", "High Oil", "Direct Source", "Organic Available"],
@@ -141,6 +181,7 @@ const products = [
     image: spicesHerbs,
     bgImage: bgSpices,
     isOverview: false,
+    adjustments: { wheel: { x: "0%", y: "10%", scale: 1.1, rotate: -9 } },
     description:
       "Authentic Ethiopian turmeric, ginger, fenugreek, and black cumin — exported globally.",
     specs: ["Organic Available", "Sun Dried", "Hand Sorted", "Essential Oils"],
@@ -538,8 +579,8 @@ const ProductsPage = () => {
                   ? "34vh"
                   : "28vh"
                 : isFocused
-                  ? "90vh"
-                  : "50vh";
+                  ? p.adjustments?.wheel?.width?.focused || "90vh"
+                  : p.adjustments?.wheel?.width?.normal || "50vh";
 
               const contentScale = isFocused ? 1 : 0.9;
 
@@ -600,14 +641,14 @@ const ProductsPage = () => {
                   >
                     {p.isOverview ? (
                       <div className="relative w-[24vh] h-[24vh]">
-                        {[
+                        {(p.adjustments?.wheel?.positions || [
                           { left: "10%", top: "5%", width: "45%", rot: -15, z: 1 },
                           { left: "55%", top: "15%", width: "50%", rot: 20, z: 3 },
                           { left: "25%", top: "45%", width: "40%", rot: 5, z: 2 },
                           { left: "-5%", top: "60%", width: "48%", rot: -25, z: 4 },
                           { left: "65%", top: "55%", width: "42%", rot: 30, z: 1 },
                           { left: "35%", top: "20%", width: "38%", rot: -10, z: 5 },
-                        ].map((pos, j) => (
+                        ]).map((pos, j) => (
                           <img
                             key={j}
                             src={amalgamImgs[j % amalgamImgs.length]}
@@ -633,6 +674,9 @@ const ProductsPage = () => {
                         style={{
                           filter: isFocused
                             ? "drop-shadow(0 20px 30px rgba(0,0,0,0.2))"
+                            : "none",
+                          transform: p.adjustments?.wheel 
+                            ? `translate(${p.adjustments.wheel.x || "0%"}, ${p.adjustments.wheel.y || "0%"}) scale(${p.adjustments.wheel.scale || 1}) rotate(${p.adjustments.wheel.rotate || 0}deg)` 
                             : "none",
                         }}
                       />
@@ -808,7 +852,7 @@ const ProductsPage = () => {
                       to="/contact"
                       className="magnetic-btn inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-body text-sm font-semibold text-black hover:bg-white/90 transition-colors shadow-lg"
                     >
-                      Request Quote <ArrowUpRight className="w-4 h-4" />
+                      Get Started <ArrowUpRight className="w-4 h-4" />
                     </Link>
                   </div>
                 </div>

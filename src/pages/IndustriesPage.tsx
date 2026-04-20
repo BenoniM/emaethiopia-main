@@ -146,14 +146,7 @@ const labStats = [
   { value: "100%", label: "Traceability", sub: "Farm to Export" },
 ];
 
-const origins = [
-  { name: "Yirgacheffe", notes: "Floral · Jasmine · Bergamot · Stone Fruit", region: "Gedeo Zone, SNNPR" },
-  { name: "Sidama", notes: "Berry · Wine · Bright Acidity · Full Body", region: "Sidama Region" },
-  { name: "Guji", notes: "Blueberry · Dark Chocolate · Complex Finish", region: "Oromia Zone" },
-  { name: "Harrar", notes: "Wild Blueberry · Mocha · Dry Processed", region: "Eastern Highlands" },
-  { name: "Limu", notes: "Spicy · Sweet · Well-Balanced", region: "Jimma Zone" },
-  { name: "Kaffa", notes: "Forest Fruit · Herbal · Winey", region: "Forest Origin" },
-];
+
 
 const certifications = [
   { name: "SCA Member", desc: "Specialty Coffee Association standards", icon: Award },
@@ -171,7 +164,6 @@ const CoffeeLabPage = () => {
       <LabHero />
       <LabServices />
       <CuppingProcess />
-      <OriginsShowcase />
       <TeamSection />
       <Footer />
     </div>
@@ -516,90 +508,7 @@ const CuppingProcess = () => {
   );
 };
 
-// ─── Origins Showcase ──────────────────────────────────────────────────────────
 
-const OriginsShowcase = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-  const [hovered, setHovered] = useState<number | null>(null);
-
-  return (
-    <section ref={ref} className="relative bg-[#0a1f0c] py-20 lg:py-36 overflow-hidden">
-      {/* Grain overlay */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.04]"
-        style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/asfalt-dark.png')" }}
-      />
-
-      <div className="container relative mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="mb-14 text-center"
-        >
-          <span className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/8 px-4 py-1.5 font-body text-xs font-semibold tracking-widest text-white/70 uppercase">
-            <MapPin className="h-3 w-3" />
-            Ethiopian Origins
-          </span>
-          <h2 className="mb-4 font-display text-4xl font-bold text-white md:text-5xl">
-            Flavors Rooted in{" "}
-            <span className="bg-gradient-to-r from-[#6fcf6f] to-[#a8e063] bg-clip-text text-transparent">
-              Ethiopian Terroir
-            </span>
-          </h2>
-          <p className="mx-auto max-w-xl font-body text-base leading-relaxed text-white/60">
-            Our lab profiles coffees from Ethiopia's most celebrated growing regions — each with
-            distinct cup characteristics shaped by altitude, soil, and processing method.
-          </p>
-        </motion.div>
-
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {origins.map((origin, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 40 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: i * 0.08 }}
-              onMouseEnter={() => setHovered(i)}
-              onMouseLeave={() => setHovered(null)}
-              className={`group relative cursor-default overflow-hidden rounded-2xl border p-7 transition-all duration-500 ${
-                hovered === i
-                  ? "border-[#6fcf6f]/40 bg-[#6fcf6f]/5"
-                  : "border-white/10 bg-white/5"
-              }`}
-            >
-              {/* Number */}
-              <span className="absolute right-5 top-5 font-display text-5xl font-bold text-white/5 transition-all duration-500 group-hover:text-white/10">
-                0{i + 1}
-              </span>
-
-              <div className="mb-1 flex items-center gap-2">
-                <div className={`h-2 w-2 rounded-full transition-colors duration-300 ${hovered === i ? "bg-[#6fcf6f]" : "bg-white/30"}`} />
-                <span className="font-body text-[10px] font-bold tracking-widest text-white/40 uppercase">
-                  {origin.region}
-                </span>
-              </div>
-
-              <h3 className="mb-3 font-display text-2xl font-bold text-white">
-                {origin.name}
-              </h3>
-
-              <p className="font-body text-sm leading-relaxed text-white/55">
-                {origin.notes}
-              </p>
-
-              <div className="mt-6 flex items-center gap-2 font-body text-xs font-bold uppercase tracking-widest text-[#6fcf6f] opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <span>View Profile</span>
-                <ArrowRight className="h-3 w-3" />
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
 
 // ─── Team Section ──────────────────────────────────────────────────────────────
 
