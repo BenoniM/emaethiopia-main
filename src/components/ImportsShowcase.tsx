@@ -9,7 +9,7 @@ import productStretcher from "@/assets/product-stretcher-new.jpg";
 import productBlood from "@/assets/product-blood.jpg";
 import productMedicalDevices from "@/assets/product-medical-devices.jpg";
 import stretcherVideo from "@/assets/videos-import/8943558-hd_1920_1080_25fps.mp4";
-import glucoseVideo from "@/assets/videos-import/6824189-uhd_3840_2160_30fps.mp4";
+import glucoseVideo from "@/assets/videos-import/Video&image.mp4";
 import diagnosticVideo from "@/assets/videos-import/6234582-uhd_3840_2160_25fps.mp4";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -70,12 +70,12 @@ const ImportsShowcase = () => {
         item.addEventListener("mouseenter", () => {
           // INSTANT VIDEO: Duration set to 0
           gsap.to(video, { opacity: 1, duration: 0 });
-          gsap.to(image, { scale: 1.03, duration: 0.4 });
+          gsap.to(image, { scale: 1.03, opacity: 0, duration: 0.3 });
         });
         
         item.addEventListener("mouseleave", () => {
           gsap.to(video, { opacity: 0, duration: 0 });
-          gsap.to(image, { scale: 1, duration: 0.4 });
+          gsap.to(image, { scale: 1, opacity: 1, duration: 0.3 });
         });
       });
     }, containerRef);

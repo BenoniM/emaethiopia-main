@@ -16,12 +16,13 @@ const sectionStyles = `
   @media (max-width: 1024px) {
     .center-image-container {
       max-width: 300px;
-      opacity: 0.2; /* Fade back on smaller screens to allow text readability */
+      opacity: 0.2;
     }
   }
 `;
 
 gsap.registerPlugin(ScrollTrigger);
+
 import assurance from "@/assets/serv/assurance.png";
 import globalExport from "@/assets/serv/global-export.jpg";
 import logistics from "@/assets/serv/logistice.jpg";
@@ -66,28 +67,19 @@ const steps = [
   { title1: "EXPORT &", title2: "DELIVERY", description: "Professional packaging, container shipping, and full documentation for smooth delivery.", image: exportDelivery },
 ];
 
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 40 } as const,
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
-};
-
 const ServicesSection = () => {
   const containerRef = useRef(null);
   const triggerRef = useRef(null);
   const sectionRef = useRef(null);
+
   const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
+  const bgImagesRef = useRef<(HTMLImageElement | null)[]>([]);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  
+
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // 1. Image container entry from bottom
       gsap.from(".center-image-container", {
         y: "60vh",
         opacity: 0,
@@ -101,30 +93,51 @@ const ServicesSection = () => {
         }
       });
 
-      // 2. Individual Image Transitions
       services.forEach((_, i) => {
-        // Handle image visibility based on which card is in view
-        gsap.to(imagesRef.current[i], {
-          opacity: 1,
-          scale: 1,
-          duration: 0.3,
-          ease: "power2.inOut",
-          scrollTrigger: {
-            trigger: cardsRef.current[i],
-            start: "top center+=250",
-            end: "bottom center-=250",
-            toggleActions: "play reverse play reverse",
+        const imageEl = imagesRef.current[i];
+        const bgEl = bgImagesRef.current[i];
+        const cardEl = cardsRef.current[i];
+
+        const triggerConfig = {
+          trigger: cardEl,
+          start: "top center+=250",
+          end: "bottom center-=250",
+          toggleActions: "play reverse play reverse",
+        };
+
+        // Foreground image
+        gsap.fromTo(
+          imageEl,
+          { opacity: 0, scale: 1.08 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.35,
+            ease: "power2.inOut",
+            scrollTrigger: triggerConfig,
           }
-        });
+        );
+
+        // Background image (synced)
+        gsap.fromTo(
+          bgEl,
+          { opacity: 0, scale: 1.2 },
+          {
+            opacity: 1,
+            scale: 1.05,
+            duration: 0.35,
+            ease: "power2.inOut",
+            scrollTrigger: triggerConfig,
+          }
+        );
 
         // Card animation
-        gsap.from(cardsRef.current[i], {
+        gsap.from(cardEl, {
           opacity: 0.1,
           y: 100,
           scale: 0.9,
-          duration: 0.5,
           scrollTrigger: {
-            trigger: cardsRef.current[i],
+            trigger: cardEl,
             start: "top bottom",
             end: "top center",
             scrub: true,
@@ -138,52 +151,62 @@ const ServicesSection = () => {
 
   return (
     <>
-      {/* Custom Styles */}
       <style>{sectionStyles}</style>
 
-      {/* Coffee Laboratory & Trade Services */}
       <section id="services" ref={sectionRef} className="relative bg-background">
-        {/* Static Header - Still scrolls normally until reaching the animation trigger */}
         <div className="container mx-auto px-6 pt-12 mb-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8 }}
           >
-            <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 font-body text-xs font-semibold tracking-widest text-primary uppercase">
+            <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-semibold tracking-widest text-primary uppercase">
               Our Services
             </span>
+
             <div className="grid gap-8 lg:grid-cols-2">
-              <h2 className="font-display text-3xl font-bold leading-tight text-foreground md:text-4xl max-w-lg">
-                Coffee Laboratory{" "}
-                <span className="text-gradient">& Trade</span> Services
+              <h2 className="text-4xl font-bold">
+                Coffee Laboratory <span className="text-primary">& Trade</span>
               </h2>
-              <p className="font-body text-sm tracking-wide lg:pt-2">
-                Our Coffee Laboratory Service ensures the highest quality in coffee production through comprehensive testing and flavor profiling. With state-of-the-art equipment and expert analysis, we help producers enhance their products for global markets.
+              <p>
+                Our Coffee Laboratory Service ensures the highest quality in coffee production through comprehensive testing and flavor profiling.
               </p>
             </div>
           </motion.div>
         </div>
 
-        {/* Animation Wrapper - Defining the total scroll length */}
         <div ref={triggerRef} className="relative w-full min-h-[400vh]">
-          {/* Sticky Image Container - Pinned to the center of the viewport */}
           <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden pointer-events-none">
-            <div className="center-image-container relative w-[90vw] max-w-[450px] aspect-[4/5] rounded-[1rem] overflow-hidden shadow-2xl bg-muted z-10 perspective-1000 pointer-events-auto">
+            
+            {/* SYNCHED BACKGROUND */}
+            <div className="absolute inset-0">
               {services.map((service, index) => (
                 <img
-                  key={index}
+                  key={`bg-${index}`}
+                  ref={(el) => (bgImagesRef.current[index] = el)}
+                  src={service.image}
+                  className="absolute inset-0 h-full w-full object-cover opacity-0 scale-110 blur-md brightness-[0.6] will-change-transform"
+                />
+              ))}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/10 to-black/30" />
+            </div>
+
+            {/* CENTER IMAGE */}
+            <div className="center-image-container relative w-[90vw] max-w-[450px] aspect-[4/5] rounded-[1rem] overflow-hidden shadow-2xl bg-muted z-10 pointer-events-auto">
+              {services.map((service, index) => (
+                <img
+                  key={`main-${index}`}
                   ref={(el) => (imagesRef.current[index] = el)}
                   src={service.image}
                   alt={service.title}
-                  className="absolute inset-0 w-full h-full object-cover opacity-0 scale-110 will-change-transform"
+                  className="absolute inset-0 w-full h-full object-cover opacity-0 scale-110"
                 />
               ))}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
             </div>
           </div>
 
-          {/* Scrolling Content - Each item takes 100vh to ensure it scrolls past the center image */}
+          {/* CARDS */}
           <div className="relative z-20 mt-[-100vh]">
             {services.map((service, index) => {
               const Icon = service.icon;
@@ -197,19 +220,12 @@ const ServicesSection = () => {
                     isEven ? "justify-end" : "justify-start"
                   }`}
                 >
-                  <div className={`w-full max-w-[380px] p-8 rounded-xl border bg-white/95 backdrop-blur-xl border-border shadow-2xl hover:border-primary/30 transition-shadow duration-500`}>
-                    <div className="mb-6 inline-flex rounded-2xl p-4 bg-primary/10">
-                      <Icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <h3 className="mb-3 font-display text-2xl font-bold text-foreground">
-                      {service.title}
-                    </h3>
-                    <p className="font-body text-base leading-relaxed text-muted-foreground">
-                      {service.description}
-                    </p>
-                    <Link to="/services" className="mt-6 flex items-center gap-2 text-primary font-semibold text-sm">
-                      <span>Explore Service</span>
-                      <ArrowRight className="h-4 w-4" />
+                  <div className="w-full max-w-[380px] p-8 rounded-xl border bg-white/95 backdrop-blur-xl shadow-2xl">
+                    <Icon className="mb-4 text-primary" />
+                    <h3 className="text-2xl font-bold mb-2">{service.title}</h3>
+                    <p>{service.description}</p>
+                    <Link to="/services" className="flex items-center gap-2 mt-4 text-primary">
+                      Explore <ArrowRight size={16} />
                     </Link>
                   </div>
                 </div>
@@ -223,6 +239,7 @@ const ServicesSection = () => {
     </>
   );
 };
+
 
 const WorkProcessStack = () => {
   const containerRef = useRef(null);
