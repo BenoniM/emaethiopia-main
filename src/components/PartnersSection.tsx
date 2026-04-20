@@ -45,11 +45,11 @@ const PartnersSection = () => {
           <div 
             className="grid h-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 [transform:rotateX(25deg)] origin-bottom scale-95"
           >
-            {/* Column 1 */}
+            {/* Column 1 - Faster */}
             <div className="relative flex flex-col gap-6">
               <motion.div
                 animate={{ y: ["0%", "-50%"] }}
-                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
                 className="flex flex-col gap-6"
               >
                 {[...partners, ...partners].map((partner, i) => (
@@ -58,27 +58,27 @@ const PartnersSection = () => {
               </motion.div>
             </div>
 
-            {/* Column 2 - Slightly Slower */}
+            {/* Column 2 - Reverse Direction (Faster) */}
             <div className="relative hidden flex-col gap-6 md:flex">
               <motion.div
-                animate={{ y: ["0%", "-50%"] }}
-                transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+                animate={{ y: ["-50%", "0%"] }}
+                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
                 className="flex flex-col gap-6"
               >
-                {[...partners, ...partners].map((partner, i) => (
+                {[...partners.slice().reverse(), ...partners.slice().reverse()].map((partner, i) => (
                   <PartnerCard key={`col2-${i}`} partner={partner} />
                 ))}
               </motion.div>
             </div>
 
-            {/* Column 3 - Mid Speed Reversed */}
+            {/* Column 3 - Faster */}
             <div className="relative hidden flex-col gap-6 lg:flex">
               <motion.div
                 animate={{ y: ["0%", "-50%"] }}
-                transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
                 className="flex flex-col gap-6"
               >
-                {[...partners.slice().reverse(), ...partners.slice().reverse()].map((partner, i) => (
+                {[...partners, ...partners].map((partner, i) => (
                   <PartnerCard key={`col3-${i}`} partner={partner} />
                 ))}
               </motion.div>
@@ -101,7 +101,7 @@ const PartnerCard = ({ partner }) => (
       <img 
         src={partner.logo} 
         alt={partner.name} 
-        className="h-10 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity" 
+        className="h-10 w-auto object-contain opacity-80 group-hover:opacity-100 transition-all duration-300 grayscale group-hover:grayscale-0" 
       />
     </div>
     <h3 className="mb-1 font-display text-lg font-bold text-center text-primary uppercase tracking-tight">

@@ -311,40 +311,40 @@ const ContactSection = ({ showForm = false }: { showForm?: boolean }) => {
       {!showForm && (
         <div 
         className="relative flex h-[50vh] min-h-[450px] items-center justify-center bg-cover bg-center overflow-hidden"
-          style={{ backgroundImage: `url(${ctaBg})` }}
-        >
+        style={{ backgroundImage: `url(${ctaBg})` }}
+       >
         {/* The warm overlay from the image */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#1D781D]/40 via-[#289928]/20 to-[#259825]/40 backdrop-brightness-75" />
-          
-          <div className="container relative z-10 mx-auto px-6">
-            <motion.div
+
+        <div className="container relative z-10 mx-auto px-6">
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            className="mx-auto max-w-4xl bg-white px-8 py-10 text-center shadow-2xl md:px-16 md:py-12"
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mx-auto max-w-4xl bg-white/10 backdrop-blur-md px-8 py-10 text-center shadow-2xl md:px-16 md:py-12 rounded-3xl"
           >
-            <h2 className="mb-4 font-display text-2xl font-extrabold text-black md:text-4xl uppercase tracking-tighter">
+            <h2 className="mb-4 font-display text-2xl font-extrabold text-white md:text-4xl uppercase tracking-tighter">
               Ready to Partner<br />with EMA?
-              </h2>
-              
-            <p className="mx-auto mb-8 max-w-3xl font-body text-sm md:text-base text-gray-800 leading-relaxed">
+            </h2>
+            
+            <p className="mx-auto mb-8 max-w-3xl font-body text-sm md:text-base text-white/80 leading-relaxed">
               Whether you're looking for premium Ethiopian green coffee beans, sesame seeds, pulses, or medical equipment — 
               our team is ready to help you source, process, and deliver with confidence.
-              </p>
+            </p>
 
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    to="/contact"
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link
+                  to="/contact"
                   className="inline-flex min-w-[200px] items-center justify-center rounded-full bg-[#259825] px-8 py-5 font-body text-xs font-bold text-white uppercase tracking-wide"
                 >
                   Get Started
                 </Link>
               </motion.div>
-              </div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </div>
+      </div>
       )}
     </section>
   );

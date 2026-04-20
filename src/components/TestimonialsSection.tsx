@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 
 // Local assets
-import fullBg from "../assets/testimonial/full.jpg";
+import fullBg from "../assets/testimony.jpg";
 
 const testimonials = [
   {

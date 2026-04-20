@@ -6,8 +6,8 @@ import gsap from "gsap";
 
 // Assets
 import teamCupping from "@/assets/team-cupping.png";
-import coffeeLab from "@/assets/coffee-lab.png";
-import aboutSeedlings from "@/assets/about-seedlings.png";
+import coffeeLab from "@/assets/about2.jpg";
+import aboutSeedlings from "@/assets/about.jpg";
 
 const highlights = [
   "Premium Ethiopian Arabica green coffee beans",

@@ -28,7 +28,7 @@ import globalExport from "@/assets/serv/global-export.jpg";
 import logistics from "@/assets/serv/logistice.jpg";
 import sourcing from "@/assets/serv/sourcing.jpg";
 
-import shareReq from "@/assets/work-process/share-req.jpg";
+import shareReq from "@/assets/requirement.jpg";
 import sourceProcess from "@/assets/work-process/source-process.jpg";
 import qualityTest from "@/assets/work-process/quality-test.png";
 import exportDelivery from "@/assets/work-process/export-delivery.jpg";
