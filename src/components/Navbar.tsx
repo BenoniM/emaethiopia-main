@@ -14,7 +14,8 @@ const navLinks = [
     href: "",
     subLinks: [
       { label: "Export Products", href: "/export-products" },
-      { label: "Import Products", href: "/import-products" }
+      { label: "Import Products", href: "/import-products" },
+      { label: "Coffee", href: "/coffee" }
     ]
   },
   { label: "Coffee Lab", href: "/industries" },

@@ -38,55 +38,6 @@ const ServicesPage = () => {
         description="Our Coffee Laboratory Service ensures the highest quality in coffee production through comprehensive testing, flavor profiling, and expert analysis."
       />
 
-      {/* Coffee Lab Feature Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <span className="mb-4 inline-block font-body text-sm font-semibold tracking-widest text-primary uppercase">Coffee Laboratory</span>
-              <h2 className="mb-6 font-display text-4xl font-bold text-foreground md:text-5xl">
-                State-of-the-Art <span className="text-gradient">Quality Testing</span>
-              </h2>
-              <p className="mb-4 font-body text-lg leading-relaxed text-muted-foreground">
-                Our Coffee Laboratory is equipped with professional cupping equipment, moisture analyzers, and defect analysis tools. Our certified Q-graders evaluate every lot to ensure it meets the exacting standards of specialty coffee buyers worldwide.
-              </p>
-              <p className="mb-6 font-body text-base text-muted-foreground">
-                We provide comprehensive testing services including green bean grading, roast profiling, sensory evaluation, and detailed cupping reports. Whether you're a roaster seeking single-origin lots or a distributor needing consistent quality, our lab ensures every shipment exceeds expectations.
-              </p>
-              <ul className="space-y-2 font-body text-sm text-muted-foreground">
-                <li>✅ Professional cupping & sensory evaluation</li>
-                <li>✅ Moisture content & defect analysis</li>
-                <li>✅ Green bean grading (Grade 1-5)</li>
-                <li>✅ Detailed quality certificates & cupping scores</li>
-                <li>✅ Custom roast profiling for buyers</li>
-              </ul>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="grid grid-cols-2 gap-4"
-            >
-              <motion.div whileHover={{ scale: 1.03 }} className="col-span-2 overflow-hidden rounded-3xl">
-                <img src={coffeeLab} alt="EMA Coffee Laboratory cupping" className="h-64 w-full object-cover" />
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} className="overflow-hidden rounded-2xl">
-                <img src={teamFull} alt="EMA team coffee cupping" className="h-40 w-full object-cover" />
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} className="overflow-hidden rounded-2xl">
-                <img src={teamCupping} alt="EMA quality testing team" className="h-40 w-full object-cover" />
-              </motion.div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* Services Grid */}
       <section className="bg-secondary py-20" ref={ref}>
         <div className="container mx-auto px-6">
