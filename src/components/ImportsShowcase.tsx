@@ -9,7 +9,7 @@ import productStretcher from "@/assets/product-stretcher-new.jpg";
 import productBlood from "@/assets/product-blood.jpg";
 import productMedicalDevices from "@/assets/product-medical-devices.jpg";
 import stretcherVideo from "@/assets/videos-import/8943558-hd_1920_1080_25fps.mp4";
-import glucoseVideo from "@/assets/videos-import/Video&image.mp4";
+import glucoseVideo from "@/assets/videos-import/VivaChek.mp4";
 import diagnosticVideo from "@/assets/videos-import/6234582-uhd_3840_2160_25fps.mp4";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -144,7 +144,7 @@ const ImportsShowcase = () => {
                 <h3 className="font-display text-base font-bold uppercase tracking-wide text-[#1a202c] group-hover:text-white">
                   {product.title}
                 </h3>
-                <span className="mt-0.5 font-body text-[9px] font-bold text-primary uppercase tracking-tighter group-hover:text-white">
+                <span className="mt-0.5 font-body text-[10px] font-bold text-primary uppercase tracking-widest group-hover:text-white">
                   {product.price}
                 </span>
                 <p className="mt-2 font-body text-[11px] leading-relaxed text-[#718096] max-w-xs group-hover:text-white">

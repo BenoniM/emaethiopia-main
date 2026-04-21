@@ -6,7 +6,7 @@ import gsap from "gsap";
 
 // Assets
 import teamCupping from "@/assets/team-cupping.png";
-import coffeeLab from "@/assets/about2.jpg";
+import coffeeLab from "@/assets/pexels-ebahir-29452438.jpg";
 import aboutSeedlings from "@/assets/about.jpg";
 
 const highlights = [
