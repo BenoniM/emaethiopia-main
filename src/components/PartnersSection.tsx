@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import drogalogo from "@/assets/partners/droga.png";
 import ecxlogo from "@/assets/partners/ecx.png";
 import emalogo from "@/assets/partners/ema.png";
@@ -11,14 +11,15 @@ const partners = [
   { name: "Droga Pharma", logo: drogalogo, description: "Parent company providing pharmaceutical excellence" },
   { name: "ECX Ethiopia", logo: ecxlogo, description: "Ethiopian Commodity Exchange partnership" },
   { name: "EMA Trade", logo: emalogo, description: "International trade network across 30+ countries" },
-  { name: "Export Authority", logo: trustlogo, description: "Ethiopian Export Authority certified" },
+  { name: "Trust Pharmatical", logo: trustlogo, description: "Ethiopian Export Authority certified" },
   { name: "Quality Cert.", logo: partner2logo, description: "ISO 9001:2015 certified operations" },
-  { name: "Logistics Hub", logo: physiologo, description: "End-to-end supply chain partners" },
+  { name: "Droga Physiotherapy", logo: physiologo, description: "End-to-end supply chain partners" },
 ];
 
 const PartnersSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [hoveredColumn, setHoveredColumn] = useState<number | null>(null);
 
   return (
     <section className="relative overflow-hidden bg-secondary py-16 lg:py-20">
@@ -46,10 +47,14 @@ const PartnersSection = () => {
             className="grid h-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 [transform:rotateX(25deg)] origin-bottom scale-95"
           >
             {/* Column 1 - Faster */}
-            <div className="relative flex flex-col gap-6">
+            <div 
+              className="relative flex flex-col gap-6"
+              onMouseEnter={() => setHoveredColumn(0)}
+              onMouseLeave={() => setHoveredColumn(null)}
+            >
               <motion.div
-                animate={{ y: ["0%", "-50%"] }}
-                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                animate={hoveredColumn === 0 ? { y: "0%" } : { y: ["0%", "-50%"] }}
+                transition={hoveredColumn === 0 ? { duration: 0 } : { duration: 15, repeat: Infinity, ease: "linear" }}
                 className="flex flex-col gap-6"
               >
                 {[...partners, ...partners].map((partner, i) => (
@@ -59,10 +64,14 @@ const PartnersSection = () => {
             </div>
 
             {/* Column 2 - Reverse Direction (Faster) */}
-            <div className="relative hidden flex-col gap-6 md:flex">
+            <div 
+              className="relative hidden flex-col gap-6 md:flex"
+              onMouseEnter={() => setHoveredColumn(1)}
+              onMouseLeave={() => setHoveredColumn(null)}
+            >
               <motion.div
-                animate={{ y: ["-50%", "0%"] }}
-                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                animate={hoveredColumn === 1 ? { y: "-50%" } : { y: ["-50%", "0%"] }}
+                transition={hoveredColumn === 1 ? { duration: 0 } : { duration: 15, repeat: Infinity, ease: "linear" }}
                 className="flex flex-col gap-6"
               >
                 {[...partners.slice().reverse(), ...partners.slice().reverse()].map((partner, i) => (
@@ -72,10 +81,14 @@ const PartnersSection = () => {
             </div>
 
             {/* Column 3 - Faster */}
-            <div className="relative hidden flex-col gap-6 lg:flex">
+            <div 
+              className="relative hidden flex-col gap-6 lg:flex"
+              onMouseEnter={() => setHoveredColumn(2)}
+              onMouseLeave={() => setHoveredColumn(null)}
+            >
               <motion.div
-                animate={{ y: ["0%", "-50%"] }}
-                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                animate={hoveredColumn === 2 ? { y: "0%" } : { y: ["0%", "-50%"] }}
+                transition={hoveredColumn === 2 ? { duration: 0 } : { duration: 15, repeat: Infinity, ease: "linear" }}
                 className="flex flex-col gap-6"
               >
                 {[...partners, ...partners].map((partner, i) => (
