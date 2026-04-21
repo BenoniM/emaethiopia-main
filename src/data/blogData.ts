@@ -2,7 +2,7 @@ import blogImg1 from "@/assets/chigagoexpo.jpg";
 import blogImg2 from "@/assets/award1.jpg";
 import blogImg3 from "@/assets/annualevent.jpg";
 import blogImg4 from "@/assets/dubai1.jpg";
-import blogImg5 from "@/assets/blog-page/wakeup-DJVX4zJd.svg";
+import blogImg5 from "@/assets/importandexport.jpg";
 import blogImg6 from "@/assets/blog-page/lasquality-CVtmSdYv.svg";
 import blogImg7 from "@/assets/blog-page/vs-C68xEDJ1.svg";
 import blogImg8 from "@/assets/blog-page/Ethcof-CWnx5UW2.svg";
@@ -23,6 +23,11 @@ import dubai1 from "@/assets/dubai1.jpg";
 import dubai2 from "@/assets/dubai2.jpg";
 import dubai3 from "@/assets/dubai3.jpg";
 import dubai4 from "@/assets/dubai4.jpg";
+import import1 from "@/assets/import1.jpg";
+import import2  from "@/assets/import2.jpg";
+import import3 from "@/assets/import3.jpg";
+import import4 from "@/assets/import4.jpg";
+
 
 export type BlogPost = {
   id: number;
@@ -178,11 +183,11 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: 5,
-    title: "Wake Up and Smell Ethiopia's Finest Coffee!",
+    title: "EMA Import Export We believe in quality!",
     excerpt:
-      "Wake up and smell Ethiopia's finest coffee! Our single-origin green beans carry the essence of the highlands — bright, floral, and deeply complex notes in every roast.",
+      "From the picturesque coffee farms to your cup, we are committed to bringing you the finest quality coffee beans sourced directly from passionate farmers around Ethiopia. ✅✨ Why choose our coffee? 🌿 We carefully select only the highest quality beans that are sustainably grown, hand-picked, and expertly processed. 🌍 Our direct trade relationships ensure fair prices for farmers and support local communities. 🌱 We prioritize organic and ethically sourced coffee, so you can enjoy your cup with a clear conscience. ",
     author: "Admin",
-    date: "August 20, 2022",
+    date: "August 20, 2024",
     category: "Coffee Origins",
     tag: "LinkedIn",
     image: blogImg5,
@@ -208,7 +213,7 @@ export const blogPosts: BlogPost[] = [
         text: "Whether you're a specialty roaster looking for your next single-origin offering or a large-scale buyer seeking consistent supply, EMA has the Ethiopian coffee you're looking for. Wake up and taste the difference.",
       },
     ],
-    gallery: [photoBirthplace, photoCafeShow, photoSpeciality, photoHome],
+    gallery: [import1,import2,import3,import4],
   },
   {
     id: 6,
