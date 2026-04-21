@@ -6,6 +6,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
+import consultimg from "@/assets/service-page/consult.jpg";
+import qualityimg from "@/assets/service-page/quality.png";
+import sourcingimg from "@/assets/service-page/source.jpg";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -20,9 +23,9 @@ const services = [
 ];
 
 const timelineData = [
-  { title: "Consultation", content: "We begin with understanding your specific requirements — product type, volume, quality specs, target market, and delivery timeline through detailed consultations.", image: "https://images.pexels.com/photos/7821671/pexels-photo-7821671.jpeg" },
-  { title: "Sourcing & Processing", content: "Our team sources the finest products from trusted Ethiopian cooperatives and processes them in our ISO-certified facilities with full traceability.", image: "https://images.pexels.com/photos/19052799/pexels-photo-19052799.jpeg" },
-  { title: "Quality Testing", content: "Every batch undergoes comprehensive quality testing in our Coffee Laboratory — including cupping scores, moisture analysis, defect counts, and flavor profiling by certified Q-graders.", image: "https://images.pexels.com/photos/6161312/pexels-photo-6161312.jpeg" },
+  { title: "Consultation", content: "We begin with understanding your specific requirements — product type, volume, quality specs, target market, and delivery timeline through detailed consultations.", image: consultimg },
+  { title: "Sourcing & Processing", content: "Our team sources the finest products from trusted Ethiopian cooperatives and processes them in our ISO-certified facilities with full traceability.", image: qualityimg },
+  { title: "Quality Testing", content: "Every batch undergoes comprehensive quality testing in our Coffee Laboratory — including cupping scores, moisture analysis, defect counts, and flavor profiling by certified Q-graders.", image: sourcingimg },
   { title: "Export & Delivery", content: "We handle all logistics, documentation, customs clearance, and container shipping to ensure smooth, on-time delivery to your destination with full export certificates.", image: "https://images.pexels.com/photos/163726/belgium-antwerp-shipping-container-163726.jpeg" },
 ];
 
@@ -160,8 +163,8 @@ const ServicesPage = () => {
         <div className="container mx-auto px-6">
           <div className="mb-12 text-center">
             <span className="mb-3 inline-block font-body text-xs font-bold tracking-[0.4em] text-primary uppercase">Our Process</span>
-            <h2 className="font-display text-4xl md:text-6xl font-light tracking-tighter text-foreground uppercase">
-              How We <span className="font-serif italic text-primary lowercase">Work</span>
+            <h2 className="font-display text-4xl md:text-6xl font-light tracking-tighter text-foreground capitalize">
+              How We <span className="text-primary">Work</span>
             </h2>
           </div>
 

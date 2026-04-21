@@ -6,7 +6,7 @@ import gsap from "gsap";
 
 // Assets
 import teamCupping from "@/assets/team-cupping.png";
-import coffeeLab from "@/assets/about2.jpg";
+import coffeeLab from "@/assets/pexels-ebahir-29452438.jpg";
 import aboutSeedlings from "@/assets/about.jpg";
 
 const highlights = [
@@ -160,7 +160,7 @@ const handleMouseMove = (e, index) => {
               <div className="flex flex-wrap items-center gap-6 pt-4">
                 <Link
                   to="/about"
-                  className="flex items-center gap-2 rounded-full bg-[#2D4A31] px-8 py-4 font-body text-sm font-bold text-white transition-all hover:bg-[#3D6344] hover:shadow-lg"
+                  className="flex items-center gap-2 rounded-full bg-[#1B6E1B] px-8 py-4 font-body text-sm font-bold text-white transition-all hover:bg-green-700 hover:shadow-lg"
                 >
                   Learn More About Us
                   <ArrowRight className="h-4 w-4" />

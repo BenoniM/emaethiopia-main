@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+
 // Add custom styles for the 3D effect
 const sectionStyles = `
   .perspective-1000 {

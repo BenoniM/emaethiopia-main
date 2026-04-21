@@ -273,8 +273,8 @@ useEffect(() => {
               to="/export-products"
               className="group relative flex h-[40px] w-fit items-center overflow-hidden rounded-full bg-white transition-transform duration-300 hover:scale-105 md:h-[46px]"
             >
-              {/* Inner White Pill */}
-              <div className="flex h-full items-center justify-center rounded-full bg-[#154716] px-5 md:px-6">
+              {/* Inner Green Pill with Ring Fix */}
+              <div className="flex h-full items-center justify-center rounded-full bg-[#154716] px-5 ring-1 ring-[#154716] md:px-6">
                 <p className="whitespace-nowrap font-display text-xs font-bold tracking-wide text-white md:text-sm">
                   Our Exports
                 </p>
@@ -290,8 +290,8 @@ useEffect(() => {
               to="/import-products"
               className="group relative flex h-[40px] w-fit items-center overflow-hidden rounded-full bg-white transition-transform duration-300 hover:scale-105 md:h-[46px]"
             >
-              {/* Inner White Pill */}
-              <div className="flex h-full items-center justify-center rounded-full bg-[#154716] px-5 md:px-6">
+              {/* Inner Green Pill */}
+              <div className="flex h-full items-center justify-center rounded-full bg-[#154716] px-5 ring-1 ring-[#154716] md:px-6">
                 <p className="whitespace-nowrap font-display text-xs font-bold tracking-wide text-white md:text-sm">
                   Import Products
                 </p>

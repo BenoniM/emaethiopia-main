@@ -8,7 +8,7 @@ import heroSlide4 from "@/assets/hero-slide-4.jpg";
 import heroSlide5 from "@/assets/hero-slide-5.jpg";
 import heroSlide6 from "@/assets/hero-slide-6.jpg";
 
-const slides = [
+const defaultSlides = [
   { image: heroSlide1, alt: "Ethiopian green coffee cherries" },
   { image: heroSlide2, alt: "Ethiopian coffee picking" },
   { image: heroSlide3, alt: "Sesame seeds harvest" },
@@ -17,13 +17,19 @@ const slides = [
   { image: heroSlide6, alt: "Export shipping logistics" },
 ];
 
+interface HeroSlide {
+  image: string;
+  alt: string;
+}
+
 interface PageHeroProps {
   badge: string;
   title: React.ReactNode;
   description: string;
+  slides?: HeroSlide[];
 }
 
-const PageHero = ({ badge, title, description }: PageHeroProps) => {
+const PageHero = ({ badge, title, description, slides = defaultSlides }: PageHeroProps) => {
   const containerRef = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const { scrollYProgress } = useScroll({
@@ -37,7 +43,7 @@ const PageHero = ({ badge, title, description }: PageHeroProps) => {
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
-  }, []);
+  }, [slides.length]);
 
   useEffect(() => {
     const interval = setInterval(nextSlide, 5000);

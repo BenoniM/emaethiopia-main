@@ -11,6 +11,16 @@ import ImportsShowcase from "@/components/ImportsShowcase";
 
 
 
+import importHero1 from "@/assets/import-imgs/pexels-i-sens-usa-578245562-17072086.jpg";
+import importHero2 from "@/assets/import-imgs/pexels-mart-production-7088493.jpg";
+import importHero3 from "@/assets/import-imgs/pexels-rdne-6519843.jpg";
+
+const importSlides = [
+  { image: importHero1, alt: "Medical equipment diagnostic device" },
+  { image: importHero2, alt: "Healthcare professional with equipment" },
+  { image: importHero3, alt: "Modern medical diagnostic tools" },
+];
+
 const benefits = [
   { icon: HeartPulse, title: "Healthcare Impact", description: "Strengthening Ethiopian healthcare infrastructure by importing world-class medical equipment and diagnostic devices to hospitals and clinics nationwide." },
   { icon: Shield, title: "Certified Quality", description: "All imported medical devices meet international quality standards including CE marking, ISO 13485, and WHO certification requirements." },
@@ -35,6 +45,7 @@ const ImportProductsPage = () => {
         badge="Import Products"
         title={<>Medical <span className="text-gradient">Equipment</span> & Devices</>}
         description="Importing high-quality medical equipment and diagnostic devices to strengthen Ethiopia's healthcare infrastructure under Droga Pharma."
+        slides={importSlides}
       />
 
       {/* Mission Statement */}
