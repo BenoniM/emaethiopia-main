@@ -244,7 +244,7 @@ const OriginsShowcase = () => {
 
 const IndividualOrigins = () => {
   return (
-    <section className="relative bg-[#061507] py-20 lg:py-32">
+    <section className="relative bg-white py-20 lg:py-32">
       <div className="container mx-auto px-6">
         <div className="flex flex-col gap-24 lg:gap-32">
           {origins.map((origin, i) => (
@@ -291,9 +291,8 @@ const OriginDetailRow = ({ origin, index }: { origin: any; index: number }) => {
         <div className="relative aspect-square lg:aspect-[4/3] rounded-3xl overflow-hidden bg-white/5 border border-white/10 flex items-center justify-center">
             
             <img src={origin.image} alt={origin.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#061507]/90 via-transparent to-transparent z-10" />
             
-            <h2 className="bg-letters absolute z-20 font-display text-[8rem] font-bold text-white/20 tracking-tighter uppercase whitespace-nowrap opacity-10 group-hover:opacity-100 transition-opacity duration-1000 -rotate-12 pointer-events-none mix-blend-overlay">
+            <h2 className="bg-letters absolute z-20 font-display text-[8rem] font-bold text-[#061507]/10 tracking-tighter uppercase whitespace-nowrap opacity-10 group-hover:opacity-100 transition-opacity duration-1000 -rotate-12 pointer-events-none mix-blend-overlay">
                {origin.name}
             </h2>
         </div>
@@ -302,36 +301,36 @@ const OriginDetailRow = ({ origin, index }: { origin: any; index: number }) => {
       {/* Details Side */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center">
         
-        <h3 className="mb-6 font-display text-4xl lg:text-5xl font-bold text-white">
+        <h3 className="mb-6 font-display text-4xl lg:text-5xl font-bold text-[#061507]">
           {origin.name}
         </h3>
         
-        <p className="mb-8 font-body text-lg leading-relaxed text-white/70">
+        <p className="mb-8 font-body text-lg leading-relaxed text-[#061507]/70">
           {origin.description}
         </p>
 
-        <div className="grid grid-cols-2 gap-6 mb-8 border-y border-white/10 py-8">
+        <div className="grid grid-cols-2 gap-6 mb-8 border-y border-[#061507]/10 py-8">
             <div>
-                 <p className="flex items-center gap-2 font-body text-xs tracking-widest text-white/40 uppercase mb-2">
+                 <p className="flex items-center gap-2 font-body text-xs tracking-widest text-[#061507]/50 uppercase mb-2">
                      <MountainSnow className="w-4 h-4" /> Altitude
                  </p>
-                 <p className="font-display text-lg font-medium text-white">{origin.altitude}</p>
+                 <p className="font-display text-lg font-medium text-[#061507]">{origin.altitude}</p>
             </div>
             <div>
-                 <p className="flex items-center gap-2 font-body text-xs tracking-widest text-white/40 uppercase mb-2">
+                 <p className="flex items-center gap-2 font-body text-xs tracking-widest text-[#061507]/50 uppercase mb-2">
                      <Droplets className="w-4 h-4" /> Processing
                  </p>
-                 <p className="font-display text-lg font-medium text-white">{origin.process}</p>
+                 <p className="font-display text-lg font-medium text-[#061507]">{origin.process}</p>
             </div>
         </div>
 
         <div>
-            <p className="font-body text-xs tracking-widest text-white/40 uppercase mb-4">Tasting Notes</p>
+            <p className="font-body text-xs tracking-widest text-[#061507]/50 uppercase mb-4">Tasting Notes</p>
             <div className="flex flex-wrap gap-3">
                 {origin.notes.split('·').map((note: string, idx: number) => (
                     <span 
                         key={idx} 
-                        className="rounded-full bg-white/5 border border-white/10 px-4 py-2 font-body text-sm font-medium text-white/80"
+                        className="rounded-full bg-[#061507]/5 border border-[#061507]/10 px-4 py-2 font-body text-sm font-medium text-[#061507]/80"
                     >
                         {note.trim()}
                     </span>
