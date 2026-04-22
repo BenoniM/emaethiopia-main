@@ -152,7 +152,7 @@ const TestimonialsSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative w-full h-[90vh] min-h-[550px] flex flex-col items-center justify-end overflow-hidden bg-slate-950 mt-32"
+      className="relative w-full h-[60vh] md:h-[90vh] min-h-[450px] md:min-h-[550px] flex flex-col items-center justify-end overflow-hidden bg-slate-950 mt-16 md:mt-32"
     >
       {/* LAYER 1: Background */}
       <div className="absolute inset-0 z-0 pointer-events-none scale-110" ref={bgRef}>
@@ -166,7 +166,7 @@ const TestimonialsSection = () => {
       {/* LAYER 2: Text Layer */}
       <div
         ref={textRef}
-        className="absolute inset-0 z-10 flex flex-col items-center justify-start pt-24 pointer-events-none"
+        className="absolute inset-0 z-10 flex flex-col items-center justify-start pt-16 md:pt-24 pointer-events-none"
       >
         <h2 className="font-display text-4xl md:text-6xl font-bold text-white tracking-tight text-center leading-[0.85]">
           What Our<br /><span className="text-green-500">Clients Say.</span>

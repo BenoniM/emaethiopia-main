@@ -190,8 +190,8 @@ const BlogSection = () => {
         <div className="absolute inset-0 z-[3] bg-gradient-to-b from-black/40 via-transparent to-black/80" />
       </div>
 
-      {/* ── Arrows ── */}
-      <div className="absolute inset-y-0 left-4 right-4 z-30 flex items-center justify-between pointer-events-none md:left-10 md:right-10">
+      {/* ── Arrows (Desktop) ── */}
+      <div className="hidden absolute inset-y-0 left-4 right-4 z-30 md:flex items-center justify-between pointer-events-none md:left-10 md:right-10">
         <button
           onClick={goPrev}
           disabled={isAnimating}
@@ -262,8 +262,13 @@ const BlogSection = () => {
           </div>
         </div>
 
-        {/* Counter */}
-        <div className="flex items-center justify-center">
+        {/* Counter & Mobile Arrows */}
+        <div className="flex items-center justify-between md:justify-center w-full mt-4 md:mt-0">
+          {/* Mobile Prev Arrow */}
+          <button onClick={goPrev} disabled={isAnimating} className="md:hidden flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-[#259825]/50 backdrop-blur-md active:bg-white active:scale-95 transition-all disabled:opacity-20">
+            <ChevronLeft className="h-5 w-5 text-white" />
+          </button>
+
           <div ref={numberRef} className="flex items-baseline gap-2">
             <span className="font-display text-5xl font-bold text-[#259825] md:text-6xl">
               {padNumber(activeIndex)}
@@ -272,6 +277,11 @@ const BlogSection = () => {
               / {padNumber(blogPosts.length - 1)}
             </span>
           </div>
+
+          {/* Mobile Next Arrow */}
+          <button onClick={goNext} disabled={isAnimating} className="md:hidden flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-[#259825]/50 backdrop-blur-md active:bg-white active:scale-95 transition-all disabled:opacity-20">
+            <ChevronRight className="h-5 w-5 text-white" />
+          </button>
         </div>
       </div>
     </section>

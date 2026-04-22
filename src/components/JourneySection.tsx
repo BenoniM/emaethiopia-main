@@ -255,19 +255,19 @@ export default function JourneySection() {
           }}
         />
 
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-10 py-7 z-10">
-          <span className="ml-2 text-sm font-medium tracking-[0.24em] uppercase text-primary">Our Journey</span>
-          <span className="ml-2 text-sm font-medium tracking-[0.2em] uppercase text-white/80">Scroll to explore</span>
+        <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 py-6 md:px-10 md:py-7 z-10">
+          <span className="ml-0 md:ml-2 text-xs md:text-sm font-medium tracking-[0.24em] uppercase text-primary">Our Journey</span>
+          <span className="ml-0 md:ml-2 text-[10px] md:text-sm font-medium tracking-[0.2em] uppercase text-white/80">Scroll to explore</span>
         </div>
 
         {milestones.map((m, i) => (
   <div
     key={i}
     ref={(el) => { (overlayRefs.current[i] as HTMLDivElement | null) = el; }}
-    className="absolute top-1/4 -translate-y-1/2 left-[5%] md:left-[8%] z-10"
+    className="absolute top-1/3 -translate-y-1/2 md:top-[30%] left-[5%] md:left-[8%] z-10"
     style={{
       // Decreased max width from 600px to 450px
-      width: "min(450px, 85vw)",
+      width: "min(450px, 80vw)",
       opacity: i === 0 ? 1 : 0,
       transition: "opacity 0.1s ease-out, transform 0.1s ease-out",
       willChange: "opacity, transform",
@@ -283,23 +283,23 @@ export default function JourneySection() {
       }}
     >
       {/* Card Header - Reduced padding and font sizes */}
-      <div className="flex items-baseline gap-3 px-6 pt-6 pb-4 border-b border-white/5">
+      <div className="flex items-baseline gap-3 px-4 pt-5 pb-3 md:px-6 md:pt-6 md:pb-4 border-b border-white/5">
         <h2 
           className="font-montserrat font-bold text-white leading-none tracking-tight"
-          style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }} // Reduced from 4.5rem
+          style={{ fontSize: "clamp(1.75rem, 4vw, 3rem)" }} // Reduced from 4.5rem
         >
           {m.year}
         </h2>
         <h3 
           className="font-montserrat font-semibold text-primary/90"
-          style={{ fontSize: "clamp(1.1rem, 2vw, 1.4rem)" }} // Reduced from 2rem
+          style={{ fontSize: "clamp(1rem, 2vw, 1.4rem)" }} // Reduced from 2rem
         >
           {m.title}
         </h3>
       </div>
 
       {/* Card Body - Targets all children to decrease their size globally */}
-      <div className="px-6 pb-6 pt-3 [&_p]:text-sm [&_p]:leading-relaxed [&_p]:mb-3 [&_img]:h-36 [&_div]:space-y-2 [&_div]:p-3">
+      <div className="px-4 pb-5 pt-3 md:px-6 md:pb-6 md:pt-3 [&_p]:text-[11px] sm:[&_p]:text-xs md:[&_p]:text-sm [&_p]:leading-relaxed [&_p]:mb-3 [&_img]:h-28 md:[&_img]:h-36 [&_div]:space-y-1 md:[&_div]:space-y-2 [&_div]:p-2 md:[&_div]:p-3">
         {m.content}
       </div>
     </div>
@@ -307,12 +307,12 @@ export default function JourneySection() {
 ))}
 
         {/* Right progress indicator */}
-        <div className="absolute right-10 top-1/2 -translate-y-1/2 flex flex-col items-center gap-4 z-10">
+        <div className="absolute right-2 md:right-10 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 md:gap-4 z-10">
           {milestones.map((_, i) => (
-            <div key={i} className="flex flex-col items-center gap-[6px]">
+            <div key={i} className="flex flex-col items-center gap-1 md:gap-[6px]">
               <div
                 ref={(el) => { (dotRefs.current[i] as HTMLDivElement | null) = el; }}
-                className="w-[2px] h-9 rounded-sm transition-all duration-200"
+                className="w-[2px] h-6 md:h-9 rounded-sm transition-all duration-200"
                 style={{ backgroundColor: "rgba(255, 255, 255, 1)", transformOrigin: "center", opacity: 1 }}
               />
               <span
