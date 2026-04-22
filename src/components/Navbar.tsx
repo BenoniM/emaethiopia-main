@@ -29,6 +29,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   // "light" = white/light solid bg → use green; "dark" = dark/image/video bg → use white
   const [bgMode, setBgMode] = useState<"light" | "dark">("dark");
+  const [menuBgMode, setMenuBgMode] = useState<"light" | "dark">("dark");
 
   const lastScrollYRef = useRef(0);
   const menuOpenRef = useRef(false);
@@ -119,6 +120,7 @@ const Navbar = () => {
     // Re-evaluate bg colour after the new page has painted
     const t = setTimeout(() => {
       setBgMode('dark'); // reset first so there's no flash of wrong colour
+      setMenuBgMode('dark');
       // Then let the scroll/resize listener pick it up on next tick
       window.dispatchEvent(new Event('resize'));
     }, 80);
@@ -148,85 +150,96 @@ const Navbar = () => {
         window.innerWidth * 0.65,
         window.innerWidth * 0.85,
       ];
+      
+      const menuSampleYPositions = [100, 160, 220, 280, 340, 400];
+      const menuSampleX = window.innerWidth / 2;
 
-      let lightVotes = 0;
-      let darkVotes = 0;
+      const evaluatePoints = (points: {x: number, y: number}[]) => {
+        let lightVotes = 0;
+        let darkVotes = 0;
 
-      for (const x of sampleXPositions) {
-        const elements = document.elementsFromPoint(x, sampleY);
-        let voted = false;
+        for (const pt of points) {
+          const elements = document.elementsFromPoint(pt.x, pt.y);
+          let voted = false;
 
-        for (const elem of elements) {
-          // Skip the navbar itself and root tags
-          if (header && header.contains(elem)) continue;
-          if (elem.tagName === 'HTML' || elem.tagName === 'BODY') continue;
+          for (const elem of elements) {
+            // Skip the navbar itself, root tags, and the open menu panel
+            if (header && header.contains(elem)) continue;
+            if (elem.tagName === 'HTML' || elem.tagName === 'BODY') continue;
+            if (elem === menuPanelRef.current || elem.closest('.group\\/link')) continue;
 
-          // Manual override check
-          const themeOverride = elem.closest('[data-nav-theme]');
-          if (themeOverride) {
-            const theme = themeOverride.getAttribute('data-nav-theme');
-            if (theme === 'dark') {
-              darkVotes++;
-            } else if (theme === 'light') {
-              lightVotes++;
+            // Manual override check
+            const themeOverride = elem.closest('[data-nav-theme]');
+            if (themeOverride) {
+              const theme = themeOverride.getAttribute('data-nav-theme');
+              if (theme === 'dark') {
+                darkVotes++;
+              } else if (theme === 'light') {
+                lightVotes++;
+              }
+              voted = true;
+              break;
             }
-            voted = true;
-            break;
-          }
 
-          // Media elements → definitively dark
-          if (
-            elem.tagName === 'IMG' ||
-            elem.tagName === 'VIDEO' ||
-            elem.tagName === 'CANVAS'
-          ) {
-            darkVotes++;
-            voted = true;
-            break;
-          }
+            // Media elements → definitively dark
+            if (
+              elem.tagName === 'IMG' ||
+              elem.tagName === 'VIDEO' ||
+              elem.tagName === 'CANVAS'
+            ) {
+              darkVotes++;
+              voted = true;
+              break;
+            }
 
-          const style = window.getComputedStyle(elem);
+            const style = window.getComputedStyle(elem);
 
-          // CSS background-image (gradients, url()) → treat as dark
-          if (
-            style.backgroundImage &&
-            style.backgroundImage !== 'none' &&
-            style.backgroundImage !== 'initial'
-          ) {
-            darkVotes++;
-            voted = true;
-            break;
-          }
+            // CSS background-image (gradients, url()) → treat as dark
+            if (
+              style.backgroundImage &&
+              style.backgroundImage !== 'none' &&
+              style.backgroundImage !== 'initial'
+            ) {
+              darkVotes++;
+              voted = true;
+              break;
+            }
 
-          // Solid background colour
-          const bg = style.backgroundColor;
-          if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)') {
-            const match = bg.match(/[\d.]+/g);
-            if (match && match.length >= 3) {
-              const alpha = match.length >= 4 ? parseFloat(match[3]) : 1;
-              if (alpha > 0.05) {
-                const r = parseInt(match[0]);
-                const g = parseInt(match[1]);
-                const b = parseInt(match[2]);
-                // Perceived luminance (ITU-R BT.709)
-                const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-                if (luma > 180) {
-                  lightVotes++;
-                } else {
-                  darkVotes++;
+            // Solid background colour
+            const bg = style.backgroundColor;
+            if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)') {
+              const match = bg.match(/[\d.]+/g);
+              if (match && match.length >= 3) {
+                const alpha = match.length >= 4 ? parseFloat(match[3]) : 1;
+                if (alpha > 0.05) {
+                  const r = parseInt(match[0]);
+                  const g = parseInt(match[1]);
+                  const b = parseInt(match[2]);
+                  // Perceived luminance (ITU-R BT.709)
+                  const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+                  if (luma > 180) {
+                    lightVotes++;
+                  } else {
+                    darkVotes++;
+                  }
+                  voted = true;
+                  break;
                 }
-                voted = true;
-                break;
               }
             }
           }
+
+          // No opaque element found → assume dark page / hero image
+          if (!voted) darkVotes++;
         }
+        return lightVotes > darkVotes ? 'light' : 'dark';
+      };
 
-        // No opaque element found → assume dark page / hero image
-        if (!voted) darkVotes++;
-      }
+      const topPoints = sampleXPositions.map(x => ({ x, y: sampleY }));
+      const menuPoints = menuSampleYPositions.map(y => ({ x: menuSampleX, y }));
 
-      setBgMode(lightVotes > darkVotes ? 'light' : 'dark');
+      setBgMode(evaluatePoints(topPoints));
+      setMenuBgMode(evaluatePoints(menuPoints));
     };
 
     const handleScroll = () => {
@@ -254,23 +267,26 @@ const Navbar = () => {
     };
   }, [closeMenu]);
 
-  const isLight = bgMode === 'light';
+  const isLightTop = bgMode === 'light';
+  const isLightMenu = menuBgMode === 'light';
+  const hamburgerStroke = menuOpen ? "white" : (isLightTop ? "#1D781D" : "white");
+
   // Line separating menu items
-  const activeLineBgClass = isLight ? "bg-[#1D781D]" : "bg-white";
+  const activeLineBgClass = isLightMenu ? "bg-[#1D781D]" : "bg-white";
   // Primary nav link colour
-  const activeTextColorClass = isLight
+  const activeTextColorClass = isLightMenu
     ? "text-[#1D781D] hover:text-[#0f3e0f]"
     : "text-white hover:text-white/70";
   // Sub-link colour
-  const activeSubTextColorClass = isLight
+  const activeSubTextColorClass = isLightMenu
     ? "text-[#1D781D] hover:text-[#0f3e0f]"
     : "text-white/80 hover:text-white";
   // Little-dot tint
-  const activeDotClass = isLight
+  const activeDotClass = isLightMenu
     ? "brightness-[0.35] sepia hue-rotate-90 saturate-[300%]"
     : "brightness-0 invert"; // force white on dark bg
   // Text-shadow for legibility on busy backgrounds
-  const textShadow = isLight
+  const textShadow = isLightMenu
     ? undefined
     : { textShadow: "0 1px 6px rgba(0,0,0,0.55)" };
 
@@ -293,9 +309,9 @@ const Navbar = () => {
             >
               {!menuOpen && <div className="absolute inset-0 bg-[#1D781D] backdrop-blur-md rounded-full pointer-events-none transition-opacity duration-300 opacity-90 hover:opacity-100" />}
               <svg viewBox="0 0 59 59" fill="none" className="h-10 w-10 relative z-10" aria-hidden="true">
-                <path ref={topLineRef} d="M14.5 19.5 L27.5 19.5" stroke="white" strokeWidth="5" strokeLinecap="round" />
-                <path ref={middleLineRef} d="M14.5 29.5 L44.5 29.5" stroke="white" strokeWidth="5" strokeLinecap="round" />
-                <path ref={bottomLineRef} d="M31.5 39.5 L44.5 39.5" stroke="white" strokeWidth="5" strokeLinecap="round" />
+                <path ref={topLineRef} d="M14.5 19.5 L27.5 19.5" stroke="white" strokeWidth="5" strokeLinecap="round" className="transition-colors duration-300" />
+                <path ref={middleLineRef} d="M14.5 29.5 L44.5 29.5" stroke="white" strokeWidth="5" strokeLinecap="round" className="transition-colors duration-300" />
+                <path ref={bottomLineRef} d="M31.5 39.5 L44.5 39.5" stroke="white" strokeWidth="5" strokeLinecap="round" className="transition-colors duration-300" />
               </svg>
             </button>
 
@@ -334,7 +350,7 @@ const Navbar = () => {
                             width="16" height="16"
                             viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" strokeWidth="2.5"
-                            className={`transition-transform duration-300 group-hover/link:rotate-90 ${isLight ? "text-[#1D781D]" : "text-white/80"}`}
+                            className={`transition-transform duration-300 group-hover/link:rotate-90 ${isLightMenu ? "text-[#1D781D]" : "text-white/80"}`}
                           >
                             <path d="m9 18 6-6-6-6" />
                           </svg>
