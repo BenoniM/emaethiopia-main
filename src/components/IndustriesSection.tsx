@@ -59,10 +59,10 @@ const IndustriesSection = () => {
 
       <div className="container relative z-10 mx-auto px-6">
         <div className="mb-12 text-center">
-          <span className="mb-3 inline-block font-body text-xs font-bold tracking-[0.2em] text-white uppercase">
+          <span className="mb-3 inline-block text-xs font-medium tracking-[0.3em] text-white uppercase">
             Industries We Serve
           </span>
-          <h2 className="font-display text-4xl font-bold text-white md:text-5xl">
+          <h2 className="font-display text-4xl font-semibold text-white md:text-5xl">
             Tailored Solutions Across Diverse Sectors
           </h2>
         </div>
@@ -87,8 +87,8 @@ const IndustriesSection = () => {
                 <div className={`relative z-10 flex flex-col h-full transition-all duration-500 
                   ${!isActive ? "justify-center items-center" : "justify-start"}`}
                 >
-                  <h3 className={`font-display font-bold transition-all duration-500 
-                    ${isActive ? "text-3xl mb-4 text-left" : "text-xl text-center mb-0"}`}
+                  <h3 className={`font-display font-bold transition-all duration-500
+                    ${isActive ? "text-3xl mb-4 text-left text-[#1B6E1B]" : "text-xl text-center mb-0"}`}
                   >
                     {industry.title}
                   </h3>
@@ -104,9 +104,9 @@ const IndustriesSection = () => {
 
                   {/* Footer Logic inside the active box */}
                   {isActive && (
-                    <div className="mt-auto pt-6 border-t border-black/10 w-full flex items-center justify-between">
-                      <span className="font-bold text-xs uppercase tracking-widest">Tell me more</span>
-                      <ArrowRight className="w-5 h-5" />
+                    <div className="mt-auto pt-6 border-t border-[#1B6E1B]/40 w-full flex items-center justify-between">
+                      <span className="font-bold text-[#1B6E1B] text-xs uppercase tracking-widest">Tell me more</span>
+                      <ArrowRight className="w-5 h-5 text-[#1B6E1B]" />
                     </div>
                   )}
                 </div>

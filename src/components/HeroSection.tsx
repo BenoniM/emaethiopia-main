@@ -164,7 +164,7 @@ useEffect(() => {
 
         {/* === ABSOLUTE CENTER BLOCK: Fixed vertically slightly above center = 45% === */}
         {/* Ensures the bottom items are always completely visible, whilst properly centering title text blocks. */}
-        <div className="absolute top-[45%] left-1/2 w-full max-w-5xl -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center text-center px-6 pointer-events-auto">
+        <div className="absolute top-[40%] md:top-[45%] left-1/2 w-full max-w-5xl -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center text-center px-4 md:px-6 pointer-events-auto">
 
           {/* Founding Date — original translucent pill badge */}
           <span
@@ -179,7 +179,7 @@ useEffect(() => {
           {/* Title — "Premium Ethiopian" + animated words */}
           <h1
   ref={titleRef}
-  className="flex flex-col items-center justify-center text-center font-display text-5xl font-bold text-white md:text-7xl lg:text-[5rem]"
+  className="flex flex-col items-center justify-center text-center font-display text-4xl sm:text-5xl font-bold text-white md:text-7xl lg:text-[5rem]"
   style={{ opacity: 1 }}
 >
   <span className="block">Premium Ethiopian</span>
@@ -219,7 +219,7 @@ useEffect(() => {
 {/* Changing Grains — Original Width, Infinite Loop */}
 <div
   ref={grainContainerRef}
-  className="relative w-[360px] overflow-hidden drop-shadow-md mx-auto"
+  className="relative w-full max-w-[360px] md:w-[360px] overflow-hidden drop-shadow-md mx-auto"
   style={{ opacity: 0 }}
 >
   <div 

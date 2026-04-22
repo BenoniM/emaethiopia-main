@@ -97,6 +97,23 @@ const ExportsShowcase = () => {
       {/* Three Column Grid Container */}
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_minmax(auto,500px)_1fr] max-w-full lg:max-w-[1800px] mx-auto h-full">
         
+        {/* ─── MOBILE ONLY LAYOUT ─── */}
+        <div className="md:hidden flex flex-col w-full bg-[#1C6F1C]">
+          {products.map((p, i) => (
+            <div key={`mobile-${i}`} className="flex flex-col items-center justify-center p-8 py-16 border-b last:border-b-0 border-white/10">
+              <div className="relative w-[240px] h-[240px] flex justify-center items-center mb-8">
+                <img src={p.grainImage} alt={p.name} className="w-[120%] h-[120%] object-contain filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)]" />
+              </div>
+              <h3 className="font-serif text-3xl font-medium mb-3 text-white text-center uppercase tracking-widest">{p.name}</h3>
+              <p className="font-display text-[10px] font-semibold tracking-[0.2em] text-white/60 text-center uppercase mb-6">Origin: {p.origin}</p>
+              <p className="font-serif text-[14px] italic text-white/60 text-center mb-8 max-w-[280px]">{p.description}</p>
+              <Link to="/export-products" className="text-white/70 hover:text-white font-display text-[11px] tracking-wider uppercase border border-white/20 rounded-full px-6 py-3 transition-colors">
+                 {p.cta}
+              </Link>
+            </div>
+          ))}
+        </div>
+
         {/* ─── LEFT COLUMN: Grains (Normal Scroll) ─── */}
         <div className="hidden md:flex flex-col items-center justify-start space-y-[30vh] h-full">
           {products.map((p, i) => (
@@ -119,7 +136,7 @@ const ExportsShowcase = () => {
         </div>
 
         {/* ─── CENTER COLUMN: Sticky Text (White invert on hover) ─── */}
-        <div className="relative w-full h-full border-x border-dashed border-white/10 hover:border-black/10 bg-[#1C6F1C] hover:bg-[#f4f4f4] transition-colors duration-[800ms] group/center">
+        <div className="hidden md:block relative w-full h-full border-x border-dashed border-white/10 hover:border-black/10 bg-[#1C6F1C] hover:bg-[#f4f4f4] transition-colors duration-[800ms] group/center">
           <Link 
             to="/export-products" 
             className="absolute inset-0 z-20 cursor-pointer sticky top-0 h-screen w-full flex flex-col items-center justify-between py-12 px-6 md:px-12 text-center overflow-hidden" 

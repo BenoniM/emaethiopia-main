@@ -100,7 +100,7 @@ const handleMouseMove = (e, index) => {
 
         <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
           {/* --- STACKED POLAROID IMAGES --- */}
-          <div className="relative h-[480px] md:h-[600px] lg:col-span-6 [perspective:1200px]">
+          <div className="relative left-[7.5%] h-[480px] md:h-[600px] lg:col-span-6 [perspective:1200px]">
             {imageData.map((item, i) => (
               <div
                 key={i}

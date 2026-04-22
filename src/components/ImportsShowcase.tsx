@@ -85,7 +85,7 @@ const ImportsShowcase = () => {
 
   return (
     <section 
-      className="relative w-full h-screen bg-[#fdfaf6] flex flex-col overflow-hidden" 
+      className="relative w-full min-h-screen md:h-screen bg-[#fdfaf6] flex flex-col overflow-hidden" 
       ref={containerRef}
     >
       <div className="container pt-10 pb-4 flex flex-col h-full">
@@ -119,7 +119,7 @@ const ImportsShowcase = () => {
               className="import-item group relative flex flex-col cursor-pointer transition-all overflow-hidden bg-white"
             >
               {/* Visual Container */}
-              <div className="relative flex-grow w-full overflow-hidden">
+              <div className="relative flex-grow w-full overflow-hidden aspect-[4/3] md:aspect-auto">
                 <video
                   className="hover-video absolute inset-0 z-0 h-full w-full object-cover opacity-0"
                   src={product.video}

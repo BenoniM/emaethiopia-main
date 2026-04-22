@@ -200,7 +200,7 @@ const ServicesSection = () => {
                   ref={(el) => (imagesRef.current[index] = el)}
                   src={service.image}
                   alt={service.title}
-                  className="absolute inset-0 w-full h-full object-cover opacity-0 scale-110"
+                  className="absolute inset-0 w-full h-full opacity-0 object-cover scale-110"
                 />
               ))}
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
