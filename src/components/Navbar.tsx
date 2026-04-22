@@ -2,9 +2,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import emaLogo from "@/assets/ema-logo.png";
-import hamburgerIcon from "@/assets/icon/hamburger.svg";
-import closeIcon from "@/assets/icon/close.svg";
 import littleDot from "@/assets/icon/little-dot.svg";
+
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -35,8 +34,9 @@ const Navbar = () => {
   const menuOpenRef = useRef(false);
   const location = useLocation();
 
-  const hamburgerImgRef = useRef<HTMLImageElement>(null);
-  const closeImgRef = useRef<HTMLImageElement>(null);
+  const topLineRef = useRef<SVGPathElement>(null);
+  const middleLineRef = useRef<SVGPathElement>(null);
+  const bottomLineRef = useRef<SVGPathElement>(null);
   const menuPanelRef = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<(HTMLDivElement | null)[]>([]);
   const menuDotsRef = useRef<(HTMLImageElement | null)[]>([]);
@@ -44,35 +44,25 @@ const Navbar = () => {
 
   const animateIcon = useCallback((open: boolean) => {
     if (open) {
-      gsap.to(hamburgerImgRef.current, {
-        opacity: 0,
-        rotation: 90,
-        scale: 0.5,
-        duration: 0.25,
-        ease: "power2.in",
-        onComplete: () => gsap.set(hamburgerImgRef.current, { display: "none" }),
+      gsap.to(middleLineRef.current, {
+        rotation: -45,
+        transformOrigin: "50% 50%",
+        duration: 0.3,
+        ease: "power2.inOut",
       });
-      gsap.set(closeImgRef.current, { display: "block" });
-      gsap.fromTo(
-        closeImgRef.current,
-        { opacity: 0, rotation: -90, scale: 0.5 },
-        { opacity: 1, rotation: 0, scale: 1, duration: 0.25, ease: "power2.out", delay: 0.1 }
-      );
+      gsap.to([topLineRef.current, bottomLineRef.current], {
+        rotation: 45,
+        transformOrigin: "50% 50%",
+        duration: 0.3,
+        ease: "power2.inOut",
+      });
     } else {
-      gsap.to(closeImgRef.current, {
-        opacity: 0,
-        rotation: 90,
-        scale: 0.5,
-        duration: 0.25,
-        ease: "power2.in",
-        onComplete: () => gsap.set(closeImgRef.current, { display: "none" }),
+      gsap.to([middleLineRef.current, topLineRef.current, bottomLineRef.current], {
+        rotation: 0,
+        transformOrigin: "50% 50%",
+        duration: 0.3,
+        ease: "power2.inOut",
       });
-      gsap.set(hamburgerImgRef.current, { display: "block" });
-      gsap.fromTo(
-        hamburgerImgRef.current,
-        { opacity: 0, rotation: -90, scale: 0.5 },
-        { opacity: 1, rotation: 0, scale: 1, duration: 0.25, ease: "power2.out", delay: 0.1 }
-      );
     }
   }, []);
 
@@ -302,8 +292,11 @@ const Navbar = () => {
               aria-label={menuOpenRef.current ? "Close menu" : "Open menu"}
             >
               {!menuOpen && <div className="absolute inset-0 bg-[#1D781D] backdrop-blur-md rounded-full pointer-events-none transition-opacity duration-300 opacity-90 hover:opacity-100" />}
-              <img ref={hamburgerImgRef} src={hamburgerIcon} alt="Menu" className="h-6 w-6 relative z-10" style={{ display: "block" }} />
-              <img ref={closeImgRef} src={closeIcon} alt="Close" className="absolute h-6 w-6 z-10" style={{ display: "none", opacity: 0 }} />
+              <svg viewBox="0 0 59 59" fill="none" className="h-10 w-10 relative z-10" aria-hidden="true">
+                <path ref={topLineRef} d="M14.5 19.5 L27.5 19.5" stroke="white" strokeWidth="5" strokeLinecap="round" />
+                <path ref={middleLineRef} d="M14.5 29.5 L44.5 29.5" stroke="white" strokeWidth="5" strokeLinecap="round" />
+                <path ref={bottomLineRef} d="M31.5 39.5 L44.5 39.5" stroke="white" strokeWidth="5" strokeLinecap="round" />
+              </svg>
             </button>
 
             <div ref={menuPanelRef} className="absolute top-14 left-1/2 -translate-x-1/2 w-[320px] pointer-events-none z-10" style={{ display: "none", opacity: 0 }}>
