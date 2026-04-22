@@ -111,7 +111,7 @@ const ImportsShowcase = () => {
         </div>
 
         {/* Grid - GAPS REMOVED (gap-0) */}
-        <div className="grid grid-cols-1 gap-0 md:grid-cols-3 flex-grow mb-8">
+        <div className="grid grid-cols-1 gap-0 md:grid-cols-3 flex-grow mb-8 -mx-8 md:mx-0">
           {importProducts.map((product, index) => (
             <div
               key={product.id}

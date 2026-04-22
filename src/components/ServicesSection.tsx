@@ -17,7 +17,6 @@ const sectionStyles = `
   @media (max-width: 1024px) {
     .center-image-container {
       max-width: 300px;
-      opacity: 0.2;
     }
   }
 `;
