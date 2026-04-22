@@ -123,7 +123,7 @@ const ImportProductsPage = () => {
               whileTap={{ scale: 0.95 }}
               className="magnetic-btn inline-flex items-center gap-2 rounded-full bg-foreground px-8 py-4 font-body text-sm font-semibold text-background"
             >
-              Request a Quote
+              Contact Us
               <ArrowUpRight className="h-4 w-4" />
             </motion.a>
           </motion.div>

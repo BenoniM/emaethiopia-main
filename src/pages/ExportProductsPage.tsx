@@ -45,6 +45,12 @@ interface Product {
       y?: string;
       scale?: number;
       rotate?: number;
+      mobile?: {
+        x?: string;
+        y?: string;
+        scale?: number;
+        rotate?: number;
+      };
       width?: {
         focused?: string;
         normal?: string;
@@ -69,7 +75,7 @@ const products: Product[] = [
     image: greenCoffee,
     bgImage: bgCoffee,
     isOverview: false,
-    adjustments: { wheel: { x: "-3%", y: "0%", scale: 1.2, rotate: 0 } },
+    adjustments: { wheel: { x: "-3%", y: "0%", scale: 1.2, rotate: 0, mobile: { x: "0%", y: "-28%", scale: 0.9, rotate: 0 } } },
     description:
       "Premium Ethiopian Arabica green coffee — washed and natural processed from Yirgacheffe, Sidamo, Jimma, and Harar regions.",
     specs: ["Arabica Variety", "Grade 1-5", "Washed & Natural", "SCA 80+"],
@@ -83,7 +89,7 @@ const products: Product[] = [
     image: sesameSeeds,
     bgImage: bgSesame,
     isOverview: false,
-    adjustments: { wheel: { x: "4%", y: "0%", scale: 1, rotate: 0 } },
+    adjustments: { wheel: { x: "4%", y: "0%", scale: 1, rotate: 0, mobile: { x: "0%", y: "-5%", scale: 1.1, rotate: 0 } } },
     description:
       "Premium Humera and Wollega sesame seeds with 50-55% oil content and nutty flavor. White, brown, and mixed varieties.",
     specs: ["50-55% Oil", "Humera & Wollega", "White & Brown", "99.5% Purity"],
@@ -97,7 +103,7 @@ const products: Product[] = [
     image: nigerSeed,
     bgImage: bgNigerSeed,
     isOverview: false,
-    adjustments: { wheel: { x: "0%", y: "0%", scale: 1, rotate: 0 } },
+    adjustments: { wheel: { x: "0%", y: "0%", scale: 1, rotate: 0, mobile: { x: "0%", y: "-5%", scale: 1, rotate: 0 } } },
     description:
       "High-quality Ethiopian Niger seeds (Noug) with 38-43% oil content for bird feed and edible oil markets.",
     specs: ["38-43% Oil", "Bird Feed Grade", "Edible Oil", "Machine Cleaned"],
@@ -111,7 +117,7 @@ const products: Product[] = [
     image: kidneyBean,
     bgImage: bgKidney,
     isOverview: false,
-    adjustments: { wheel: { x: "4%", y: "0%", scale: 1, rotate: 0 } },
+    adjustments: { wheel: { x: "4%", y: "0%", scale: 1, rotate: 0, mobile: { x: "0%", y: "-20%", scale: 0.7, rotate: 0 } } },
     description:
       "Nutrient-rich Ethiopian red kidney beans packed with protein and fiber for global food markets.",
     specs: ["High Protein", "Export Grade", "Machine Cleaned", "Low Moisture"],
@@ -125,7 +131,7 @@ const products: Product[] = [
     image: chickpea,
     bgImage: bgChickpea,
     isOverview: false,
-    adjustments: { wheel: { x: "0%", y: "-10%", scale: 1, rotate: 0 } },
+    adjustments: { wheel: { x: "0%", y: "-10%", scale: 1, rotate: 0, mobile: { x: "0%", y: "-15%", scale: 1, rotate: 0 } } },
     description:
       "Ethiopian chickpeas in Desi and Kabuli varieties — exported to Middle East, South Asia, and European markets.",
     specs: ["Desi & Kabuli", "8-12mm", "High Protein", "Machine Sorted"],
@@ -139,7 +145,7 @@ const products: Product[] = [
     image: mungBean,
     bgImage: bgMungBean,
     isOverview: false,
-    adjustments: { wheel: { x: "5%", y: "0%", scale: 1, rotate: 0 } },
+    adjustments: { wheel: { x: "5%", y: "0%", scale: 1, rotate: 0, mobile: { x: "0%", y: "-20%", scale: 0.8, rotate: 0 } } },
     description:
       "Premium Ethiopian green mung beans for Asian cuisine, sprouting, and food processing.",
     specs: ["High Germination", "3-4mm", "Sprouting Grade", "Machine Sorted"],
@@ -153,7 +159,7 @@ const products: Product[] = [
     image: haricotBean,
     bgImage: bgHaricot,
     isOverview: false,
-    adjustments: { wheel: { x: "0%", y: "0%", scale: 1.2, rotate: 0 } },
+    adjustments: { wheel: { x: "0%", y: "0%", scale: 1.2, rotate: 0, mobile: { x: "0%", y: "-10%", scale: 1, rotate: 0 } } },
     description:
       "White haricot beans from Ethiopia — exported for canning and baked beans production worldwide.",
     specs: ["Canning Grade", "6-8mm", "Low Moisture", "Hand Sorted"],
@@ -167,7 +173,7 @@ const products: Product[] = [
     image: oilSeed,
     bgImage: bgOilSeed,
     isOverview: false,
-    adjustments: { wheel: { x: "0%", y: "35%", scale: 1.3, rotate: 0 } },
+    adjustments: { wheel: { x: "0%", y: "35%", scale: 1.3, rotate: 0, mobile: { x: "0%", y: "-5%", scale: 1.1, rotate: 0 } } },
     description:
       "Ethiopian oil seeds including linseed, sunflower, and soybean — sourced from cooperatives.",
     specs: ["Multiple Varieties", "High Oil", "Direct Source", "Organic Available"],
@@ -181,7 +187,7 @@ const products: Product[] = [
     image: spicesHerbs,
     bgImage: bgSpices,
     isOverview: false,
-    adjustments: { wheel: { x: "0%", y: "10%", scale: 1.1, rotate: -9 } },
+    adjustments: { wheel: { x: "0%", y: "10%", scale: 1.1, rotate: -9, mobile: { x: "0%", y: "-10%", scale: 1, rotate: 0 } } },
     description:
       "Authentic Ethiopian turmeric, ginger, fenugreek, and black cumin — exported globally.",
     specs: ["Organic Available", "Sun Dried", "Hand Sorted", "Essential Oils"],
@@ -224,6 +230,14 @@ function snapTo(rot: number) {
 const ProductsPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const heroRef = useRef<HTMLElement>(null);
   const detailRef = useRef<HTMLElement>(null);
@@ -675,9 +689,15 @@ const ProductsPage = () => {
                           filter: isFocused
                             ? "drop-shadow(0 20px 30px rgba(0,0,0,0.2))"
                             : "none",
-                          transform: p.adjustments?.wheel 
-                            ? `translate(${p.adjustments.wheel.x || "0%"}, ${p.adjustments.wheel.y || "0%"}) scale(${p.adjustments.wheel.scale || 1}) rotate(${p.adjustments.wheel.rotate || 0}deg)` 
-                            : "none",
+                          transform: (() => {
+                            const mAdj = p.adjustments?.wheel?.mobile;
+                            const dAdj = p.adjustments?.wheel;
+                            const finalX = isMobile && mAdj?.x !== undefined ? mAdj.x : dAdj?.x || "0%";
+                            const finalY = isMobile && mAdj?.y !== undefined ? mAdj.y : dAdj?.y || "0%";
+                            const finalScale = isMobile && mAdj?.scale !== undefined ? mAdj.scale : dAdj?.scale || 1;
+                            const finalRot = isMobile && mAdj?.rotate !== undefined ? mAdj.rotate : dAdj?.rotate || 0;
+                            return `translate(${finalX}, ${finalY}) scale(${finalScale}) rotate(${finalRot}deg)`;
+                          })(),
                         }}
                       />
                     )}
@@ -690,9 +710,9 @@ const ProductsPage = () => {
 
         {/* Stationary Title Container */}
         <div className="absolute top-[18%] md:top-[30%] left-1/2 -translate-x-1/2 z-[40] w-full max-w-[90vw] md:max-w-3xl text-center pointer-events-none flex flex-col items-center gap-5">
-          <div className="title-animate inline-block bg-white/95 backdrop-blur-md px-10 py-4 rounded-[1rem] shadow-[0_20px_50px_-15px_rgba(0,0,0,0.15)] border border-white/50 pointer-events-auto">
+          <div className="title-animate inline-block bg-white/95 backdrop-blur-md px-8 py-4 md:px-10 md:py-4 rounded-[1rem] shadow-[0_20px_50px_-15px_rgba(0,0,0,0.15)] border border-white/50 pointer-events-auto">
             <h2
-              className={`font-display text-3xl md:text-5xl font-bold leading-tight ${
+              className={`font-display text-[38px] leading-[1.1] md:text-5xl md:leading-tight font-bold ${
                 active.isOverview ? "lowercase" : "uppercase tracking-tighter"
               }`}
               style={{
@@ -707,10 +727,20 @@ const ProductsPage = () => {
           <div className="title-animate pointer-events-auto" onPointerDown={(e) => e.stopPropagation()}>
             <button
               onClick={() => detailRef.current?.scrollIntoView({ behavior: "smooth" })}
-              className="group inline-flex items-center gap-3 bg-primary text-white px-10 py-4 rounded-xl font-body text-sm font-bold shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all hover:scale-105 active:scale-95"
+              className="group inline-flex items-center gap-3 bg-primary text-white px-12 py-5 md:px-10 md:py-4 rounded-xl font-body text-base md:text-sm font-bold shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all hover:scale-105 active:scale-95"
             >
               Explore
             </button>
+          </div>
+
+          {/* Mobile Drag Indicator */}
+          <div className="md:hidden title-animate flex flex-col items-center gap-2 mt-4 text-[#1B6E1B] font-display text-[11px] uppercase tracking-[0.2em] drop-shadow-md bg-white backdrop-blur-sm px-6 py-2 rounded-full border border-white/30 pointer-events-none">
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M8 9l-4 3 4 3" />
+              <path d="M16 9l4 3-4 3" />
+              <line x1="4" y1="12" x2="20" y2="12" />
+            </svg>
+            <span className="font-bold">Drag Left Or Right</span>
           </div>
         </div>
 
@@ -852,7 +882,7 @@ const ProductsPage = () => {
                       to="/contact"
                       className="magnetic-btn inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-body text-sm font-semibold text-black hover:bg-white/90 transition-colors shadow-lg"
                     >
-                      Get Started <ArrowUpRight className="w-4 h-4" />
+                      Contact Us <ArrowUpRight className="w-4 h-4" />
                     </Link>
                   </div>
                 </div>
