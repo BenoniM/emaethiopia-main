@@ -5,6 +5,7 @@ import PartnersSection from "@/components/PartnersSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import PageHero from "@/components/PageHero";
 import JourneySection from "@/components/JourneySection";
+import DetailedReachSection from "@/components/DetailedReachSection";
 import { motion } from "framer-motion";
 import { Timeline } from "@/components/ui/timeline";
 import teamFull from "@/assets/team-full.png";
@@ -23,6 +24,7 @@ const AboutPage = () => {
       <AboutSection />
       <JourneySection />
       <PartnersSection />
+      <DetailedReachSection />
       <TestimonialsSection />
       <Footer />
     </div>

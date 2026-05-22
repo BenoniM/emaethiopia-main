@@ -152,7 +152,7 @@ const TestimonialsSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative w-full h-[60vh] md:h-[90vh] min-h-[450px] md:min-h-[550px] flex flex-col items-center justify-end overflow-hidden bg-slate-950 mt-16 md:mt-32"
+      className="relative w-full h-[60vh] md:h-[90vh] min-h-[450px] md:min-h-[550px] flex flex-col items-center justify-end overflow-hidden bg-slate-950 pt-16 md:pt-32"
     >
       {/* LAYER 1: Background */}
       <div className="absolute inset-0 z-0 pointer-events-none scale-110" ref={bgRef}>
