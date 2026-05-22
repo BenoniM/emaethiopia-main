@@ -7,7 +7,7 @@ import Index from "./pages/Index.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
 import ExportProductsPage from "./pages/ExportProductsPage.tsx";
 import ImportProductsPage from "./pages/ImportProductsPage.tsx";
-import ServicesPage from "./pages/ServicesPage.tsx";
+// import ServicesPage from "./pages/ServicesPage.tsx";
 import IndustriesPage from "./pages/IndustriesPage.tsx";
 import ContactPage from "./pages/ContactPage.tsx";
 import BlogPage from "./pages/BlogPage.tsx";
@@ -30,7 +30,7 @@ const App = () => (
           <Route path="/about" element={<AboutPage />} />
           <Route path="/export-products" element={<ExportProductsPage />} />
           <Route path="/import-products" element={<ImportProductsPage />} />
-          <Route path="/services" element={<ServicesPage />} />
+          {/* <Route path="/services" element={<ServicesPage />} /> */}
           <Route path="/industries" element={<IndustriesPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/blog" element={<BlogPage />} />

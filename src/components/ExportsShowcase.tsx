@@ -4,24 +4,24 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
 
 // Grain images (left column)
-import grainCoffee from "@/assets/export-imgs/green-coffee.png";
+import grainCoffee from "@/assets/export-imgs/singlecoffee.png";
 import grainSesame from "@/assets/export-imgs/sesame-seeds.png";
 import grainNiger from "@/assets/export-imgs/niger-seed.png";
-import grainKidney from "@/assets/export-imgs/kidney-bean.png";
+import grainKidney from "@/assets/export-imgs/singlebeans.png";
 import grainChickpea from "@/assets/export-imgs/chickpea.png";
 
 // Food images (right column)
-import foodCoffee from "@/assets/coffee1.jpg";
+import foodCoffee from "@/assets/export-imgs/coffee1.png";
 import foodSesame from "@/assets/sesame.jpg";
 import foodNiger from "@/assets/nigerseed.jpg";
-import foodKidney from "@/assets/redkidneybeans.jpg";
+import foodKidney from "@/assets/export-imgs/redbeans.png";
 import foodChickpea from "@/assets/chickpeas.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const products = [
   {
-    name: "Green Coffee",
+    name: "Coffee",
     origin: "Yirgacheffe · Sidamo",
     description: "Premium Ethiopian Arabica green coffee cherries — washed and natural processed from the lush highlands, delivering floral, citrus, and wine-like notes prized worldwide.",
     grainImage: grainCoffee,

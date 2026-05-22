@@ -18,7 +18,7 @@ const navLinks = [
     ]
   },
   { label: "Coffee Lab", href: "/industries" },
-  { label: "Services", href: "/services" },
+  // { label: "Services", href: "/services" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];

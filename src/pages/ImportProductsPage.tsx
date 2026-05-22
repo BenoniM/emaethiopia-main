@@ -2,14 +2,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import { motion } from "framer-motion";
-import { ArrowUpRight, HeartPulse, Shield, Truck, CheckCircle, Stethoscope, Activity } from "lucide-react";
-import { GlowingEffect } from "@/components/ui/glowing-effect";
-import productStretcher from "@/assets/product-stretcher-new.jpg";
-import productBlood from "@/assets/product-blood.jpg";
-import productMedicalDevices from "@/assets/product-medical-devices.jpg";
+import { ArrowUpRight, HeartPulse, Shield, Truck, Stethoscope } from "lucide-react";
 import ImportsShowcase from "@/components/ImportsShowcase";
-
-
 
 import importHero1 from "@/assets/import-imgs/pexels-i-sens-usa-578245562-17072086.jpg";
 import importHero2 from "@/assets/import-imgs/pexels-mart-production-7088493.jpg";

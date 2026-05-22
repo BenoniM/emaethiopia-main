@@ -67,7 +67,7 @@ const Footer = () => {
             <div className="col-span-2 md:pl-4">
               <h4 className="font-display text-[11px] font-semibold uppercase tracking-[0.2em] mb-6 text-[#f7f4ed]">Headquarters</h4>
               <ul className="space-y-2.5 font-body text-sm text-[#f7f4ed]/75">
-                <li>7th Floor, Room 701</li>
+                <li>7th Floor, House Number 488/001</li>
                 <li>Droga Building, Gulele Subcity</li>
                 <li>Woreda 9, Addis Ababa, Ethiopia</li>
               </ul>
@@ -78,7 +78,7 @@ const Footer = () => {
                   <a href="mailto:export@emaethiopia.com" className="hover:text-[#f7f4ed] transition-colors inline-block relative after:absolute after:-bottom-0.5 after:left-0 after:w-0 hover:after:w-full after:h-px after:bg-[#f7f4ed] after:transition-all">export@emaethiopia.com</a>
                 </li>
                 <li>
-                  <span className="opacity-60 pr-2">T:</span> <a href="tel:+251929908566" className="hover:text-[#f7f4ed] transition-colors inline-block relative after:absolute after:-bottom-0.5 after:left-0 after:w-0 hover:after:w-full after:h-px after:bg-[#f7f4ed] after:transition-all">+251 929 908 566</a>
+                  <span className="opacity-60 pr-2">T:</span> <a href="tel:+251961260001" className="hover:text-[#f7f4ed] transition-colors inline-block relative after:absolute after:-bottom-0.5 after:left-0 after:w-0 hover:after:w-full after:h-px after:bg-[#f7f4ed] after:transition-all">+251 961260001</a>
                 </li>
               </ul>
             </div>

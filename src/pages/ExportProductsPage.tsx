@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 import emaLogo from "@/assets/ema-logo.png";
-import greenCoffee from "@/assets/export-imgs/green-coffee.png";
+import greenCoffee from "@/assets/export-imgs/coffee1.png";
 import sesameSeeds from "@/assets/export-imgs/sesame-seeds.png";
 import nigerSeed from "@/assets/export-imgs/niger-seed.png";
-import kidneyBean from "@/assets/export-imgs/kidney-bean.png";
+import kidneyBean from "@/assets/export-imgs/redbeans.png";
 import chickpea from "@/assets/export-imgs/chickpea.png";
 import mungBean from "@/assets/export-imgs/mung-bean.png";
 import haricotBean from "@/assets/export-imgs/haricot-bean.png";
@@ -37,7 +37,10 @@ interface Product {
   bgImage?: any;
   isOverview: boolean;
   description: string;
+  longDescription?: string;
   specs: string[];
+  qualitySpecs?: string[];
+  varieties?: { name: string; description: string }[];
   origin: string;
   adjustments?: {
     wheel?: {
@@ -69,7 +72,7 @@ interface Product {
 const products: Product[] = [
   {
     id: "green-coffee",
-    title: "Green Coffee",
+    title: "Coffee",
     subtitle: "Premium Arabica Beans",
     color: "#5b5743ff",
     image: greenCoffee,
@@ -77,9 +80,20 @@ const products: Product[] = [
     isOverview: false,
     adjustments: { wheel: { x: "-3%", y: "0%", scale: 1.2, rotate: 0, mobile: { x: "0%", y: "-28%", scale: 0.9, rotate: 0 } } },
     description:
-      "Premium Ethiopian Arabica green coffee — washed and natural processed from Yirgacheffe, Sidamo, Jimma, and Harar regions.",
+      "Experience the Essence of Ethiopia with EMA Coffee. We share our latest 2026 Arabica and specialty coffee streams with global partners across Europe, North America, and the Middle East.",
+    longDescription:
+      "Our current exports feature the diverse genetic profiles unique to Ethiopia, sourced directly from the country's most renowned regions. Yirgacheffe is celebrated for its intense floral aroma and fine acidity. Guji is a citrus fruit flavor bomb with bright citric acidity and excellent mouthfeel. Sidamo is known as sweet coffee for its deeply complex and balanced flavor profile.",
     specs: ["Arabica Variety", "Grade 1-5", "Washed & Natural", "SCA 80+"],
-    origin: "Yirgacheffe, Sidamo, Jimma, Harar",
+    qualitySpecs: ["Washed & Natural Process", "SCA Score 80+", "Grade 1–5 Available", "Direct Farmer Sourcing"],
+    varieties: [
+      { name: "Yirgacheffe", description: "Elevate your palate with the sophisticated, highland-grown Yirgacheffe. This world class selection offers a smooth, mild body and a signature floral aroma that defines premium quality." },
+      { name: "Lekempti", description: "Experience a harmonious balance of caramel and vanilla with our Lekempti beans. Prized for their exotic and clean aftertaste, these beans provide a rich, heavy body that lingers beautifully." },
+      { name: "Guji", description: "Directly from our Shakiso site comes a vibrant citrus fruit flavor bomb. Expect a bright, lemony acidity paired with lush notes of tangerine and strawberry." },
+      { name: "Djimmah", description: "For those who prefer a bold, grounded cup, Djimmah delivers. This variety features a heavy body with deep, earthy undertones of dark cocoa and walnut." },
+      { name: "Sidamo", description: "Discover why Sidamo is nicknamed 'sweet coffee'. Sourced from the southern highlands, its greenish-grayish beans offer a deeply complex and floral profile." },
+      { name: "Limu", description: "A favorite among specialty roasters in Europe and the USA for its unique, wine-like sharpness. These greenish-bluish beans offer a spicy flavor profile with elegant floral overtones." },
+    ],
+    origin: "Yirgacheffe, Sidamo, Jimma, Harar, Guji, Lekempti",
   },
   {
     id: "sesame-seeds",
@@ -91,8 +105,22 @@ const products: Product[] = [
     isOverview: false,
     adjustments: { wheel: { x: "4%", y: "0%", scale: 1, rotate: 0, mobile: { x: "0%", y: "-5%", scale: 1.1, rotate: 0 } } },
     description:
-      "Premium Humera and Wollega sesame seeds with 50-55% oil content and nutty flavor. White, brown, and mixed varieties.",
-    specs: ["50-55% Oil", "Humera & Wollega", "White & Brown", "99.5% Purity"],
+      "Premium Humera and Wollega sesame seeds with 50–55% oil content and nutty flavor. White, brown, and mixed varieties.",
+    longDescription:
+      "Sesame seeds are tiny, oil-rich, edible seeds from the Sesamum indicum plant, one of the oldest cultivated oilseed crops. Our sesame is machine cleaned, free from any water damage and infestation, of sound merchantable quality with natural taste and smell, and fit for human consumption.",
+    specs: ["Purity min 99.0%", "Oil content min 50%", "Moisture max 8.0%", "Machine Cleaned"],
+    qualitySpecs: [
+      "Purity min 99.0%",
+      "Admixture max 1.0%",
+      "Decolorization max 1.0%",
+      "Free Fatty Acid max 2%",
+      "Moisture max 8.0%",
+      "Oil content min 50%",
+      "Machine Cleaned",
+      "Free from water damage & infestation",
+      "Free from alive weevils",
+      "Fit for human consumption",
+    ],
     origin: "Humera, Wollega",
   },
   {
@@ -106,36 +134,60 @@ const products: Product[] = [
     adjustments: { wheel: { x: "0%", y: "0%", scale: 1, rotate: 0, mobile: { x: "0%", y: "-5%", scale: 1, rotate: 0 } } },
     description:
       "High-quality Ethiopian Niger seeds (Noug) with 38-43% oil content for bird feed and edible oil markets.",
+    longDescription:
+      "Ethiopian Niger seeds are prized globally for their high oil content and versatility. Used in bird feed and edible oil production, our Noug is machine cleaned and processed to the highest export standards.",
     specs: ["38-43% Oil", "Bird Feed Grade", "Edible Oil", "Machine Cleaned"],
+    qualitySpecs: ["38–43% Oil Content", "Machine Cleaned", "Free from Infestation", "Export Grade"],
     origin: "Central & Western Ethiopia",
   },
   {
     id: "kidney-bean",
     title: "Kidney Beans",
-    subtitle: "Red Kidney",
+    subtitle: "Red Kidney & LSKB",
     color: "#7B1818",
     image: kidneyBean,
     bgImage: bgKidney,
     isOverview: false,
     adjustments: { wheel: { x: "4%", y: "0%", scale: 1, rotate: 0, mobile: { x: "0%", y: "-20%", scale: 0.7, rotate: 0 } } },
     description:
-      "Nutrient-rich Ethiopian red kidney beans packed with protein and fiber for global food markets.",
+      "Proudly sourced from Ethiopia's fertile regions, our red kidney beans are known for their deep red color, rich taste, and high nutritional value. Packed with protein and fiber, ideal for global markets, food processors, and healthy diets.",
+    longDescription:
+      "We export multiple kidney bean varieties. RKB are Shasheneme type, sortex machine clean and hand pick quality. Light Speckled Kidney Beans (LSKB) are distinguished by their light cream color with reddish-brown speckles, uniform size, and smooth texture — carefully sourced and processed to meet quality standards, rich in plant-based protein, dietary fiber, iron, and essential minerals, offering both nutritional value and strong demand in domestic and international markets.",
     specs: ["High Protein", "Export Grade", "Machine Cleaned", "Low Moisture"],
-    origin: "Rift Valley, Southern Ethiopia",
+    qualitySpecs: [
+      "RKB Purity 97% min",
+      "LSKB Purity 98% min",
+      "Moisture max 13%",
+      "Sortex & Hand Picked",
+      "Freshly Fumigated",
+      "Free from Live Weevils & Weevil Holes",
+      "Discolored & shriveled max 3% (RKB)",
+      "Foreign matter nil (LSKB)",
+      "Damaged/wrinkled/broken/cracked max 1.0%",
+      "Fit for human consumption",
+    ],
+    varieties: [
+      { name: "Red Kidney Beans (RKB)", description: "Ethiopian origin, Shasheneme type. Sortex machine clean and hand pick quality. Purity 97%, other beans/discolored/shriveled max 3%, moisture 13% max, free from live weevils and weevil holes, freshly fumigated and fit for human consumption." },
+      { name: "Light Speckled Kidney Beans (LSKB)", description: "Purity min 98%, foreign matter nil, damaged/wrinkled/broken/cracked max 1.0%, contrasting/other color max 1.0%, moisture max 13.0%, new crop, free from any abnormal odor, free from alive or dead insects, fit for human consumption, fumigated prior to shipment." },
+    ],
+    origin: "Rift Valley, Southern Ethiopia (Shasheneme)",
   },
   {
     id: "chickpea",
     title: "Chickpea",
-    subtitle: "Desi & Kabuli",
+    subtitle: "Dessie Desi Type",
     color: "#BF6C00",
     image: chickpea,
     bgImage: bgChickpea,
     isOverview: false,
     adjustments: { wheel: { x: "0%", y: "-10%", scale: 1, rotate: 0, mobile: { x: "0%", y: "-15%", scale: 1, rotate: 0 } } },
     description:
-      "Ethiopian chickpeas in Desi and Kabuli varieties — exported to Middle East, South Asia, and European markets.",
-    specs: ["Desi & Kabuli", "8-12mm", "High Protein", "Machine Sorted"],
-    origin: "Northern & Central Ethiopia",
+      "The Desi type is the most dominant chickpea variety grown and consumed in Ethiopia, prized for its hardiness and versatility. Exported to Middle East, South Asia, and European markets.",
+    longDescription:
+      "Dessie Chickpeas are the flagship Ethiopian chickpea variety. The Desi type is hardier and more versatile than Kabuli, making it ideal for a wide range of culinary applications. Our chickpeas are machine sorted and processed to meet international export standards.",
+    specs: ["Desi Type", "High Protein", "Machine Sorted", "Export Grade"],
+    qualitySpecs: ["Desi Variety", "Machine Sorted", "High Protein Content", "Low Moisture", "Free from Infestation"],
+    origin: "Northern & Central Ethiopia (Dessie Region)",
   },
   {
     id: "mung-bean",
@@ -148,21 +200,44 @@ const products: Product[] = [
     adjustments: { wheel: { x: "5%", y: "0%", scale: 1, rotate: 0, mobile: { x: "0%", y: "-20%", scale: 0.8, rotate: 0 } } },
     description:
       "Premium Ethiopian green mung beans for Asian cuisine, sprouting, and food processing.",
+    longDescription:
+      "Our green mung beans are sourced from Eastern Ethiopia and processed to meet the highest sprouting and food-grade standards. Ideal for Asian cuisine, health food markets, and industrial food processing.",
     specs: ["High Germination", "3-4mm", "Sprouting Grade", "Machine Sorted"],
+    qualitySpecs: ["High Germination Rate", "3–4mm Size", "Machine Sorted", "Low Moisture", "Free from Infestation"],
     origin: "Eastern Ethiopia",
   },
   {
     id: "haricot-bean",
     title: "Haricot Bean",
-    subtitle: "White Beans",
+    subtitle: "White Pea Beans",
     color: "#FDCA90",
     image: haricotBean,
     bgImage: bgHaricot,
     isOverview: false,
     adjustments: { wheel: { x: "0%", y: "0%", scale: 1.2, rotate: 0, mobile: { x: "0%", y: "-10%", scale: 1, rotate: 0 } } },
     description:
-      "White haricot beans from Ethiopia — exported for canning and baked beans production worldwide.",
-    specs: ["Canning Grade", "6-8mm", "Low Moisture", "Hand Sorted"],
+      "White pea beans, also known as Navy Beans, are small, creamy white beans with a mild, delicate flavor and a smooth, creamy texture when cooked. Exceptionally high in fiber and protein, traditionally used to make Baked Beans and thicken soups and stews.",
+    longDescription:
+      "Exported for canning and baked beans production worldwide. Sortex quality with clean and bright appearance and natural odour. Free from any abnormal odor, alive or dead insects, and fit for human consumption.",
+    specs: ["Sortex Quality", "Moisture max 15%", "Canning Grade", "High Fiber & Protein"],
+    qualitySpecs: [
+      "Moisture max 15%",
+      "Size max 680 grains per 100g",
+      "Split grains max 1%",
+      "Husked grains (without cover) max 0.5%",
+      "Grains with cracked cover max 1%",
+      "Moulded grains free",
+      "Malnourished grains max 0.5%",
+      "Wrinkled grains max 2%",
+      "Stained grains max 1%",
+      "Muddy grains max 1%",
+      "Contrasting colour (red, black beans) free",
+      "Slightly yellow grain max 2%",
+      "Eaten by weevils max 0.5%",
+      "Foreign plant matters max 0.3%",
+      "Foreign inorganic matters (stones, metal, glass) free",
+      "Toxic/noxious seeds free",
+    ],
     origin: "Rift Valley",
   },
   {
@@ -176,7 +251,10 @@ const products: Product[] = [
     adjustments: { wheel: { x: "0%", y: "35%", scale: 1.3, rotate: 0, mobile: { x: "0%", y: "-5%", scale: 1.1, rotate: 0 } } },
     description:
       "Ethiopian oil seeds including linseed, sunflower, and soybean — sourced from cooperatives.",
+    longDescription:
+      "Our oil seed range covers multiple varieties sourced directly from Ethiopian farming cooperatives. High oil content and organic options available for health food and industrial markets.",
     specs: ["Multiple Varieties", "High Oil", "Direct Source", "Organic Available"],
+    qualitySpecs: ["Multiple Varieties", "High Oil Content", "Direct Cooperative Source", "Organic Available", "Machine Cleaned"],
     origin: "Various Regions",
   },
   {
@@ -189,9 +267,25 @@ const products: Product[] = [
     isOverview: false,
     adjustments: { wheel: { x: "0%", y: "10%", scale: 1.1, rotate: -9, mobile: { x: "0%", y: "-10%", scale: 1, rotate: 0 } } },
     description:
-      "Authentic Ethiopian turmeric, ginger, fenugreek, and black cumin — exported globally.",
+      "Authentic Ethiopian spices including Black Cumin (Nigella Sativa), Turmeric Finger Type, and Gum Olibanum (Frankincense) — exported globally for culinary, medicinal, and industrial applications.",
+    longDescription:
+      "Our spice range covers some of Ethiopia's most prized exports. Black Cumin is valued for its high content of essential oils, antioxidants, and natural bioactive compounds. Turmeric Finger Type is double polished from Ethiopian origin. Gum Olibanum (Frankincense) is the ancient aromatic gum-resin extracted from Boswellia trees found in Ethiopia's arid regions.",
     specs: ["Organic Available", "Sun Dried", "Hand Sorted", "Essential Oils"],
-    origin: "Various Regions",
+    qualitySpecs: [
+      "Black Cumin Purity 99% min",
+      "Black Cumin Moisture max 12%",
+      "Turmeric Moisture max 14%",
+      "Turmeric Damaged finger max 3%",
+      "Free from Pest & Weevil",
+      "Hand Sorted & Sun Dried",
+      "Free from any kind of Infestation",
+    ],
+    varieties: [
+      { name: "Black Cumin (Nigella Sativa)", description: "Purity 99% min, moisture max 12%, free from any kind of infestation. A premium aromatic seed known for its distinctive black color, slightly bitter taste, and strong, earthy aroma. Widely used in traditional medicine, food processing, and spice blends. Valued for its high content of essential oils, antioxidants, and natural bioactive compounds. Commonly used in bakery products, spice mixes, herbal remedies, and oil extraction. In strong demand across domestic and international markets for both culinary and health-related applications." },
+      { name: "Turmeric Finger Type", description: "Ethiopian origin, double polished. Moisture max 14%, damaged finger max 3%, free from any pest and weevil. A deep orange-yellow spice derived from the ground rhizome (underground stem) of the Curcuma longa plant, a member of the ginger family." },
+      { name: "Gum Olibanum (Frankincense)", description: "Gum Olibanum is the ancient and proper name for Frankincense — an aromatic gum-resin extracted from trees of the genus Boswellia, primarily found in arid regions of Africa and Arabia (e.g., Somalia, Oman, Ethiopia)." },
+    ],
+    origin: "Various Regions, Ethiopia",
   },
 ];
 
@@ -855,9 +949,14 @@ const ProductsPage = () => {
                   <h2 className="detail-animate font-display text-4xl md:text-5xl font-bold text-white mb-5">
                     {active.title}
                   </h2>
-                  <p className="detail-animate font-body text-lg leading-relaxed text-white/80 mb-8">
+                  <p className="detail-animate font-body text-lg leading-relaxed text-white/80 mb-3">
                     {active.description}
                   </p>
+                  {active.longDescription && (
+                    <p className="detail-animate font-body text-base leading-relaxed text-white/60 mb-8">
+                      {active.longDescription}
+                    </p>
+                  )}
 
                   <div className="detail-animate flex flex-wrap gap-2 mb-8">
                     {active.specs.map((s) => (
@@ -869,6 +968,40 @@ const ProductsPage = () => {
                       </span>
                     ))}
                   </div>
+
+                  {/* Quality Specs */}
+                  {active.qualitySpecs && active.qualitySpecs.length > 0 && (
+                    <div className="detail-animate mb-8 rounded-xl border border-white/10 bg-black/20 backdrop-blur-md p-5 shadow-inner">
+                      <span className="font-body text-xs font-semibold tracking-widest text-[#f5eedc] uppercase block mb-3">
+                        Quality Specifications
+                      </span>
+                      <div className="grid grid-cols-2 gap-x-6 gap-y-1">
+                        {active.qualitySpecs.map((q) => (
+                          <div key={q} className="flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-white/40 shrink-0" />
+                            <span className="font-body text-sm text-white/80">{q}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Varieties */}
+                  {active.varieties && active.varieties.length > 0 && (
+                    <div className="detail-animate mb-8">
+                      <span className="font-body text-xs font-semibold tracking-widest text-[#f5eedc] uppercase block mb-3">
+                        Varieties
+                      </span>
+                      <div className="grid gap-3">
+                        {active.varieties.map((v) => (
+                          <div key={v.name} className="rounded-xl border border-white/10 bg-black/20 backdrop-blur-md p-4">
+                            <p className="font-body text-sm font-bold text-white mb-1">{v.name}</p>
+                            <p className="font-body text-sm text-white/70 leading-relaxed">{v.description}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="detail-animate mb-8 rounded-xl border border-white/10 bg-black/20 backdrop-blur-md p-5 shadow-inner">
                     <span className="font-body text-xs font-semibold tracking-widest text-[#f5eedc] uppercase">

@@ -38,8 +38,8 @@ import sourcing from "@/assets/serv/sourcing.jpg";
 import sample from "@/assets/process/sample.png";
 import dry from "@/assets/process/dry.png";
 import breaka from "@/assets/process/break.png";
-import skim from "@/assets/process/skim.png";
-import slurp from "@/assets/process/slurp.png";
+import skim from "@/assets/process/cooling.jpeg";
+import slurp from "@/assets/process/coffeetasting.jpeg";
 import final from "@/assets/process/final.png";
 
 
@@ -547,7 +547,7 @@ const TeamSection = () => {
 
             <div className="grid gap-5 sm:grid-cols-2">
               {[
-                { icon: Award, label: "Licensed Q-Graders", val: "Certified" },
+                { icon: Award, label: "Cupping License", val: "Certified" },
                 { icon: BookOpen, label: "SCA Training", val: "Aligned" },
                 { icon: Leaf, label: "Origin Knowledge", val: "9+ Regions" },
                 { icon: Shield, label: "Export Standards", val: "ECX / ISO" },

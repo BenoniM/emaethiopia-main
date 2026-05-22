@@ -118,7 +118,7 @@ const ContactSection = ({ showForm = false }: { showForm?: boolean }) => {
                     { 
                       icon: MapPin, 
                       label: "Business Office", 
-                      values: ["Droga Building, 7th Floor, RM 701", "Addis Ababa, Ethiopia"],
+                      values: ["Droga Building, 7th Floor, House Number 488/001", "Addis Ababa, Ethiopia"],
                       gradient: "from-[hsl(120_40%_20%)] to-[hsl(120_60%_35%)]"
                     },
                   ].map((item, idx) => {

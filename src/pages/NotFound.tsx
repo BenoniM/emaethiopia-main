@@ -1,7 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
 import { Home, MoveLeft, Terminal } from "lucide-react";
 
 const NotFound = () => {
@@ -14,7 +13,7 @@ const NotFound = () => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
   }, [location.pathname]);
 
-  useGSAP(() => {
+  useEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
     // Initial entrance
@@ -62,7 +61,7 @@ const NotFound = () => {
         from: "random"
       }
     });
-  }, { scope: containerRef });
+  }, [containerRef]);
 
   return (
     <div 
