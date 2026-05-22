@@ -12,13 +12,27 @@ type LocationItem = {
 };
 
 const LOCATIONS: LocationItem[] = [
-  { name: "Ethiopia (Hub)", lat: 9.0338, lng: 38.7423, isHub: true, flag: "ET" },
-  { name: "San Francisco", lat: 37.7749, lng: -122.4194, isHub: false, flag: "US" },
-  { name: "Washington", lat: 38.9072, lng: -77.0369, isHub: false, flag: "US" },
-  { name: "Paris", lat: 48.8566, lng: 2.3522, isHub: false, flag: "FR" },
-  { name: "Frankfurt", lat: 50.1109, lng: 8.6821, isHub: false, flag: "DE" },
-  { name: "Singapore", lat: 1.3521, lng: 103.8198, isHub: false, flag: "SG" },
-  { name: "Tokyo", lat: 35.6762, lng: 139.6503, isHub: false, flag: "JP" },
+  { name: "Ethiopia (Hub)", lat: 9.0338,   lng: 38.7423,   isHub: true,  flag: "ET" },
+  { name: "San Francisco",  lat: 37.7749,  lng: -122.4194, isHub: false, flag: "US" },
+  { name: "Washington",     lat: 38.9072,  lng: -77.0369,  isHub: false, flag: "US" },
+  { name: "Paris",          lat: 48.8566,  lng: 2.3522,    isHub: false, flag: "FR" },
+  { name: "Frankfurt",      lat: 50.1109,  lng: 8.6821,    isHub: false, flag: "DE" },
+  { name: "Singapore",      lat: 1.3521,   lng: 103.8198,  isHub: false, flag: "SG" },
+  { name: "Tokyo",          lat: 35.6762,  lng: 139.6503,  isHub: false, flag: "JP" },
+  { name: "China",          lat: 39.9042,  lng: 116.4074,  isHub: false, flag: "CN" },
+  { name: "Denmark",        lat: 55.6761,  lng: 12.5683,   isHub: false, flag: "DK" },
+  { name: "Germany",        lat: 52.5200,  lng: 13.4050,   isHub: false, flag: "DE" },
+  { name: "Romania",        lat: 44.4268,  lng: 26.1025,   isHub: false, flag: "RO" },
+  { name: "Saudi Arabia",   lat: 24.7136,  lng: 46.6753,   isHub: false, flag: "SA" },
+  { name: "Yemen",          lat: 15.3694,  lng: 44.1910,   isHub: false, flag: "YE" },
+  { name: "India",          lat: 20.5937,  lng: 78.9629,   isHub: false, flag: "IN" },
+  { name: "Iran",           lat: 35.6892,  lng: 51.3890,   isHub: false, flag: "IR" },
+  { name: "Iraq",           lat: 33.3152,  lng: 44.3661,   isHub: false, flag: "IQ" },
+  { name: "Pakistan",       lat: 30.3753,  lng: 69.3451,   isHub: false, flag: "PK" },
+  { name: "Azerbaijan",     lat: 40.4093,  lng: 49.8671,   isHub: false, flag: "AZ" },
+  { name: "Bangladesh",     lat: 23.6850,  lng: 90.3563,   isHub: false, flag: "BD" },
+  { name: "Taiwan",         lat: 23.6978,  lng: 120.9605,  isHub: false, flag: "TW" },
+  { name: "South Korea",    lat: 37.5665,  lng: 126.9780,  isHub: false, flag: "KR" },
 ];
 
 const getFlagUrl = (countryCode: string) =>
@@ -27,11 +41,9 @@ const getFlagUrl = (countryCode: string) =>
 const convertLatLngToVector3 = (lat: number, lng: number, radius: number) => {
   const u = (lng + 180) / 360;
   const v = (90 - lat) / 180;
-
   const x = -radius * Math.cos(u * Math.PI * 2) * Math.sin(v * Math.PI);
   const y = radius * Math.cos(v * Math.PI);
   const z = radius * Math.sin(u * Math.PI * 2) * Math.sin(v * Math.PI);
-
   return new THREE.Vector3(x, y, z);
 };
 
@@ -65,11 +77,7 @@ export default function DetailedReachSection() {
     cameraRef.current = camera;
     camera.position.set(0, 0, CAMERA_DISTANCE);
 
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias: true,
-      alpha: true,
-    });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
@@ -96,7 +104,7 @@ export default function DetailedReachSection() {
     scene.add(directionalLight);
 
     const loader = new THREE.TextureLoader();
-    const TARGET_GREEN = { r: 0x1b, g: 0x6e, b: 0x1b };
+    const TARGET_GREEN = { r: 0x0f, g: 0x4a, b: 0x0f };
 
     let recoloredTexture: THREE.Texture | null = null;
 
@@ -104,47 +112,30 @@ export default function DetailedReachSection() {
       "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg",
       (texture) => {
         const image = texture.image as HTMLImageElement | HTMLCanvasElement;
-
         const canvas2 = document.createElement("canvas");
         canvas2.width = image.width;
         canvas2.height = image.height;
-
         const ctx = canvas2.getContext("2d");
         if (!ctx) return;
-
         ctx.drawImage(image, 0, 0);
-
         const imageData = ctx.getImageData(0, 0, canvas2.width, canvas2.height);
         const data = imageData.data;
-
         for (let i = 0; i < data.length; i += 4) {
-          const r = data[i];
-          const g = data[i + 1];
-          const b = data[i + 2];
-          const a = data[i + 3];
-
+          const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
           if (a === 0) continue;
-
           const max = Math.max(r, g, b);
           const min = Math.min(r, g, b);
           const saturation = max === 0 ? 0 : (max - min) / max;
-
-          const isLandOrGreen =
-            saturation > 0.12 &&
-            !(b > r + 20 && b > g + 20);
-
-          if (isLandOrGreen) {
-            data[i] = TARGET_GREEN.r;
+          const isLand = saturation > 0.12 && !(b > r + 20 && b > g + 20);
+          if (isLand) {
+            data[i]     = TARGET_GREEN.r;
             data[i + 1] = TARGET_GREEN.g;
             data[i + 2] = TARGET_GREEN.b;
           }
         }
-
         ctx.putImageData(imageData, 0, 0);
-
         recoloredTexture = new THREE.CanvasTexture(canvas2);
         recoloredTexture.needsUpdate = true;
-
         globeMat.map = recoloredTexture;
         globeMat.needsUpdate = true;
       }
@@ -161,9 +152,8 @@ export default function DetailedReachSection() {
 
       const pinGeo = new THREE.SphereGeometry(loc.isHub ? 2.5 : 1.5, 16, 16);
       const pinMat = new THREE.MeshBasicMaterial({
-        color: loc.isHub ? 0xef4444 : 0x1B6E1B,
+        color: loc.isHub ? 0xef4444 : 0xffffff,
       });
-
       const pin = new THREE.Mesh(pinGeo, pinMat);
       pin.position.copy(destVector);
       globeGroup.add(pin);
@@ -173,29 +163,25 @@ export default function DetailedReachSection() {
         const midPoint = new THREE.Vector3()
           .addVectors(hubVector, destVector)
           .multiplyScalar(0.5);
-
         const distance = hubVector.distanceTo(destVector);
         midPoint.normalize().multiplyScalar(GLOBE_RADIUS + distance * 0.3 + 6);
 
         const curve = new THREE.QuadraticBezierCurve3(hubVector, midPoint, destVector);
         const points = curve.getPoints(50);
-
         const arcGeo = new THREE.BufferGeometry().setFromPoints(points);
         const arcMat = new THREE.LineDashedMaterial({
           color: 0xffffff,
           dashSize: 2.5,
           gapSize: 3,
           transparent: true,
-          opacity: 0.95,
+          opacity: 0.7,
         });
-
         arcMat.depthTest = false;
         arcMat.depthWrite = false;
 
         const arc = new THREE.Line(arcGeo, arcMat);
         arc.computeLineDistances();
         arc.renderOrder = 50;
-
         globeGroup.add(arc);
         arcLines.push(arc);
       }
@@ -234,13 +220,10 @@ export default function DetailedReachSection() {
 
           if (dotProduct > -0.15) {
             const projected = pointWorldPos.clone().project(cameraRef.current!);
-
             const x = (projected.x * 0.5 + 0.5) * container.clientWidth;
             const y = -(projected.y * 0.5 - 0.5) * container.clientHeight;
-
             const scale = 0.7 + dotProduct * 0.3;
             const opacity = dotProduct > 0 ? 1 : (dotProduct + 0.15) / 0.15;
-
             marker.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) scale(${scale})`;
             marker.style.opacity = opacity.toString();
             marker.style.display = "flex";
@@ -266,25 +249,14 @@ export default function DetailedReachSection() {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", handleResize);
       controls.dispose();
-
       pinMeshes.forEach((pin) => {
         pin.geometry.dispose();
-        if (Array.isArray(pin.material)) {
-          pin.material.forEach((m) => m.dispose());
-        } else {
-          pin.material.dispose();
-        }
+        (Array.isArray(pin.material) ? pin.material : [pin.material]).forEach((m) => m.dispose());
       });
-
       arcLines.forEach((arc) => {
         arc.geometry.dispose();
-        if (Array.isArray(arc.material)) {
-          arc.material.forEach((m) => m.dispose());
-        } else {
-          arc.material.dispose();
-        }
+        (Array.isArray(arc.material) ? arc.material : [arc.material]).forEach((m) => m.dispose());
       });
-
       globeGeo.dispose();
       globeMat.dispose();
       recoloredTexture?.dispose();
@@ -294,16 +266,13 @@ export default function DetailedReachSection() {
 
   const handleLocationClick = (name: string, lat: number, lng: number) => {
     if (!controlsRef.current || !cameraRef.current || !globeGroupRef.current) return;
-
     setActiveLocation(name);
 
     const localTarget = convertLatLngToVector3(lat, lng, CAMERA_DISTANCE);
     localTarget.applyEuler(globeGroupRef.current.rotation);
 
     const startPos = cameraRef.current.position.clone();
-
     gsap.killTweensOf(startPos);
-
     gsap.to(startPos, {
       x: localTarget.x,
       y: localTarget.y,
@@ -319,83 +288,133 @@ export default function DetailedReachSection() {
   };
 
   return (
-    <section className="relative w-full py-24 bg-zinc-950 text-white overflow-hidden border-t border-zinc-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <section className="relative w-full py-24 overflow-hidden border-t border-green-900" style={{ backgroundColor: "#1B6E1B" }}>
+      {/* Subtle texture overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.04]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }}
+      />
+
+      {/* Dark vignette edges */}
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.25) 100%)" }}
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+
+          {/* LEFT PANEL */}
           <div className="lg:col-span-5 space-y-6 z-10">
-            <span className="text-xs uppercase tracking-widest text-[#1B6E1B] font-medium bg-[#1B6E1B]/10 px-3 py-1 rounded-full border border-[#1B6E1B]/20">
+            <span
+              className="text-xs uppercase tracking-widest font-semibold px-3 py-1 rounded-full border inline-block"
+              style={{
+                color: "rgba(255,255,255,0.9)",
+                backgroundColor: "rgba(255,255,255,0.12)",
+                borderColor: "rgba(255,255,255,0.25)",
+              }}
+            >
               Global Presence
             </span>
 
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
               Our Reach
             </h2>
 
-            <p className="text-zinc-400 text-lg leading-relaxed">
+            <p style={{ color: "rgba(255,255,255,0.75)" }} className="text-lg leading-relaxed">
               From our operational heartland in Ethiopia, we maintain key trading lines and
               logistical partnerships across major global hubs. Select a location to rotate the view.
             </p>
 
-            <div className="grid grid-cols-2 gap-3 pt-4">
-              {LOCATIONS.map((loc) => (
-                <button
-                  key={loc.name}
-                  onClick={() => handleLocationClick(loc.name, loc.lat, loc.lng)}
-                  className={`relative p-3 rounded-xl border text-left transition-all duration-300 backdrop-blur-md ${
-                    activeLocation === loc.name
-                      ? "bg-zinc-900 border-[#1B6E1B] shadow-[0_0_15px_rgba(27,110,27,0.22)] text-white"
-                      : "bg-zinc-900/40 border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-white"
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-  <div
-    className={`w-8 h-5 rounded overflow-hidden border shadow-md shrink-0 ${
-      loc.isHub ? "border-red-500" : "border-[#1B6E1B]"
-    }`}
-  >
-    <img
-      src={getFlagUrl(loc.flag)}
-      alt={`${loc.name} flag`}
-      className="w-full h-full object-cover"
-      loading="lazy"
-      draggable={false}
-    />
-  </div>
+            {/* Scrollable location grid */}
+            <div
+              className="grid grid-cols-3 gap-2 pt-2 pr-1 overflow-y-auto"
+              style={{ maxHeight: "420px" }}
+            >
+              {LOCATIONS.map((loc) => {
+                const isActive = activeLocation === loc.name;
+                return (
+                  <button
+                    key={loc.name}
+                    onClick={() => handleLocationClick(loc.name, loc.lat, loc.lng)}
+                    className="relative p-2.5 rounded-xl border text-left transition-all duration-300"
+                    style={{
+                      backgroundColor: isActive
+                        ? "rgba(0,0,0,0.30)"
+                        : "rgba(0,0,0,0.15)",
+                      borderColor: isActive
+                        ? "rgba(255,255,255,0.6)"
+                        : "rgba(255,255,255,0.18)",
+                      boxShadow: isActive
+                        ? "0 0 14px rgba(255,255,255,0.12)"
+                        : "none",
+                      backdropFilter: "blur(8px)",
+                    }}
+                  >
+                    {/* Flag */}
+                    <div
+                      className="w-8 h-5 rounded overflow-hidden border mb-1.5 shrink-0"
+                      style={{
+                        borderColor: loc.isHub
+                          ? "rgba(239,68,68,0.8)"
+                          : "rgba(255,255,255,0.35)",
+                      }}
+                    >
+                      <img
+                        src={getFlagUrl(loc.flag)}
+                        alt={`${loc.name} flag`}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        draggable={false}
+                      />
+                    </div>
 
-  <span className="text-xs uppercase tracking-wider font-bold">
-    {loc.name.replace(" (Hub)", "")}
-  </span>
-</div>
+                    {/* Name */}
+                    <span
+                      className="text-[10px] uppercase tracking-wide font-bold leading-tight block"
+                      style={{ color: isActive ? "white" : "rgba(255,255,255,0.75)" }}
+                    >
+                      {loc.name.replace(" (Hub)", "")}
+                    </span>
 
-<span
-  className={`absolute top-3.5 right-3 w-1.5 h-1.5 rounded-full ${
-    loc.isHub ? "bg-red-500" : "bg-[#1B6E1B]"
-  }`}
-/>
-                </button>
-              ))}
+                    {/* Status dot */}
+                    <span
+                      className="absolute top-2.5 right-2.5 w-1.5 h-1.5 rounded-full"
+                      style={{ backgroundColor: loc.isHub ? "#ef4444" : "rgba(255,255,255,0.5)" }}
+                    />
+                  </button>
+                );
+              })}
             </div>
           </div>
 
+          {/* GLOBE */}
           <div
             ref={containerRef}
             className="lg:col-span-7 w-full h-[500px] md:h-[650px] relative flex items-center justify-center cursor-grab active:cursor-grabbing"
           >
-            <div className="absolute w-80 h-80 bg-[#1B6E1B]/15 rounded-full blur-[130px] pointer-events-none" />
+            {/* Glow */}
+            <div
+              className="absolute w-96 h-96 rounded-full blur-[150px] pointer-events-none"
+              style={{ backgroundColor: "rgba(255,255,255,0.08)" }}
+            />
 
+            {/* Floating markers */}
             <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-20">
               {LOCATIONS.map((loc, i) => (
                 <div
                   key={`marker-${loc.name}`}
-                  ref={(el) => {
-                    markerRefs.current[i] = el;
-                  }}
+                  ref={(el) => { markerRefs.current[i] = el; }}
                   className="absolute top-0 left-0 flex flex-col items-center justify-center origin-center pointer-events-none will-change-transform"
                 >
                   <div
-                    className={`w-10 h-7 rounded-md overflow-hidden border-2 flex items-center justify-center shadow-lg bg-zinc-900/80 backdrop-blur-md ${
-                      loc.isHub ? "border-red-500" : "border-[#1B6E1B]"
-                    }`}
+                    className="w-9 h-6 rounded overflow-hidden border-2 flex items-center justify-center shadow-lg"
+                    style={{
+                      backgroundColor: "rgba(0,0,0,0.6)",
+                      backdropFilter: "blur(6px)",
+                      borderColor: loc.isHub ? "#ef4444" : "rgba(255,255,255,0.55)",
+                    }}
                   >
                     <img
                       src={getFlagUrl(loc.flag)}
@@ -405,16 +424,27 @@ export default function DetailedReachSection() {
                       draggable={false}
                     />
                   </div>
-
-                  <span className="mt-2 px-2.5 py-0.5 text-[11px] font-bold text-white bg-black/70 rounded-md backdrop-blur-md border border-white/10 tracking-wide whitespace-nowrap shadow-xl">
+                  <span
+                    className="mt-1.5 px-2 py-0.5 text-[10px] font-bold rounded whitespace-nowrap shadow-xl tracking-wide"
+                    style={{
+                      color: "white",
+                      backgroundColor: "rgba(0,0,0,0.65)",
+                      backdropFilter: "blur(6px)",
+                      border: "1px solid rgba(255,255,255,0.12)",
+                    }}
+                  >
                     {loc.name.replace(" (Hub)", "")}
                   </span>
                 </div>
               ))}
             </div>
 
-            <canvas ref={canvasRef} className="w-full h-full block touch-none relative z-10" />
+            <canvas
+              ref={canvasRef}
+              className="w-full h-full block touch-none relative z-10"
+            />
           </div>
+
         </div>
       </div>
     </section>
