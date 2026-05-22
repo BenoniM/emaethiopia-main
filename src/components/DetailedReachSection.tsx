@@ -56,6 +56,7 @@ export default function DetailedReachSection() {
   const markerRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const [activeLocation, setActiveLocation] = useState<string>("Ethiopia (Hub)");
+  const activeLocationRef = useRef<string>("Ethiopia (Hub)");
 
   const GLOBE_RADIUS = 100;
   const CAMERA_DISTANCE = 320;
@@ -222,10 +223,13 @@ export default function DetailedReachSection() {
             const projected = pointWorldPos.clone().project(cameraRef.current!);
             const x = (projected.x * 0.5 + 0.5) * container.clientWidth;
             const y = -(projected.y * 0.5 - 0.5) * container.clientHeight;
-            const scale = 0.7 + dotProduct * 0.3;
+            const isActive = loc.name === activeLocationRef.current;
+            const baseScale = 0.7 + dotProduct * 0.3;
+            const scale = isActive ? baseScale * 1.55 : baseScale;
             const opacity = dotProduct > 0 ? 1 : (dotProduct + 0.15) / 0.15;
             marker.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) scale(${scale})`;
             marker.style.opacity = opacity.toString();
+            marker.style.zIndex = isActive ? "50" : "10";
             marker.style.display = "flex";
           } else {
             marker.style.display = "none";
@@ -267,6 +271,7 @@ export default function DetailedReachSection() {
   const handleLocationClick = (name: string, lat: number, lng: number) => {
     if (!controlsRef.current || !cameraRef.current || !globeGroupRef.current) return;
     setActiveLocation(name);
+    activeLocationRef.current = name;
 
     const localTarget = convertLatLngToVector3(lat, lng, CAMERA_DISTANCE);
     localTarget.applyEuler(globeGroupRef.current.rotation);
@@ -402,41 +407,75 @@ export default function DetailedReachSection() {
 
             {/* Floating markers */}
             <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-20">
-              {LOCATIONS.map((loc, i) => (
-                <div
-                  key={`marker-${loc.name}`}
-                  ref={(el) => { markerRefs.current[i] = el; }}
-                  className="absolute top-0 left-0 flex flex-col items-center justify-center origin-center pointer-events-none will-change-transform"
-                >
+              {LOCATIONS.map((loc, i) => {
+                const isActiveMarker = activeLocation === loc.name;
+                return (
                   <div
-                    className="w-9 h-6 rounded overflow-hidden border-2 flex items-center justify-center shadow-lg"
-                    style={{
-                      backgroundColor: "rgba(0,0,0,0.6)",
-                      backdropFilter: "blur(6px)",
-                      borderColor: loc.isHub ? "#ef4444" : "rgba(255,255,255,0.55)",
-                    }}
+                    key={`marker-${loc.name}`}
+                    ref={(el) => { markerRefs.current[i] = el; }}
+                    className="absolute top-0 left-0 flex flex-col items-center justify-center origin-center pointer-events-none will-change-transform"
+                    style={{ transition: "transform 0.3s ease, opacity 0.3s ease" }}
                   >
-                    <img
-                      src={getFlagUrl(loc.flag)}
-                      alt={`${loc.name} flag`}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                      draggable={false}
-                    />
+                    {/* Glow ring behind flag for active marker */}
+                    {isActiveMarker && (
+                      <div
+                        className="absolute rounded-lg pointer-events-none"
+                        style={{
+                          inset: "-5px",
+                          background: loc.isHub
+                            ? "rgba(239,68,68,0.35)"
+                            : "rgba(255,255,255,0.22)",
+                          boxShadow: loc.isHub
+                            ? "0 0 18px 6px rgba(239,68,68,0.5)"
+                            : "0 0 18px 6px rgba(255,255,255,0.35)",
+                          borderRadius: "10px",
+                          zIndex: -1,
+                        }}
+                      />
+                    )}
+
+                    <div
+                      className="rounded overflow-hidden border-2 flex items-center justify-center shadow-lg"
+                      style={{
+                        width:  isActiveMarker ? "44px" : "36px",
+                        height: isActiveMarker ? "30px" : "24px",
+                        transition: "width 0.3s ease, height 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease",
+                        backgroundColor: "rgba(0,0,0,0.7)",
+                        backdropFilter: "blur(6px)",
+                        borderColor: loc.isHub
+                          ? "#ef4444"
+                          : isActiveMarker
+                            ? "rgba(255,255,255,0.95)"
+                            : "rgba(255,255,255,0.45)",
+                        boxShadow: isActiveMarker
+                          ? "0 2px 16px rgba(0,0,0,0.5)"
+                          : "0 1px 6px rgba(0,0,0,0.3)",
+                      }}
+                    >
+                      <img
+                        src={getFlagUrl(loc.flag)}
+                        alt={`${loc.name} flag`}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        draggable={false}
+                      />
+                    </div>
+                    <span
+                      className="mt-1.5 px-2.5 py-0.5 font-bold rounded whitespace-nowrap shadow-xl tracking-wide"
+                      style={{
+                        fontSize: isActiveMarker ? "11px" : "10px",
+                        transition: "font-size 0.3s ease, background-color 0.3s ease, border-color 0.3s ease",
+                        color: "white",
+                        backgroundColor: isActiveMarker ? "rgba(0,0,0,0.85)" : "rgba(0,0,0,0.60)",
+                        backdropFilter: "blur(6px)",
+                        border: `1px solid ${isActiveMarker ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.10)"}`,
+                      }}
+                    >
+                      {loc.name.replace(" (Hub)", "")}
+                    </span>
                   </div>
-                  <span
-                    className="mt-1.5 px-2 py-0.5 text-[10px] font-bold rounded whitespace-nowrap shadow-xl tracking-wide"
-                    style={{
-                      color: "white",
-                      backgroundColor: "rgba(0,0,0,0.65)",
-                      backdropFilter: "blur(6px)",
-                      border: "1px solid rgba(255,255,255,0.12)",
-                    }}
-                  >
-                    {loc.name.replace(" (Hub)", "")}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <canvas
