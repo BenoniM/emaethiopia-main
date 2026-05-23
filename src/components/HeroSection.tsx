@@ -96,8 +96,8 @@ useEffect(() => {
   if (!grainTrackRef.current) return;
 
   const totalItems = grainProducts.length;
-  const itemWidth = 130; // Matches your div width
-  const gap = 12; // Matches gap-3
+  const itemWidth = 150;
+  const gap = 12;
   const stepDistance = itemWidth + gap;
 
   // Create a continuous seamless loop
@@ -154,8 +154,14 @@ useEffect(() => {
             />
           </div>
         ))}
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-foreground/55" style={{ zIndex: 3 }} />
+        {/* Gradient overlay — bottom to top, 80% coverage */}
+        <div 
+          className="absolute inset-0" 
+          style={{ 
+            zIndex: 3,
+            background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.75) 30%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 80%)"
+          }} 
+        />
       </div>
 
       {/* ============ MAIN CONTENT LAYER ============ */}
@@ -216,10 +222,10 @@ useEffect(() => {
   </div>
 </a>
 
-{/* Changing Grains — Original Width, Infinite Loop */}
+{/* Changing Grains — 3-4 visible, taller cards */}
 <div
   ref={grainContainerRef}
-  className="relative w-full max-w-[360px] md:w-[360px] overflow-hidden drop-shadow-md mx-auto"
+  className="relative w-full max-w-[640px] md:w-[640px] overflow-hidden drop-shadow-md mx-auto"
   style={{ opacity: 0 }}
 >
   <div 
@@ -227,17 +233,15 @@ useEffect(() => {
     className="flex gap-3"
     style={{ 
       width: "max-content",
-      // Offset by roughly one and a half items to start with a grain in the center
-      paddingLeft: "109px" 
+      paddingLeft: "16px" 
     }}
   >
-    {/* We clone the array once for the seamless wrap-around */}
     {[...grainProducts, ...grainProducts].map((product, i) => (
       <div
         key={`${product.name}-${i}`}
-        className="w-[130px] shrink-0 cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-white/10 backdrop-blur-md transition-all hover:bg-white/20"
+        className="w-[150px] shrink-0 cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-white/10 backdrop-blur-md transition-all hover:bg-white/20"
       >
-        <div className="aspect-square overflow-hidden">
+        <div className="h-[150px] overflow-hidden">
           <img
             src={product.image}
             alt={product.name}
@@ -253,9 +257,8 @@ useEffect(() => {
     ))}
   </div>
 
-  {/* Optional: Soft Gradient Overlays to "fade" the cuts */}
-  <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-[#154716]/40 to-transparent pointer-events-none z-10" />
-  <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[#154716]/40 to-transparent pointer-events-none z-10" />
+  <div className="absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-black/30 to-transparent pointer-events-none z-10" />
+  <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-black/30 to-transparent pointer-events-none z-10" />
 </div>
         </div>
 

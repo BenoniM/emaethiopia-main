@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, HeartPulse, Shield, Truck, Stethoscope } from "lucide-react";
 import ImportsShowcase from "@/components/ImportsShowcase";
 
-import importHero1 from "@/assets/import-imgs/pexels-i-sens-usa-578245562-17072086.jpg";
-import importHero2 from "@/assets/import-imgs/pexels-mart-production-7088493.jpg";
-import importHero3 from "@/assets/import-imgs/pexels-rdne-6519843.jpg";
+import importHero1 from "@/assets/import-imgs/blood.jpg";
+import importHero2 from "@/assets/import-imgs/dh201.jpg";
+import importHero3 from "@/assets/import-imgs/hemoglobin1.jpg";
 
 const importSlides = [
   { image: importHero1, alt: "Medical equipment diagnostic device" },

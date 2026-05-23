@@ -35,9 +35,9 @@ import qualityTest from "@/assets/work-process/quality-test.png";
 import assurance from "@/assets/serv/assurance.png";
 import exportDelivery from "@/assets/work-process/export-delivery.jpg";
 import sourcing from "@/assets/serv/sourcing.jpg";
-import sample from "@/assets/process/sample.png";
-import dry from "@/assets/process/dry.png";
-import breaka from "@/assets/process/break.png";
+import sample from "@/assets/process/preparation.jpg";
+import dry from "@/assets/process/duket.jpg";
+import breaka from "@/assets/process/brewing.jpeg";
 import skim from "@/assets/process/cooling.jpeg";
 import slurp from "@/assets/process/coffeetasting.jpeg";
 import final from "@/assets/process/final.png";
@@ -60,9 +60,9 @@ const labServices = [
   },
   {
     icon: Award,
-    title: "Q-Grading & Certification",
+    title: "Cupping License Certified",
     description:
-      "Our certified Q-Graders score each coffee lot using the SCAA 100-point system. Lots scoring 80+ are classified as Specialty Grade, with full certification documentation provided.",
+      "Our certified Cupping score each coffee lot using the SCAA 100-point system. Lots scoring 80+ are classified as Specialty Grade, with full certification documentation provided.",
     tag: "Certification",
     accent: "#1B5E20",
   },

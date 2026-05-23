@@ -26,6 +26,8 @@ import bgMungBean from "@/assets/product-mung-bean.jpg";
 import bgHaricot from "@/assets/product-haricot.jpg";
 import bgOilSeed from "@/assets/product-oilseeds.jpg";
 import bgSpices from "@/assets/product-spices.png";
+import gumOlibanum from "@/assets/export-imgs/gum1.jpeg";
+import bgGum from "@/assets/export-imgs/gum2.jpeg";
 
 /* ─── product data ─────────────────────────────────────────── */
 interface Product {
@@ -267,9 +269,9 @@ const products: Product[] = [
     isOverview: false,
     adjustments: { wheel: { x: "0%", y: "10%", scale: 1.1, rotate: -9, mobile: { x: "0%", y: "-10%", scale: 1, rotate: 0 } } },
     description:
-      "Authentic Ethiopian spices including Black Cumin (Nigella Sativa), Turmeric Finger Type, and Gum Olibanum (Frankincense) — exported globally for culinary, medicinal, and industrial applications.",
+      "Authentic Ethiopian spices including Black Cumin (Nigella Sativa) and Turmeric Finger Type — exported globally for culinary, medicinal, and industrial applications.",
     longDescription:
-      "Our spice range covers some of Ethiopia's most prized exports. Black Cumin is valued for its high content of essential oils, antioxidants, and natural bioactive compounds. Turmeric Finger Type is double polished from Ethiopian origin. Gum Olibanum (Frankincense) is the ancient aromatic gum-resin extracted from Boswellia trees found in Ethiopia's arid regions.",
+      "Our spice range covers some of Ethiopia's most prized exports. Black Cumin is valued for its high content of essential oils, antioxidants, and natural bioactive compounds. Turmeric Finger Type is double polished from Ethiopian origin.",
     specs: ["Organic Available", "Sun Dried", "Hand Sorted", "Essential Oils"],
     qualitySpecs: [
       "Black Cumin Purity 99% min",
@@ -283,9 +285,22 @@ const products: Product[] = [
     varieties: [
       { name: "Black Cumin (Nigella Sativa)", description: "Purity 99% min, moisture max 12%, free from any kind of infestation. A premium aromatic seed known for its distinctive black color, slightly bitter taste, and strong, earthy aroma. Widely used in traditional medicine, food processing, and spice blends. Valued for its high content of essential oils, antioxidants, and natural bioactive compounds. Commonly used in bakery products, spice mixes, herbal remedies, and oil extraction. In strong demand across domestic and international markets for both culinary and health-related applications." },
       { name: "Turmeric Finger Type", description: "Ethiopian origin, double polished. Moisture max 14%, damaged finger max 3%, free from any pest and weevil. A deep orange-yellow spice derived from the ground rhizome (underground stem) of the Curcuma longa plant, a member of the ginger family." },
-      { name: "Gum Olibanum (Frankincense)", description: "Gum Olibanum is the ancient and proper name for Frankincense — an aromatic gum-resin extracted from trees of the genus Boswellia, primarily found in arid regions of Africa and Arabia (e.g., Somalia, Oman, Ethiopia)." },
     ],
     origin: "Various Regions, Ethiopia",
+  },
+  {
+    id: "gum-olibanum",
+    title: "Gum Olibanum",
+    subtitle: "Ethiopian Frankincense",
+    color: "#7A5C3A",
+    image: gumOlibanum,
+    bgImage: bgGum,
+    isOverview: false,
+    adjustments: { wheel: { x: "0%", y: "0%", scale: 1.1, rotate: 0, mobile: { x: "0%", y: "-10%", scale: 1, rotate: 0 } } },
+    description:
+      "Gum Olibanum is the ancient and proper name for Frankincense, an aromatic gum resin extracted from trees of the genus Boswellia, primarily found in arid regions of Africa and Arabia (e.g., Somalia, Oman, Ethiopia).",
+    specs: [],
+    origin: "Ethiopia",
   },
 ];
 
@@ -925,9 +940,10 @@ const ProductsPage = () => {
                 </div>
               </div>
             ) : (
-              <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+              <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
                 <div
-                  className="detail-image relative aspect-square rounded-3xl flex items-center justify-center overflow-hidden border border-white/10 shadow-2xl bg-black/10 backdrop-blur-sm"
+                  className="detail-image relative rounded-3xl flex items-center justify-center overflow-hidden border border-white/10 shadow-2xl bg-black/10 backdrop-blur-sm lg:sticky lg:top-24"
+                  style={{ aspectRatio: "3/4", maxHeight: "80vh" }}
                 >
                   <div
                     className="absolute inset-0 opacity-[0.15]"
@@ -938,7 +954,7 @@ const ProductsPage = () => {
                   <img
                     src={active.image!}
                     alt={active.title}
-                    className="relative z-10 w-3/5 h-3/5 object-contain filter drop-shadow-2xl"
+                    className="relative z-10 w-4/5 h-4/5 object-contain filter drop-shadow-2xl"
                   />
                 </div>
 

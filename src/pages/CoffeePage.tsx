@@ -158,7 +158,20 @@ const OriginsShowcase = () => {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <section ref={ref} className="relative bg-[#061507] py-20 lg:py-32 overflow-hidden border-b border-white/5">
+    <section ref={ref} className="relative bg-[#F0F4F0] lg:py-32 overflow-hidden border-b border-white/5">
+      {/* Animated blur orbs */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.2]">
+        <motion.div
+          animate={{ x: [0, 50, 0], y: [0, 30, 0] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-10 -left-10 w-96 h-96 bg-primary/20 blur-[100px] rounded-full"
+        />
+        <motion.div
+          animate={{ x: [0, -40, 0], y: [0, 60, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute top-1/2 -right-20 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full"
+        />
+      </div>
       <div className="container relative mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -166,15 +179,15 @@ const OriginsShowcase = () => {
           transition={{ duration: 0.7 }}
           className="mb-16 text-center"
         >
-          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#8be08b]/20 bg-[#8be08b]/10 px-4 py-1.5 font-body text-xs font-semibold tracking-widest text-[#8be08b] uppercase">
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#8be08b]/20 bg-[#8be08b]/10 px-4 py-1.5 font-body text-xs font-semibold tracking-widest text-primary uppercase">
             <MapPin className="h-4 w-4" />
             Discover The Origins
           </span>
-          <h2 className="mb-6 font-display text-4xl font-bold text-white md:text-5xl lg:text-6xl">
+          <h2 className="mb-6 font-display text-4xl font-bold text-primary md:text-5xl lg:text-6xl">
             Flavors Rooted in{" "}
-            <span className="text-white/60">Terroir</span>
+            <span className="text-gradiant">Terroir</span>
           </h2>
-          <p className="mx-auto max-w-2xl font-body text-lg leading-relaxed text-white/60">
+          <p className="mx-auto max-w-2xl font-body text-lg leading-relaxed text-primary">
             Our premium selections represent Ethiopia's most celebrated growing regions — each with
             distinct cup characteristics shaped by altitude, soil, and processing method.
           </p>
@@ -206,7 +219,7 @@ const OriginsShowcase = () => {
                 <img 
                   src={origin.image} 
                   alt={origin.name} 
-                  className="w-full h-full object-cover opacity-20 scale-125 blur-sm transition-all duration-700 group-hover:scale-150 group-hover:opacity-40 group-hover:blur-none" 
+                  className="w-full h-full object-cover  scale-125 blur-sm transition-all duration-700 group-hover:scale-150 group-hover:blur-none" 
                 />
 
                 <div className="absolute inset-0 transition-opacity duration-500 group-hover:opacity-60" />
@@ -216,7 +229,7 @@ const OriginsShowcase = () => {
 
                 <div className="mb-4 flex items-center gap-2">
                   <div className={`h-2 w-2 rounded-full transition-colors duration-300 ${hovered === i ? "bg-[#8be08b]" : "bg-white/30"}`} />
-                  <span className="font-body text-xs font-bold tracking-[0.2em] text-white/50 uppercase">
+                  <span className="font-body text-xs font-bold tracking-[0.2em] text-white uppercase">
                     {origin.region}
                   </span>
                 </div>
@@ -225,7 +238,7 @@ const OriginsShowcase = () => {
                   {origin.name}
                 </h3>
 
-                <p className="font-body text-sm leading-relaxed text-white/70">
+                <p className="font-body text-sm leading-relaxed text-white">
                   {origin.notes}
                 </p>
               </div>

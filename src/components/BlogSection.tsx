@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 // Updated Image Imports
 import birthplace from "@/assets/blog/birthplace.jpg";
-import cafeShow from "@/assets/blog/Cafe-Show-Seoul-2023.jpeg";
+import cafeShow from "@/assets/news/china1.jpg";
 import homeBg from "@/assets/blog/Home.jpg";
 import specialty from "@/assets/blog/speciality.jpg";
 
@@ -14,9 +14,9 @@ const blogPosts = [
   {
     image: cafeShow,
     category: "Event",
-    title: "Join Us at the 23rd Seoul International Cafe Show",
+    title: "We’re heading to HOTELEX Shanghai",
     excerpt:
-      "We're excited to invite you to the 23rd Seoul International Cafe Show, taking place from November 6–9, 2024, at Coex in Seoul, South Korea. Visit our booth to sample premium Ethiopian green coffee beans.",
+      "Join us at one of the world’s leading hospitality exhibitions from March 30 – April 2.Let’s connect, explore new opportunities, and build impactful partnerships together.See you at HOTELEX.",
   },
   {
     image: homeBg,

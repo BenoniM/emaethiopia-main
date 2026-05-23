@@ -27,7 +27,11 @@ import import1 from "@/assets/import1.jpg";
 import import2  from "@/assets/import2.jpg";
 import import3 from "@/assets/import3.jpg";
 import import4 from "@/assets/import4.jpg";
-
+import china1 from "@/assets/news/china3.jpg"
+import china2 from "@/assets/news/china2.jpg"
+import china3 from "@/assets/news/china1.jpg"
+import china4 from "@/assets/news/china4.jpg"
+import china5 from "@/assets/news/china5.jpg"
 
 export type BlogPost = {
   id: number;
@@ -47,14 +51,14 @@ export type BlogPost = {
 export const blogPosts: BlogPost[] = [
   {
     id: 1,
-    title: " Calling all Coffee Connoisseurs!",
+    title: " We’re heading to HOTELEX Shanghai",
     excerpt:
-      "Ema Coffee, Ethiopia's finest export, is excited to announce our participation in the Speciality Coffee Expo 2024 in Chicago! 🌍☕️ Join us to experience the rich heritage and exquisite flavors of Ethiopian coffee. From the birthplace of coffee to your cup, let's celebrate the artistry and passion behind every sip. ",
+      "Join us at one of the world’s leading hospitality exhibitions from March 30 – April 2.Let’s connect, explore new opportunities, and build impactful partnerships together.See you at HOTELEX.",
     author: "Admin",
     date: "April 12-14, 2024",
     category: "Exports",
     tag: "LinkedIn",
-    image: blogImg1,
+    image: china3,
     featured: true,
     readTime: "5 min read",
     body: [
@@ -77,7 +81,7 @@ export const blogPosts: BlogPost[] = [
         text: "As global demand for ethically sourced, traceable agricultural products grows, Ethiopia's position as a premier exporter only strengthens. EMA is proud to be at the forefront of this story — connecting the world to the richness of Ethiopian soil.",
       },
     ],
-    gallery: [photoBirthplace, photoHome, photoSpeciality, photoCafeShow],
+    gallery: [china2, china3, china4, china1],
   },
   {
     id: 2,

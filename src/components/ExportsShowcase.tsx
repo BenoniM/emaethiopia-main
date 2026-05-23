@@ -4,17 +4,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
 
 // Grain images (left column)
-import grainCoffee from "@/assets/export-imgs/singlecoffee.png";
+import grainCoffee from "@/assets/export-imgs/green-coffee.png";
 import grainSesame from "@/assets/export-imgs/sesame-seeds.png";
 import grainNiger from "@/assets/export-imgs/niger-seed.png";
 import grainKidney from "@/assets/export-imgs/singlebeans.png";
 import grainChickpea from "@/assets/export-imgs/chickpea.png";
 
 // Food images (right column)
-import foodCoffee from "@/assets/export-imgs/coffee1.png";
+import foodCoffee from "@/assets/export-imgs/coffee2.png";
 import foodSesame from "@/assets/sesame.jpg";
 import foodNiger from "@/assets/nigerseed.jpg";
-import foodKidney from "@/assets/export-imgs/redbeans.png";
+import foodKidney from "@/assets/export-imgs/beans2.png";
 import foodChickpea from "@/assets/chickpeas.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -190,12 +190,11 @@ const ExportsShowcase = () => {
                       pointerEvents: isActive ? "auto" : "none",
                     }}
                   >
-                    <Link
-                      to="/export-products"
+                    <span
                       className="text-white/40 hover:text-white group-hover/center:text-black/40 group-hover/center:hover:text-black transition-colors duration-[800ms] font-display text-[11px] tracking-wider uppercase"
                     >
                       {p.cta}
-                    </Link>
+                    </span>
                     <p className="font-serif text-[14px] italic text-white/40 group-hover/center:text-black/60 transition-colors duration-[800ms] max-w-[280px]">
                       {p.description}
                     </p>

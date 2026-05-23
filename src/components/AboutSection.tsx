@@ -6,7 +6,7 @@ import gsap from "gsap";
 
 // Assets
 import teamCupping from "@/assets/team-cupping.png";
-import coffeeLab from "@/assets/pexels-ebahir-29452438.jpg";
+import coffeeLab from "@/assets/coffee/abouus3.jpg";
 import aboutSeedlings from "@/assets/about.jpg";
 
 const highlights = [
@@ -14,7 +14,7 @@ const highlights = [
   "Sesame seeds, Niger seeds & oil seed crops",
   "Chickpea, haricot beans, mung bean & red kidney bean",
   "Medical equipment & diagnostic devices import",
-  "ISO-certified processing & Coffee Laboratory",
+  "Cupping License Certified",
   "Direct farmer partnerships & fair trade",
 ];
 

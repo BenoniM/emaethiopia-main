@@ -77,8 +77,12 @@ const Footer = () => {
                 <li>
                   <a href="mailto:export@emaethiopia.com" className="hover:text-[#f7f4ed] transition-colors inline-block relative after:absolute after:-bottom-0.5 after:left-0 after:w-0 hover:after:w-full after:h-px after:bg-[#f7f4ed] after:transition-all">export@emaethiopia.com</a>
                 </li>
-                <li>
-                  <span className="opacity-60 pr-2">T:</span> <a href="tel:+251961260001" className="hover:text-[#f7f4ed] transition-colors inline-block relative after:absolute after:-bottom-0.5 after:left-0 after:w-0 hover:after:w-full after:h-px after:bg-[#f7f4ed] after:transition-all">+251 961260001</a>
+                <li className="flex items-start gap-0">
+                  <span className="opacity-60 pr-2 shrink-0">T:</span>
+                  <div className="flex flex-col gap-0.5">
+                    <a href="tel:+251961260001" className="hover:text-[#f7f4ed] transition-colors inline-block relative after:absolute after:-bottom-0.5 after:left-0 after:w-0 hover:after:w-full after:h-px after:bg-[#f7f4ed] after:transition-all">+251 961260001</a>
+                    <a href="tel:+251929908566" className="hover:text-[#f7f4ed] transition-colors inline-block relative after:absolute after:-bottom-0.5 after:left-0 after:w-0 hover:after:w-full after:h-px after:bg-[#f7f4ed] after:transition-all">+251 929908566</a>
+                  </div>
                 </li>
               </ul>
             </div>
