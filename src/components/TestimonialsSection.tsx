@@ -169,7 +169,7 @@ const TestimonialsSection = () => {
         className="absolute inset-0 z-10 flex flex-col items-center justify-start pt-16 md:pt-24 pointer-events-none"
       >
         <h2 className="font-display text-4xl md:text-6xl font-bold text-white tracking-tight text-center leading-[0.85]">
-          What Our<br /><span className="text-green-500">Clients Say.</span>
+          What Our<br /><span className="text-green-500">Clients Say</span>
         </h2>
       </div>
 
