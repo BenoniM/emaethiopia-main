@@ -10,7 +10,7 @@ import heroSlide3 from "@/assets/hero-slide-3.jpg";
 import heroSlide4 from "@/assets/hero-slide-4.jpg";
 import heroSlide5 from "@/assets/hero-slide-5.jpg";
 import heroSlide6 from "@/assets/hero-slide-6.jpg";
-import productCoffeeGreen from "@/assets/export-imgs/coffee1.png";
+import productCoffeeGreen from "@/assets/export-imgs/coffee2.png";
 import productSesame from "@/assets/product-sesame.jpg";
 import productChickpea from "@/assets/product-chickpea.jpg";
 import productKidney from "@/assets/product-kidney.png";
@@ -159,7 +159,7 @@ useEffect(() => {
           className="absolute inset-0" 
           style={{ 
             zIndex: 3,
-            background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.75) 30%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 80%)"
+            background: "linear-gradient(to top, rgba(37,153,37,0.97) 0%, rgba(37,153,37,0.90) 15%, rgba(37,153,37,0.60) 45%, rgba(37,153,37,0) 100%)"
           }} 
         />
       </div>

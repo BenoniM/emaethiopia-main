@@ -26,8 +26,8 @@ import bgMungBean from "@/assets/product-mung-bean.jpg";
 import bgHaricot from "@/assets/product-haricot.jpg";
 import bgOilSeed from "@/assets/product-oilseeds.jpg";
 import bgSpices from "@/assets/product-spices.png";
-import gumOlibanum from "@/assets/export-imgs/gum1.jpeg";
-import bgGum from "@/assets/export-imgs/gum2.jpeg";
+import gumOlibanum from "@/assets/export-imgs/gum3.png";
+import bgGum from "@/assets/export-imgs/gum3.png";
 
 /* ─── product data ─────────────────────────────────────────── */
 interface Product {
