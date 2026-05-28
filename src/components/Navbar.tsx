@@ -290,109 +290,153 @@ const Navbar = () => {
     ? undefined
     : { textShadow: "0 1px 6px rgba(0,0,0,0.55)" };
 
+  const isHomePage = location.pathname === "/";
+  
+  const headerBgClass = isHomePage 
+    ? (scrolled && !menuOpenRef.current ? "backdrop-blur-md bg-white/95 shadow-md border border-gray-100/50" : "bg-transparent") 
+    : "bg-primary shadow-lg"; // primary color for bg on non-home pages
+
+  const headerShapeClass = scrolled && !menuOpenRef.current
+    ? "mt-4 md:mt-5 rounded-full mx-auto w-[96%] max-w-7xl"
+    : "mt-0 rounded-none mx-auto w-full max-w-full";
+
+  const navTextBase = isHomePage && scrolled ? "text-primary drop-shadow-none" : "text-white drop-shadow-sm";
+  const navTextHover = isHomePage && scrolled ? "hover:text-primary/80" : "hover:text-white/80";
+
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 pointer-events-none transition-all duration-500 ${scrolled && !menuOpenRef.current ? "backdrop-blur-md bg-foreground/15" : "bg-transparent"}`}
+      <div 
+        className="fixed top-0 left-0 right-0 flex justify-center z-50 pointer-events-none transition-transform duration-500 ease-in-out"
         style={{ transform: isVisible ? "translateY(0)" : "translateY(-100%)" }}
       >
-        <div className="flex items-start justify-between px-6 py-5 md:px-10 md:py-6 relative w-full h-full pointer-events-none">
-          <Link to="/" className="relative z-[60] pointer-events-auto">
-            <img src={emaLogo} alt="EMA Ethiopia" className="h-14 w-14 rounded-full transition-transform duration-300 hover:scale-110" />
-          </Link>
+        <header
+          className={`relative pointer-events-auto transition-all duration-500 ease-in-out flex flex-col justify-center ${headerBgClass} ${headerShapeClass}`}
+        >
+          <div className="flex items-center justify-between px-5 py-1 md:py-2 md:px-8 relative w-full pointer-events-none h-14 md:h-16">
+            {/* Logo */}
+            <Link to="/" className="relative z-[60] pointer-events-auto flex-shrink-0">
+               <img src={emaLogo} alt="EMA Ethiopia" className="h-11 w-11 md:h-11 md:w-11 rounded-full transition-transform duration-500 hover:scale-110 " />
+            </Link>
 
-          <div className="relative z-[60] flex flex-col items-center pointer-events-auto">
-            <button
-              onClick={toggleMenu}
-              className={`relative z-20 flex h-14 w-14 items-center justify-center rounded-full transition-all duration-300 overflow-hidden ${menuOpen ? "bg-[#1D781D] border border-white" : "bg-transparent"}`}
-              aria-label={menuOpenRef.current ? "Close menu" : "Open menu"}
+            {/* Desktop Nav Links (Slides from right to center) */}
+            <div 
+              className="hidden md:flex absolute top-1/2 items-center gap-8 z-[60] pointer-events-auto whitespace-nowrap transition-all duration-500 ease-in-out"
+              style={{
+                left: scrolled ? '50%' : 'calc(100% - 2.5rem)',
+                transform: scrolled ? 'translate(-50%, -50%)' : 'translate(-100%, -50%)'
+              }}
             >
-              {!menuOpen && <div className="absolute inset-0 bg-[#1D781D] backdrop-blur-md rounded-full pointer-events-none transition-opacity duration-300 opacity-90 hover:opacity-100" />}
-              <svg viewBox="0 0 59 59" fill="none" className="h-10 w-10 relative z-10" aria-hidden="true">
-                <path ref={topLineRef} d="M14.5 19.5 L27.5 19.5" stroke="white" strokeWidth="5" strokeLinecap="round" className="transition-colors duration-300" />
-                <path ref={middleLineRef} d="M14.5 29.5 L44.5 29.5" stroke="white" strokeWidth="5" strokeLinecap="round" className="transition-colors duration-300" />
-                <path ref={bottomLineRef} d="M31.5 39.5 L44.5 39.5" stroke="white" strokeWidth="5" strokeLinecap="round" className="transition-colors duration-300" />
-              </svg>
-            </button>
+              {navLinks.map((link) => (
+                <div key={link.label} className="relative group/desklink">
+                  {link.subLinks ? (
+                    <div className="flex items-center gap-1.5 cursor-pointer py-2">
+                      <span className={`font-body text-[15px] font-semibold transition-colors duration-500 ease-in-out ${navTextBase} ${navTextHover}`}>
+                        {link.label}
+                      </span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={`mt-0.5 group-hover/desklink:rotate-180 transition-transform ${navTextBase}`}>
+                        <path d="m6 9 6 6 6-6" />
+                      </svg>
+                    </div>
+                  ) : (
+                    <Link to={link.href} className={`font-body text-[15px] font-semibold transition-colors py-2 block ${navTextBase} ${navTextHover}`}>
+                      {link.label}
+                    </Link>
+                  )}
+                  
+                  {/* Desktop Dropdown */}
+                  {link.subLinks && (
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-black/5 opacity-0 invisible group-hover/desklink:opacity-100 group-hover/desklink:visible transition-all duration-300 transform origin-top translate-y-2 group-hover/desklink:translate-y-0 flex flex-col overflow-hidden">
+                      {link.subLinks.map((sub) => (
+                        <Link key={sub.label} to={sub.href} className="px-5 py-3.5 text-sm font-body font-semibold text-black hover:bg-primary hover:text-white transition-colors border-b border-gray-100 last:border-0">
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
 
-            <div ref={menuPanelRef} className="absolute top-14 left-1/2 -translate-x-1/2 w-[320px] pointer-events-none z-10" style={{ display: "none", opacity: 0 }}>
-              <nav className="relative flex flex-col w-full h-full">
-                <div ref={menuLineRef} className={`absolute top-0 bottom-6 left-1/2 -translate-x-[0.5px] w-[1px] opacity-80 transition-colors duration-300 ${activeLineBgClass}`} style={{ transformOrigin: "top", transform: "scaleY(0)" }} />
+            {/* Mobile Hamburger Menu */}
+            <div className="relative z-[60] flex flex-col items-center pointer-events-auto md:hidden">
+              <button
+                onClick={toggleMenu}
+                className={`relative z-20 flex h-12 w-12 items-center justify-center rounded-full transition-all duration-300 overflow-hidden ${menuOpen ? "bg-primary border border-white" : "bg-transparent"}`}
+                aria-label={menuOpenRef.current ? "Close menu" : "Open menu"}
+              >
+                {!menuOpen && <div className="absolute inset-0 bg-primary backdrop-blur-md rounded-full pointer-events-none transition-opacity duration-300 opacity-90 hover:opacity-100" />}
+                <svg viewBox="0 0 59 59" fill="none" className="h-8 w-8 relative z-10" aria-hidden="true">
+                  <path ref={topLineRef} d="M14.5 19.5 L27.5 19.5" stroke="white" strokeWidth="5" strokeLinecap="round" className="transition-colors duration-300" />
+                  <path ref={middleLineRef} d="M14.5 29.5 L44.5 29.5" stroke="white" strokeWidth="5" strokeLinecap="round" className="transition-colors duration-300" />
+                  <path ref={bottomLineRef} d="M31.5 39.5 L44.5 39.5" stroke="white" strokeWidth="5" strokeLinecap="round" className="transition-colors duration-300" />
+                </svg>
+              </button>
 
-                <div className="flex flex-col relative w-full pt-4 pb-8">
-                  {navLinks.map((link, i) => (
-                    <div
-                      key={link.label}
-                      ref={(el) => { menuItemsRef.current[i] = el; }}
-                      className="group/link relative flex flex-col items-end w-full pr-[calc(50%+30px)] min-h-[48px] justify-start pt-[12px] opacity-0"
-                      style={{ transform: "translateX(-20px)" }}
-                    >
-                      <img
-                        ref={(el) => { menuDotsRef.current[i] = el; }}
-                        src={littleDot}
-                        alt=""
-                        className={`absolute right-[152px] top-[17px] translate-x-1/2 h-[14px] w-[14px] z-10 drop-shadow-md transition-all duration-300 ${activeDotClass}`}
-                        style={{ opacity: 0, transform: "scale(0)" }}
-                      />
-
-                      {/* Main Link Logic */}
-                      {link.subLinks ? (
-                        <div className="flex items-center gap-2 cursor-default">
-                          <span
-                            className={`text-lg lg:text-xl font-body font-medium whitespace-nowrap block transition-colors duration-300 ${activeTextColorClass}`}
-                            style={textShadow}
+              {/* Mobile Menu Panel */}
+              <div ref={menuPanelRef} className="absolute top-14 right-0 w-[260px] pointer-events-none z-10" style={{ display: "none", opacity: 0 }}>
+                <nav className="relative flex flex-col w-full h-full bg-black/70 backdrop-blur-xl rounded-3xl border border-white/20 mt-4 p-5 shadow-2xl">
+                  <div className="flex flex-col relative w-full">
+                    {navLinks.map((link, i) => (
+                      <div
+                        key={link.label}
+                        ref={(el) => { menuItemsRef.current[i] = el; }}
+                        className="group/link relative flex flex-col w-full min-h-[44px] justify-start py-2 opacity-0"
+                        style={{ transform: "translateX(-20px)" }}
+                      >
+                        {/* Main Link Logic */}
+                        {link.subLinks ? (
+                          <div className="flex items-center justify-between gap-2 cursor-default border-b border-white/10 pb-2">
+                            <span className="text-base font-body font-semibold whitespace-nowrap block text-white drop-shadow-md">
+                              {link.label}
+                            </span>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16" height="16"
+                              viewBox="0 0 24 24" fill="none"
+                              stroke="currentColor" strokeWidth="2.5"
+                              className="transition-transform duration-300 group-hover/link:rotate-90 text-white"
+                            >
+                              <path d="m9 18 6-6-6-6" />
+                            </svg>
+                          </div>
+                        ) : (
+                          <Link
+                            to={link.href}
+                            className="text-base font-body font-semibold whitespace-nowrap block text-white drop-shadow-md border-b border-white/10 pb-2"
+                            onClick={closeMenu}
                           >
                             {link.label}
-                          </span>
-                          {/* Chevron Arrow */}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16" height="16"
-                            viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" strokeWidth="2.5"
-                            className={`transition-transform duration-300 group-hover/link:rotate-90 ${isLightMenu ? "text-[#1D781D]" : "text-white/80"}`}
-                          >
-                            <path d="m9 18 6-6-6-6" />
-                          </svg>
-                        </div>
-                      ) : (
-                        <Link
-                          to={link.href}
-                          className={`text-lg lg:text-xl font-body font-medium whitespace-nowrap block transition-colors duration-300 ${activeTextColorClass}`}
-                          style={textShadow}
-                          onClick={closeMenu}
-                        >
-                          {link.label}
-                        </Link>
-                      )}
+                          </Link>
+                        )}
 
-                      {/* Sub-links */}
-                      {link.subLinks && (
-                        <div className="grid grid-rows-[0fr] group-hover/link:grid-rows-[1fr] transition-[grid-template-rows] duration-300 overflow-visible">
-                          <div className="overflow-hidden min-h-0 pt-2 opacity-0 group-hover/link:opacity-100 transition-opacity duration-300 delay-100">
-                            <div className="flex flex-col items-end gap-2">
-                              {link.subLinks.map((subLink) => (
-                                <Link
-                                  key={subLink.label}
-                                  to={subLink.href}
-                                  className={`font-body text-sm whitespace-nowrap block text-right pr-0 transition-colors duration-300 ${activeSubTextColorClass}`}
-                                  onClick={closeMenu}
-                                >
-                                  {subLink.label}
-                                </Link>
-                              ))}
+                        {/* Sub-links */}
+                        {link.subLinks && (
+                          <div className="grid grid-rows-[0fr] group-hover/link:grid-rows-[1fr] transition-[grid-template-rows] duration-300 overflow-visible">
+                            <div className="overflow-hidden min-h-0 pt-2 opacity-0 group-hover/link:opacity-100 transition-opacity duration-300 delay-100">
+                              <div className="flex flex-col gap-2 pl-4 border-l-2 border-primary mt-1">
+                                {link.subLinks.map((subLink) => (
+                                  <Link
+                                    key={subLink.label}
+                                    to={subLink.href}
+                                    className="font-body text-sm whitespace-nowrap block text-white/90 hover:text-white transition-colors duration-300 py-1"
+                                    onClick={closeMenu}
+                                  >
+                                    {subLink.label}
+                                  </Link>
+                                ))}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </nav>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </nav>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
+      </div>
     </>
   );
 };

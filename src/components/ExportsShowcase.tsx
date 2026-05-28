@@ -16,7 +16,10 @@ import foodSesame from "@/assets/sesame.jpg";
 import foodNiger from "@/assets/nigerseed.jpg";
 import foodKidney from "@/assets/export-imgs/beans2.png";
 import foodChickpea from "@/assets/chickpeas.jpg";
-
+import grainSpices from "@/assets/export-imgs/spices-herbs.png";
+import spicesHerbs from "@/assets/export-imgs/spiceswithbg.png";
+import gumOlibanum from "@/assets/export-imgs/gum3.png";
+import grainGum from "@/assets/export-imgs/gumwithbg.png";
 gsap.registerPlugin(ScrollTrigger);
 
 const products = [
@@ -29,23 +32,23 @@ const products = [
     cta: "Click to explore",
   },
   {
-    name: "Sesame Seeds",
+    name: "Oil Seeds",
     origin: "Humera · Wollega",
     description: "Humera and Wollega sesame seeds with 50–55% oil content — the gold standard for tahini, confections, and culinary oils.",
     grainImage: grainSesame,
     foodImage: foodSesame,
     cta: "Click to explore",
   },
+  // {
+  //   name: "Niger Seeds",
+  //   origin: "Ethiopian Highlands",
+  //   description: "High-quality Ethiopian Niger seeds (Noug) with 38–43% oil content — essential for oil extraction, traditional Ethiopian cuisine, and premium bird feed.",
+  //   grainImage: grainNiger,
+  //   foodImage: foodNiger,
+  //   cta: "Click to explore",
+  // },
   {
-    name: "Niger Seeds",
-    origin: "Ethiopian Highlands",
-    description: "High-quality Ethiopian Niger seeds (Noug) with 38–43% oil content — essential for oil extraction, traditional Ethiopian cuisine, and premium bird feed.",
-    grainImage: grainNiger,
-    foodImage: foodNiger,
-    cta: "Click to explore",
-  },
-  {
-    name: "Red Kidney Beans",
+    name: "Pulses",
     origin: "Southern Ethiopia",
     description: "Nutrient-rich Ethiopian red kidney beans — packed with protein and fiber, exported to international food markets for stews, curries, and health cooking.",
     grainImage: grainKidney,
@@ -53,11 +56,19 @@ const products = [
     cta: "Click to explore",
   },
   {
-    name: "Chickpea",
-    origin: "Debre Zeit · Amhara",
-    description: "Desi and Kabuli chickpeas cultivated in Ethiopia's fertile central highlands — exported globally for hummus, falafel, and beyond.",
-    grainImage: grainChickpea,
-    foodImage: foodChickpea,
+    name: "Spices and Herbs",
+    origin: "Various Regions, Ethiopia",
+    description: "Our spice range covers some of Ethiopia's most prized exports, valued for their high content of essential oils, antioxidants, and natural bioactive compounds.",
+    grainImage: grainSpices,
+    foodImage: spicesHerbs,
+    cta: "Click to explore",
+  },
+  {
+    name: "Gum Olibanum",
+    origin: "Various Regions, Ethiopia",
+    description: "Our spice range covers some of Ethiopia's most prized exports, valued for their high content of essential oils, antioxidants, and natural bioactive compounds.",
+    grainImage: gumOlibanum,
+    foodImage: grainGum,
     cta: "Click to explore",
   },
 ];
